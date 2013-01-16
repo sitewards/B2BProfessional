@@ -1,0 +1,108 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * config.xml
+ *	- rewrite blocks,
+ *	- set-up helper,
+ *	- set-up url rewrite,
+ *	- define router,
+ *	- set-up layout.xml,
+ *	- set-up translation file,
+ *	- define default values
+ *
+ * @category    Sitewards
+ * @package     Sitewards_B2BProfessional
+ * @copyright   Copyright (c) 2012 Sitewards GmbH (http://www.sitewards.com/)
+ */
+-->
+<config>
+	<modules>
+		<Sitewards_B2BProfessional>
+			<version>2.0.1</version>
+		</Sitewards_B2BProfessional>
+	</modules>
+	<global>
+		<blocks>
+			<bundle>
+				<rewrite>
+					<catalog_product_price>Sitewards_B2BProfessional_Block_Bundle_Catalog_Price</catalog_product_price>
+					<catalog_product_view_type_bundle_option_checkbox>Sitewards_B2BProfessional_Block_Bundle_Catalog_Product_View_Type_Bundle_Option_Checkbox</catalog_product_view_type_bundle_option_checkbox>
+					<catalog_product_view_type_bundle_option_multi>Sitewards_B2BProfessional_Block_Bundle_Catalog_Product_View_Type_Bundle_Option_Multi</catalog_product_view_type_bundle_option_multi>
+					<catalog_product_view_type_bundle_option_radio>Sitewards_B2BProfessional_Block_Bundle_Catalog_Product_View_Type_Bundle_Option_Radio</catalog_product_view_type_bundle_option_radio>
+					<catalog_product_view_type_bundle_option_select>Sitewards_B2BProfessional_Block_Bundle_Catalog_Product_View_Type_Bundle_Option_Select</catalog_product_view_type_bundle_option_select>
+				</rewrite>
+			</bundle>
+			<catalog>
+				<rewrite>
+					<product_price>Sitewards_B2BProfessional_Block_Price</product_price>
+					<product_view_type_configurable>Sitewards_B2BProfessional_Block_Configurable</product_view_type_configurable>
+				</rewrite>
+			</catalog>
+			<b2bprofessional>
+				<class>Sitewards_B2BProfessional_Block</class>
+			</b2bprofessional>
+		</blocks>
+		<helpers>
+			<b2bprofessional>
+				<class>Sitewards_B2BProfessional_Helper</class>
+			</b2bprofessional>
+		</helpers>
+		<models>
+			<b2bprofessional>
+				<class>Sitewards_B2BProfessional_Model</class>
+			</b2bprofessional>
+		</models>
+		<rewrite>
+			<sitewards_B2BProfessional_cart>
+				<from><![CDATA[#^/checkout/cart/#]]></from>
+				<to>B2BProfessional/cart/</to>
+			</sitewards_B2BProfessional_cart>
+		</rewrite>
+	</global>
+	<frontend>
+		<routers>
+			<Sitewards_B2BProfessional>
+				<use>standard</use>
+				<args>
+					<module>Sitewards_B2BProfessional</module>
+					<frontName>B2BProfessional</frontName>
+				</args>
+			</Sitewards_B2BProfessional>
+		</routers>
+		<layout>
+			<updates>
+				<b2bprofessional>
+					<file>B2BProfessional.xml</file>
+				</b2bprofessional>
+			</updates>
+		</layout>
+		<translate>
+			<modules>
+				<Sitewards_B2BProfessional>
+					<files>
+						<default>Sitewards_B2BProfessional.csv</default>
+					</files>
+				</Sitewards_B2BProfessional>
+			</modules>
+		</translate>
+	</frontend>
+	<adminhtml>
+		<translate>
+			<modules>
+				<Sitewards_B2BProfessional>
+					<files>
+						<default>Sitewards_B2BProfessional.csv</default>
+					</files>
+				</Sitewards_B2BProfessional>
+			</modules>
+		</translate>
+	</adminhtml>
+	<default>
+		<b2bprofessional>
+			<languagesettings>
+				<logintext>Please login</logintext>
+				<errortext>Your account is not allowed to access this store.</errortext>
+			</languagesettings>
+		</b2bprofessional>
+	</default>
+</config>

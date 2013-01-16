@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * adminhtml.xml
+ *	- create acl for this module
+ *
+ * @category    Sitewards
+ * @package     Sitewards_B2BProfessional
+ * @copyright   Copyright (c) 2012 Sitewards GmbH (http://www.sitewards.com/)
+ */
+-->
+<config>
+	<acl>
+		<resources>
+			<admin>
+				<children>
+					<system>
+						<children>
+							<config>
+								<children>
+									<b2bprofessional translate="title" module="b2bprofessional">
+										<title>B2B Professional</title>
+										<sort_order>50</sort_order>
+									</b2bprofessional>
+								</children>
+							</config>
+						</children>
+					</system>
+				</children>
+			</admin>
+		</resources>
+	</acl>
+</config>
