@@ -18,7 +18,7 @@
 <config>
 	<modules>
 		<Sitewards_B2BProfessional>
-			<version>2.0.1</version>
+			<version>2.0.2</version>
 		</Sitewards_B2BProfessional>
 	</modules>
 	<global>
@@ -35,7 +35,8 @@
 			<catalog>
 				<rewrite>
 					<product_price>Sitewards_B2BProfessional_Block_Price</product_price>
-					<product_view_type_configurable>Sitewards_B2BProfessional_Block_Configurable</product_view_type_configurable>
+					<product_view_type_configurable>Sitewards_B2BProfessional_Block_Product_View_Type_Configurable</product_view_type_configurable>
+					<product_view_options_type_select>Sitewards_B2BProfessional_Block_Product_View_Options_Type_Select</product_view_options_type_select>
 				</rewrite>
 			</catalog>
 			<b2bprofessional>
