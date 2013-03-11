@@ -1,5 +1,6 @@
 {
-    "name": "Sitewards/B2B_Professional",
+    "name": "sitewards/b2b_professional",
+	"license": "OSL-3.0",
     "type": "magento-module",
     "description": "The Sitewards B2B Extension extends your webshop with some essential functions to realize a B2B Store",
     "homepage": "http://www.sitewards.com",
