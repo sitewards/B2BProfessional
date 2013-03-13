@@ -25,10 +25,14 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 			return true;
 		}
 
-		$iUserStoreId		= Mage::getSingleton('customer/session')->getCustomer()->getStore()->getGroupID();
-		$iCurrentStoreId	= Mage::app()->getStore()->getGroupID();
-
-		if ($iUserStoreId == $iCurrentStoreId) {
+		$bCreatedViaAdmin = false;
+		$oCustomer = Mage::getSingleton('customer/session')->getCustomer();
+		if($oCustomer->getCreatedIn() == 'Admin') {
+			$bCreatedViaAdmin = true;
+		}
+		$iUserStoreId		= $oCustomer->getStoreId();
+		$iCurrentStoreId	= Mage::app()->getStore()->getId();
+		if ($iUserStoreId == $iCurrentStoreId || $bCreatedViaAdmin == true) {
 			return true;
 		}
 	}
