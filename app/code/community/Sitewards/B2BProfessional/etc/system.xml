@@ -49,12 +49,22 @@
 							<label>Global customer activation</label>
 							<frontend_type>select</frontend_type>
 							<source_model>adminhtml/system_config_source_yesno</source_model>
-							<sort_order>3</sort_order>
+							<sort_order>2</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
 							<comment><![CDATA[Activate customers for all stores. Otherwise they will only see the prices in the store, they have registered for.]]></comment>
 						</activecustomers>
+						<requirelogin translate="label comment">
+							<label>Require User Login</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>3</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							<comment><![CDATA[Require a user to login to view pages in the shop]]></comment>
+						</requirelogin>
 					</fields>
 				</generalsettings>
 				<languagesettings translate="label comment">

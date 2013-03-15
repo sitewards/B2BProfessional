@@ -18,7 +18,7 @@
 <config>
 	<modules>
 		<Sitewards_B2BProfessional>
-			<version>2.0.3</version>
+			<version>2.1.0</version>
 		</Sitewards_B2BProfessional>
 	</modules>
 	<global>
@@ -43,6 +43,16 @@
 				<class>Sitewards_B2BProfessional_Block</class>
 			</b2bprofessional>
 		</blocks>
+		<events>
+			<controller_action_predispatch>
+				<observers>
+					<b2bprofessional>
+						<class>b2bprofessional/observer</class>
+						<method>onControllerActionPreDispatch</method>
+					</b2bprofessional>
+				</observers>
+			</controller_action_predispatch>
+		</events>
 		<helpers>
 			<b2bprofessional>
 				<class>Sitewards_B2BProfessional_Helper</class>
