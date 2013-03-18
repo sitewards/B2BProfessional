@@ -35,6 +35,8 @@ class Sitewards_B2BProfessional_Model_Observer {
 				if(
 					!$oControllerAction instanceof Mage_Cms_IndexController
 						&&
+					!$oControllerAction instanceof Mage_Cms_PageController
+						&&
 					$oControllerAction instanceof Mage_Core_Controller_Front_Action
 						&&
 					!$oControllerAction instanceof Mage_Customer_AccountController
@@ -42,7 +44,7 @@ class Sitewards_B2BProfessional_Model_Observer {
 					// Redirect to the homepage
 					/* @var $oResponse Mage_Core_Controller_Response_Http */
 					$oResponse = $oControllerAction->getResponse();
-					$oResponse->setRedirect(Mage::getUrl('/'));
+					$oResponse->setRedirect($oHelper->getRequireLoginRedirect());
 
 					/*
 					 * Add message to the session
@@ -51,7 +53,7 @@ class Sitewards_B2BProfessional_Model_Observer {
 					 */
 					/* @var $oSession Mage_Core_Model_Session */
 					$oSession = Mage::getSingleton('core/session');
-					$oSession->addNotice('You do not have access to view this shop');
+					$oSession->addNotice($oHelper->getRequireLoginMessage());
 					session_write_close();
 				}
 			}

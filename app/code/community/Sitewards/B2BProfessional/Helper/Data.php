@@ -15,6 +15,18 @@
  */
 class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	/**
+	 * Check to see if the website is set-up to require a user login to view pages
+	 *
+	 * @return boolean
+	 */
+	public function checkRequireLogin() {
+		// if option is not active return true!
+		if (Mage::getStoreConfig('b2bprofessional/generalsettings/requirelogin')) {
+			return true;
+		}
+	}
+
+	/**
 	 * Check to see if the user is allowed on the current store
 	 * 
 	 * @return boolean
@@ -227,5 +239,34 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 		$oCurrentCategory = Mage::getModel('catalog/category');
 		$oCurrentCategory = $oCurrentCategory->load($iCategoryId);
 		return array_merge($aCurrentCategories, $oCurrentCategory->getAllChildren(true));
+	}
+
+	/**
+	 * Get the require login message
+	 *
+	 * @return string
+	 */
+	public function getRequireLoginMessage() {
+		// text displayed instead of price
+		if (Mage::getStoreConfig('b2bprofessional/languagesettings/languageoverride') == 1) {
+			$sLoginMessage = Mage::getStoreConfig('b2bprofessional/languagesettings/requireloginmessage');
+		} else {
+			$sLoginMessage = $this->__('You do not have access to view this store.');
+		}
+		return $sLoginMessage;
+	}
+
+	/**
+	 * Get the url of the require login redirect
+	 *
+	 * @return string
+	 */
+	public function getRequireLoginRedirect() {
+		$sRedirectPath = '/';
+		$sConfigVar = Mage::getStoreConfig('b2bprofessional/generalsettings/requireloginredirect');
+		if (isset($sConfigVar)) {
+			$sRedirectPath = $sConfigVar;
+		}
+		return Mage::getUrl($sRedirectPath);
 	}
 }

@@ -113,6 +113,8 @@
 			<languagesettings>
 				<logintext>Please login</logintext>
 				<errortext>Your account is not allowed to access this store.</errortext>
+				<requireloginmessage>You do not have access to view this store.</requireloginmessage>
+				<requireloginredirect>0</requireloginredirect>
 			</languagesettings>
 		</b2bprofessional>
 	</default>
