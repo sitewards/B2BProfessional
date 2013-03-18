@@ -20,10 +20,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	 * @return boolean
 	 */
 	public function checkRequireLogin() {
-		// if option is not active return true!
-		if (Mage::getStoreConfig('b2bprofessional/generalsettings/requirelogin')) {
-			return true;
-		}
+		return Mage::getStoreConfigFlag('b2bprofessional/generalsettings/requirelogin');
 	}
 
 	/**
