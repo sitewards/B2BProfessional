@@ -19,4 +19,5 @@ Features of the B2BProfessional Extension
 * Multilanguage support (German and English installed, extendible to other languages)
 * Activation for specific product categories
 * Activation for specific customer groups
-* Optional require login to access store
+* Require login to access store
+* Set page to redirect user to when they are not logged in
