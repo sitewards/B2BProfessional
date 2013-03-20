@@ -45,6 +45,14 @@
 					</b2bprofessional>
 				</observers>
 			</controller_action_predispatch>
+			<core_block_abstract_to_html_before>
+				<observers>
+					<b2bprofessional>
+						<class>b2bprofessional/observer</class>
+						<method>onCoreBlockAbstractToHtmlBefore</method>
+					</b2bprofessional>
+				</observers>
+			</core_block_abstract_to_html_before>
 			<core_block_abstract_to_html_after>
 				<observers>
 					<b2bprofessional>

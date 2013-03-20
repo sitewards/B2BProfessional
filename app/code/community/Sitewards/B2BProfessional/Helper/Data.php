@@ -91,6 +91,11 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 				$aCurrentCategories[] = $oCategory->getId();
 			} else {
 				$aCurrentCategories = $aB2BProfFilters;
+				foreach($aB2BProfFilters as $iCategoryId) {
+					$oCategory = Mage::getModel('catalog/category')->load($iCategoryId);
+
+					$aCurrentCategories = array_merge($aCurrentCategories, $oCategory->getAllChildren(true));
+				}
 			}
 		}
 		$aCurrentCategories = array_unique($aCurrentCategories);

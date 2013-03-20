@@ -109,6 +109,26 @@ class Sitewards_B2BProfessional_Model_Observer {
 	}
 
 	/**
+	 * On the event core_block_abstract_to_html_before
+	 * 	 - Check for the block type Mage_Catalog_Block_Product_List_Toolbar
+	 * 	 - Remove the price order when required
+	 *
+	 * @param Varien_Event_Observer $oObserver
+	 */
+	public function onCoreBlockAbstractToHtmlBefore(Varien_Event_Observer $oObserver) {
+		$oBlock = $oObserver->getData('block');
+
+		if($oBlock instanceof Mage_Catalog_Block_Product_List_Toolbar) {
+			/* @var $oB2BHelper Sitewards_B2BProfessional_Helper_Data */
+			$oB2BHelper = Mage::helper('b2bprofessional');
+
+			if($oB2BHelper->checkActive()) {
+				$oBlock->removeOrderFromAvailableOrders('price');
+			}
+		}
+	}
+
+	/**
 	 * On the event catalog_product_type_configurable_price
 	 * Set the COnfigurable price of a product to 0 to stop the changed price showing up in the drop down
 	 *
