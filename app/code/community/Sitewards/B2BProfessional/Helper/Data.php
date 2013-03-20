@@ -41,6 +41,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 		}
 		$iUserStoreId		= $oCustomer->getStoreId();
 		$iCurrentStoreId	= Mage::app()->getStore()->getId();
+
 		if ($iUserStoreId == $iCurrentStoreId || $bCreatedViaAdmin == true) {
 			return true;
 		}
@@ -135,6 +136,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	 */
 	public function checkLoggedIn() {
 		$bLoggedIn = Mage::getSingleton('customer/session')->isLoggedIn();
+
 		if (!$this->checkAllowed()) {
 			$bLoggedIn = false;
 		}

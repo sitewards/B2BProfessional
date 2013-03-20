@@ -123,4 +123,29 @@ class Sitewards_B2BProfessional_Model_Observer {
 			$oProduct->setConfigurablePrice(0);
 		}
 	}
+
+	/**
+	 * If we have a Mage_Catalog_Block_Layer_View
+	 *	 - remove the price attribute
+	 *
+	 * @param Varien_Event_Observer $oObserver
+	 */
+	public function onCoreLayoutBlockCreateAfter(Varien_Event_Observer $oObserver) {
+		$oBlock = $oObserver->getData('block');
+		if($oBlock instanceof Mage_Catalog_Block_Layer_View) {
+			/* @var $oB2BHelper Sitewards_B2BProfessional_Helper_Data */
+			$oB2BHelper = Mage::helper('b2bprofessional');
+
+			if($oB2BHelper->checkActive()) {
+				$aFilterableAttributes = $oBlock->getData('_filterable_attributes');
+				$aNewFilterableAttributes = array();
+				foreach ($aFilterableAttributes as $oFilterableAttribute) {
+					if ($oFilterableAttribute->getAttributeCode() != 'price') {
+						$aNewFilterableAttributes[] = $oFilterableAttribute;
+					}
+				}
+				$oBlock->setData('_filterable_attributes', $aNewFilterableAttributes);
+			}
+		}
+	}
 }
