@@ -77,15 +77,21 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 			 * 	- If not check for a current_category,
 			 * 		- If not load the store default category,
 			 */
-			/* @var $oCategory Mage_Catalog_Model_Category */
-			$oCategory = Mage::registry('current_category_filter');
-			if(is_null($oCategory)) {
-				$oCategory = Mage::registry('current_category');
+			$aB2BProfFilters = Mage::registry('b2bprof_category_filters');
+			if(empty($aB2BProfFilters)) {
+				/* @var $oCategory Mage_Catalog_Model_Category */
+				$oCategory = Mage::registry('current_category_filter');
 				if(is_null($oCategory)) {
-					$oCategory = Mage::getModel('catalog/category')->load(Mage::app()->getStore()->getRootCategoryId());
+					$oCategory = Mage::registry('current_category');
+					if(is_null($oCategory)) {
+						$oCategory = Mage::getModel('catalog/category')->load(Mage::app()->getStore()->getRootCategoryId());
+					}
 				}
+				$aCurrentCategories = $oCategory->getAllChildren(true);
+				$aCurrentCategories[] = $oCategory->getId();
+			} else {
+				$aCurrentCategories = $aB2BProfFilters;
 			}
-			$aCurrentCategories = $oCategory->getAllChildren(true);
 		}
 		$aCurrentCategories = array_unique($aCurrentCategories);
 

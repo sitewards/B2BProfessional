@@ -136,11 +136,27 @@ class Sitewards_B2BProfessional_Model_Observer {
 			/* @var $oB2BHelper Sitewards_B2BProfessional_Helper_Data */
 			$oB2BHelper = Mage::helper('b2bprofessional');
 
+			/*
+			 * Get all possible category filters
+			 * Assign to value b2bprof_category_filters to be used in
+			 * Sitewards_B2BProfessional_Helper_Data->checkCategoryIsActive
+			 */
+			/* @var $oCategoryFilter Mage_Catalog_Block_Layer_Filter_Category */
+			$oCategoryFilter = $oBlock->getChild('category_filter');
+			$oCategories = $oCategoryFilter->getItems();
+			$aCategoryOptions = array();
+			foreach($oCategories as $oCategory) {
+				/* @var $oCategory Mage_Catalog_Model_Layer_Filter_Item */
+				$iCategoryId = $oCategory->getValue();
+				$aCategoryOptions[] = $iCategoryId;
+			}
+			Mage::register('b2bprof_category_filters', $aCategoryOptions);
+
 			if($oB2BHelper->checkActive()) {
 				$aFilterableAttributes = $oBlock->getData('_filterable_attributes');
 				$aNewFilterableAttributes = array();
 				foreach ($aFilterableAttributes as $oFilterableAttribute) {
-					if ($oFilterableAttribute->getAttributeCode() != 'price') {
+					if($oFilterableAttribute->getAttributeCode() != 'price') {
 						$aNewFilterableAttributes[] = $oFilterableAttribute;
 					}
 				}
