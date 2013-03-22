@@ -18,8 +18,8 @@ class Sitewards_B2BProfessional_Model_Customer extends Mage_Customer_Model_Custo
 	 * 	- If cusomter is not active,
 	 * 		- Throw correct exception or add system message,
 	 *
-	 * @param string $sLoginEmail        	
-	 * @param string $sLoginPassword        	
+	 * @param string $sLoginEmail
+	 * @param string $sLoginPassword
 	 * @return true
 	 * @throws Exception
 	 * 	- Customer is not confirmed and confirmation is required,

@@ -89,13 +89,6 @@
 				</args>
 			</Sitewards_B2BProfessional>
 		</routers>
-		<layout>
-			<updates>
-				<b2bprofessional>
-					<file>B2BProfessional.xml</file>
-				</b2bprofessional>
-			</updates>
-		</layout>
 		<translate>
 			<modules>
 				<Sitewards_B2BProfessional>
