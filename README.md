@@ -38,6 +38,8 @@ File list
 		* controller_action_predispatch
 		* core_block_abstract_to_html_after
 		* catalog_product_type_configurable_price
+		* core_block_abstract_to_html_before
+		* core_layout_block_create_after
 	* Set-up url rewrite
 		* From /checkout/cart
 		* To B2BProfessional/cart/
@@ -122,6 +124,12 @@ File list
 	* onCatalogProductTypeConfigurablePrice
 		* On the event catalog_product_type_configurable_price
 		* Set the COnfigurable price of a product to 0 to stop the changed price showing up in the drop down
+	* onCoreBlockAbstractToHtmlBefore
+		* On the event core_block_abstract_to_html_before
+			* Check for the block type Mage_Catalog_Block_Product_List_Toolbar
+			* Remove the price order when required
+	* onCoreLayoutBlockCreateAfter
+		* If we have a Mage_Catalog_Block_Layer_View then remove the price attribute
 * app\code\community\Sitewards\B2BProfessional\Model\System\Config\Source\Category.php
 	* Populate an options array with the current system categories
 * app\code\community\Sitewards\B2BProfessional\Model\System\Config\Source\Page.php
