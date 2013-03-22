@@ -41,6 +41,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 		}
 		$iUserStoreId		= $oCustomer->getStoreId();
 		$iCurrentStoreId	= Mage::app()->getStore()->getId();
+
 		if ($iUserStoreId == $iCurrentStoreId || $bCreatedViaAdmin == true) {
 			return true;
 		}
@@ -71,7 +72,31 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 				$aCurrentCategories = $oProduct->getCategoryIds();
 			}
 		} else {
-			$aCurrentCategories = array(Mage::getModel('catalog/product')->getCategoryId());
+			/*
+			 * Check if there is a filtered category
+			 * 	- If not check for a current_category,
+			 * 		- If not load the store default category,
+			 */
+			$aB2BProfFilters = Mage::registry('b2bprof_category_filters');
+			if(empty($aB2BProfFilters)) {
+				/* @var $oCategory Mage_Catalog_Model_Category */
+				$oCategory = Mage::registry('current_category_filter');
+				if(is_null($oCategory)) {
+					$oCategory = Mage::registry('current_category');
+					if(is_null($oCategory)) {
+						$oCategory = Mage::getModel('catalog/category')->load(Mage::app()->getStore()->getRootCategoryId());
+					}
+				}
+				$aCurrentCategories = $oCategory->getAllChildren(true);
+				$aCurrentCategories[] = $oCategory->getId();
+			} else {
+				$aCurrentCategories = $aB2BProfFilters;
+				foreach($aB2BProfFilters as $iCategoryId) {
+					$oCategory = Mage::getModel('catalog/category')->load($iCategoryId);
+
+					$aCurrentCategories = array_merge($aCurrentCategories, $oCategory->getAllChildren(true));
+				}
+			}
 		}
 		$aCurrentCategories = array_unique($aCurrentCategories);
 
@@ -135,6 +160,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	 */
 	public function checkLoggedIn() {
 		$bLoggedIn = Mage::getSingleton('customer/session')->isLoggedIn();
+
 		if (!$this->checkAllowed()) {
 			$bLoggedIn = false;
 		}

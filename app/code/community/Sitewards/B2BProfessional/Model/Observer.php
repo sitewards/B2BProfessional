@@ -109,6 +109,26 @@ class Sitewards_B2BProfessional_Model_Observer {
 	}
 
 	/**
+	 * On the event core_block_abstract_to_html_before
+	 * 	 - Check for the block type Mage_Catalog_Block_Product_List_Toolbar
+	 * 	 - Remove the price order when required
+	 *
+	 * @param Varien_Event_Observer $oObserver
+	 */
+	public function onCoreBlockAbstractToHtmlBefore(Varien_Event_Observer $oObserver) {
+		$oBlock = $oObserver->getData('block');
+
+		if($oBlock instanceof Mage_Catalog_Block_Product_List_Toolbar) {
+			/* @var $oB2BHelper Sitewards_B2BProfessional_Helper_Data */
+			$oB2BHelper = Mage::helper('b2bprofessional');
+
+			if($oB2BHelper->checkActive()) {
+				$oBlock->removeOrderFromAvailableOrders('price');
+			}
+		}
+	}
+
+	/**
 	 * On the event catalog_product_type_configurable_price
 	 * Set the COnfigurable price of a product to 0 to stop the changed price showing up in the drop down
 	 *
@@ -121,6 +141,47 @@ class Sitewards_B2BProfessional_Model_Observer {
 
 		if ($oB2BHelper->checkActive($oProduct->getId())) {
 			$oProduct->setConfigurablePrice(0);
+		}
+	}
+
+	/**
+	 * If we have a Mage_Catalog_Block_Layer_View
+	 *	 - remove the price attribute
+	 *
+	 * @param Varien_Event_Observer $oObserver
+	 */
+	public function onCoreLayoutBlockCreateAfter(Varien_Event_Observer $oObserver) {
+		$oBlock = $oObserver->getData('block');
+		if($oBlock instanceof Mage_Catalog_Block_Layer_View) {
+			/* @var $oB2BHelper Sitewards_B2BProfessional_Helper_Data */
+			$oB2BHelper = Mage::helper('b2bprofessional');
+
+			/*
+			 * Get all possible category filters
+			 * Assign to value b2bprof_category_filters to be used in
+			 * Sitewards_B2BProfessional_Helper_Data->checkCategoryIsActive
+			 */
+			/* @var $oCategoryFilter Mage_Catalog_Block_Layer_Filter_Category */
+			$oCategoryFilter = $oBlock->getChild('category_filter');
+			$oCategories = $oCategoryFilter->getItems();
+			$aCategoryOptions = array();
+			foreach($oCategories as $oCategory) {
+				/* @var $oCategory Mage_Catalog_Model_Layer_Filter_Item */
+				$iCategoryId = $oCategory->getValue();
+				$aCategoryOptions[] = $iCategoryId;
+			}
+			Mage::register('b2bprof_category_filters', $aCategoryOptions);
+
+			if($oB2BHelper->checkActive()) {
+				$aFilterableAttributes = $oBlock->getData('_filterable_attributes');
+				$aNewFilterableAttributes = array();
+				foreach ($aFilterableAttributes as $oFilterableAttribute) {
+					if($oFilterableAttribute->getAttributeCode() != 'price') {
+						$aNewFilterableAttributes[] = $oFilterableAttribute;
+					}
+				}
+				$oBlock->setData('_filterable_attributes', $aNewFilterableAttributes);
+			}
 		}
 	}
 }
