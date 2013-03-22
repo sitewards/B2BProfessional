@@ -21,3 +21,21 @@ Features of the B2BProfessional Extension
 * Activation for specific customer groups
 * Require login to access store
 * Set page to redirect user to when they are not logged in
+
+B2BProfessional Extension File list
+------------------
+* app\etc\modules\Sitewards_B2BProfessional.xml
+* app\code\community\Sitewards\B2BProfessional\etc\adminhtml.xml
+* app\code\community\Sitewards\B2BProfessional\etc\config.xml
+* app\code\community\Sitewards\B2BProfessional\etc\system.xml
+* app\code\community\Sitewards\B2BProfessional\Block\Bundle\Catalog\Price.php
+* app\code\community\Sitewards\B2BProfessional\Block\Bundle\Catalog\Product\View\Type\Bundle\Option\Checkbox.php
+* app\code\community\Sitewards\B2BProfessional\Block\Bundle\Catalog\Product\View\Type\Bundle\Option\Multi.php
+* app\code\community\Sitewards\B2BProfessional\Block\Bundle\Catalog\Product\View\Type\Bundle\Option\Radio.php
+* app\code\community\Sitewards\B2BProfessional\Block\Bundle\Catalog\Product\View\Type\Bundle\Option\Select.php
+* app\code\community\Sitewards\B2BProfessional\controllers\CartController.php
+* app\code\community\Sitewards\B2BProfessional\Helper\Data.php
+* app\code\community\Sitewards\B2BProfessional\Model\Customer.php
+* app\code\community\Sitewards\B2BProfessional\Model\Observer.php
+* app\code\community\Sitewards\B2BProfessional\Model\System\Config\Source\Category.php
+* app\code\community\Sitewards\B2BProfessional\Model\System\Config\Source\Page.php
