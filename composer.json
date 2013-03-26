@@ -5,6 +5,7 @@
     "description": "The Sitewards B2B Extension extends your webshop with some essential functions to realize a B2B Store",
     "homepage": "http://www.sitewards.com",
     "require": {
-        "magento-hackathon/magento-composer-installer": "*"
+        "magento-hackathon/magento-composer-installer": "*",
+		"netzarbeiter/customer-activation"
     }
 }
