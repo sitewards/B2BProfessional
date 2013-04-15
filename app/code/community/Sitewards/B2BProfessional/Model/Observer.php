@@ -185,15 +185,22 @@ class Sitewards_B2BProfessional_Model_Observer {
 		}
 	}
 
+	/**
+	 * Load the quote from the session
+	 * Validate that each item can is active and remove if not
+	 *
+	 * @param Varien_Event_Observer $oObserver
+	 */
 	public function onCustomQuoteProcess(Varien_Event_Observer $oObserver) {
 		/* @var $oCheckSession Mage_Checkout_Model_Session */
 		$oCheckSession = $oObserver->getData('checkout_session');
+
 		$iQuoteId = $oCheckSession->getQuoteId();
 		$bResetQuoteId = false;
 		if(!is_null($iQuoteId)) {
 			/* @var $oB2BHelper Sitewards_B2BProfessional_Helper_Data */
 			$oB2BHelper = Mage::helper('b2bprofessional');
-;
+
 			/* @var $oQuote Mage_Sales_Model_Quote */
 			$oQuote = Mage::getModel('sales/quote')->load($iQuoteId);
 			foreach($oQuote->getAllItems() as $oQuoteItem) {
@@ -201,13 +208,13 @@ class Sitewards_B2BProfessional_Model_Observer {
 				$iProductId = $oQuoteItem->getProductId();
 				if ($oB2BHelper->checkActive($iProductId)) {
 					$bResetQuoteId = true;
+					$oQuote->removeItem($oQuoteItem->getId());
 				}
 			}
 		}
 
 		if($bResetQuoteId == true) {
-			$oCheckSession->setQuoteId(null);
-			$oCheckSession->setLastSuccessQuoteId(null);
+			$oQuote->save();
 		}
 	}
 }
