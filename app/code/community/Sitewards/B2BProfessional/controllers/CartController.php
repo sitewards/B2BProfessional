@@ -38,11 +38,7 @@ class Sitewards_B2BProfessional_CartController extends Mage_Checkout_CartControl
 
 		if ((!empty($iProductId) && $oB2BHelper->checkActive($iProductId)) || ! $bAllowed) {
 			$this->setFlag('', 'no-dispatch', true);
-			if (Mage::getStoreConfig('b2bprofessional/languagesettings/languageoverride') == 1) {
-				Mage::getSingleton('customer/session')->addError(Mage::getStoreConfig('b2bprofessional/languagesettings/errortext'));
-			} else {
-				Mage::getSingleton('customer/session')->addError($this->__('Your account is not allowed to access this store.'));
-			}
+			Mage::getSingleton('customer/session')->addError($oB2BHelper->getCheckoutMessage());
 			Mage::app()->getResponse()->setRedirect(Mage::getUrl('customer/account/login'))->sendHeaders();
 		}
 	}

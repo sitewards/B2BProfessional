@@ -28,6 +28,7 @@ class Sitewards_B2BProfessional_Model_Observer {
 		if($oHelper->checkGlobalActive() == true) {
 			/* @var $oControllerAction Mage_Core_Controller_Front_Action */
 			$oControllerAction = $oObserver->getData('controller_action');
+
 			/*
 			 * Check to see if the system requires a login
 			 * And there is no logged in user
@@ -76,18 +77,19 @@ class Sitewards_B2BProfessional_Model_Observer {
 				if (!$oHelper->hasValidCart()) {
 					// Stop the default action from being dispatched
 					$oControllerAction->setFlag('', 'no-dispatch', true);
-					/*
-					 * Set the appropriate error message to the user session
-					 */
-					if (Mage::getStoreConfig('b2bprofessional/languagesettings/languageoverride') == 1) {
-						Mage::getSingleton('customer/session')->addError(Mage::getStoreConfig('b2bprofessional/languagesettings/errortext'));
-					} else {
-						Mage::getSingleton('customer/session')->addError($oHelper->__('Your account is not allowed to access this store.'));
-					}
-					/*
-					 * Redirect to the account login url
-					 */
+					//Set the appropriate error message to the user session
+					Mage::getSingleton('customer/session')->addError($oHelper->getCheckoutMessage());
+					//Redirect to the account login url
 					Mage::app()->getResponse()->setRedirect(Mage::getUrl('customer/account/login'))->sendHeaders();
+				}
+			/*
+			 * On Cart action
+			 *  - validate that the cart is valid
+			 *  - add message to the checkout session
+			 */
+			} elseif($oControllerAction instanceof Mage_Checkout_CartController) {
+				if (!$oHelper->hasValidCart()) {
+					Mage::getSingleton('checkout/session')->addError($oHelper->getCheckoutMessage());
 				}
 			}
 		}

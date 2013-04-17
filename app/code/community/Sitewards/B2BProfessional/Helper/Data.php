@@ -332,4 +332,19 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 		}
 		return $sReplacementText;
 	}
+
+	/**
+	 * * Get the checkout error message
+	 *  - Check for admin language override
+	 *
+	 * @return string
+	 */
+	public function getCheckoutMessage() {
+		if (Mage::getStoreConfig('b2bprofessional/languagesettings/languageoverride') == 1) {
+			$sCheckoutMessage = Mage::getStoreConfig('b2bprofessional/languagesettings/errortext');
+		} else {
+			$sCheckoutMessage = $this->__('Your account is not allowed to access this store.');
+		}
+		return $sCheckoutMessage;
+	}
 }
