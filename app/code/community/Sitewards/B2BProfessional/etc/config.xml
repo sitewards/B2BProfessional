@@ -35,6 +35,11 @@
 			<b2bprofessional>
 				<class>Sitewards_B2BProfessional_Block</class>
 			</b2bprofessional>
+			<checkout>
+				<rewrite>
+					<links>Sitewards_B2BProfessional_Block_Checkout_Links</links>
+				</rewrite>
+			</checkout>
 		</blocks>
 		<events>
 			<controller_action_predispatch>
@@ -77,14 +82,6 @@
 					</b2bprofessional>
 				</observers>
 			</core_layout_block_create_after>
-			<custom_quote_process>
-				<observers>
-					<b2bprofessional>
-						<class>b2bprofessional/observer</class>
-						<method>onCustomQuoteProcess</method>
-					</b2bprofessional>
-				</observers>
-			</custom_quote_process>
 		</events>
 		<helpers>
 			<b2bprofessional>

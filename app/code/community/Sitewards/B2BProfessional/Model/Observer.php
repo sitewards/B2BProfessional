@@ -79,12 +79,12 @@ class Sitewards_B2BProfessional_Model_Observer {
 		$oBlock = $oObserver->getData('block');
 		$oTransport = $oObserver->getData('transport');
 
+		/* @var $oB2BHelper Sitewards_B2BProfessional_Helper_Data */
+		$oB2BHelper = Mage::helper('b2bprofessional');
+
 		if($oBlock instanceof Mage_Catalog_Block_Product_Price) {
 			$oProduct = $oBlock->getProduct();
 			$iCurrentProductId = $oProduct->getId();
-
-			/* @var $oB2BHelper Sitewards_B2BProfessional_Helper_Data */
-			$oB2BHelper = Mage::helper('b2bprofessional');
 
 			if ($oB2BHelper->checkActive($iCurrentProductId)) {
 				// To stop duplicate information being displayed validate that we only do this once per product
@@ -104,6 +104,20 @@ class Sitewards_B2BProfessional_Model_Observer {
 				}
 				// Set can show price to false to stop tax being displayed via Symmetrics_TweaksGerman_Block_Tax
 				$oProduct->setCanShowPrice(false);
+			}
+		} elseif(
+			$oBlock instanceof Mage_Checkout_Block_Cart_Totals
+			||
+			$oBlock instanceof Mage_Checkout_Block_Onepage_Link
+			||
+			$oBlock instanceof Mage_Checkout_Block_Multishipping_Link
+		) {
+			/*
+			 * If the current cart is not valid
+			 *  - remove the block html
+			 */
+			if (!$oB2BHelper->hasValidCart()) {
+				$oTransport->setHtml('');
 			}
 		}
 	}
@@ -130,7 +144,7 @@ class Sitewards_B2BProfessional_Model_Observer {
 
 	/**
 	 * On the event catalog_product_type_configurable_price
-	 * Set the COnfigurable price of a product to 0 to stop the changed price showing up in the drop down
+	 * Set the Configurable price of a product to 0 to stop the changed price showing up in the drop down
 	 *
 	 * @param Varien_Event_Observer $oObserver
 	 */
@@ -182,39 +196,6 @@ class Sitewards_B2BProfessional_Model_Observer {
 				}
 				$oBlock->setData('_filterable_attributes', $aNewFilterableAttributes);
 			}
-		}
-	}
-
-	/**
-	 * Load the quote from the session
-	 * Validate that each item can is active and remove if not
-	 *
-	 * @param Varien_Event_Observer $oObserver
-	 */
-	public function onCustomQuoteProcess(Varien_Event_Observer $oObserver) {
-		/* @var $oCheckSession Mage_Checkout_Model_Session */
-		$oCheckSession = $oObserver->getData('checkout_session');
-
-		$iQuoteId = $oCheckSession->getQuoteId();
-		$bResetQuoteId = false;
-		if(!is_null($iQuoteId)) {
-			/* @var $oB2BHelper Sitewards_B2BProfessional_Helper_Data */
-			$oB2BHelper = Mage::helper('b2bprofessional');
-
-			/* @var $oQuote Mage_Sales_Model_Quote */
-			$oQuote = Mage::getModel('sales/quote')->load($iQuoteId);
-			foreach($oQuote->getAllItems() as $oQuoteItem) {
-				/* @var $oQuoteItem Mage_Sales_Model_Quote_Item */
-				$iProductId = $oQuoteItem->getProductId();
-				if ($oB2BHelper->checkActive($iProductId)) {
-					$bResetQuoteId = true;
-					$oQuote->removeItem($oQuoteItem->getId());
-				}
-			}
-		}
-
-		if($bResetQuoteId == true) {
-			$oQuote->save();
 		}
 	}
 }

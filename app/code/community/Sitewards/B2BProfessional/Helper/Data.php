@@ -8,6 +8,7 @@
  *		- Check module global flag,
  *		- Check that customer is logged in and active,
  *		- Check that the product/customer is activated,
+ *		- Check that the current cart is valid,
  *
  * @category    Sitewards
  * @package     Sitewards_B2BProfessional
@@ -291,5 +292,28 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 			$sRedirectPath = $sConfigVar;
 		}
 		return Mage::getUrl($sRedirectPath);
+	}
+
+	/**
+	 * Validate that the current quote in the checkout session is valid for the user
+	 *  - Check each item in the quote against the function checkActive
+	 *
+	 * @return bool
+	 */
+	public function hasValidCart() {
+		$bValidCart = true;
+		/* @var $oQuote Mage_Sales_Model_Quote */
+		$oQuote = Mage::getSingleton('checkout/session')->getQuote();
+		foreach($oQuote->getAllItems() as $oItem) {
+			/* @var $oItem Mage_Sales_Model_Quote_Item */
+			$iProductId = $oItem->getProductId();
+			/*
+			 * For each item check if it is active for the current user
+			 */
+			if ($this->checkActive($iProductId)) {
+				$bValidCart = false;
+			}
+		}
+		return $bValidCart;
 	}
 }
