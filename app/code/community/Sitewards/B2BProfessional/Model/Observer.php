@@ -26,13 +26,13 @@ class Sitewards_B2BProfessional_Model_Observer {
 		/* @var $oHelper Sitewards_B2BProfessional_Helper_Data */
 		$oHelper = Mage::helper('b2bprofessional');
 		if($oHelper->checkGlobalActive() == true) {
+			/* @var $oControllerAction Mage_Core_Controller_Front_Action */
+			$oControllerAction = $oObserver->getData('controller_action');
 			/*
 			 * Check to see if the system requires a login
 			 * And there is no logged in user
 			 */
 			if($oHelper->checkRequireLogin() == true && !Mage::getSingleton('customer/session')->isLoggedIn()) {
-				/* @var $oControllerAction Mage_Core_Controller_Front_Action */
-				$oControllerAction = $oObserver->getData('controller_action');
 				/*
 				 * Check to see if the controller is:
 				 * 	1) Cms related for cms pages,
@@ -62,6 +62,32 @@ class Sitewards_B2BProfessional_Model_Observer {
 					$oSession = Mage::getSingleton('core/session');
 					$oSession->addNotice($oHelper->getRequireLoginMessage());
 					session_write_close();
+				}
+			/*
+			 * On Multishipping or Onepage actions
+			 *  - validate that the cart is valid
+			 *  - if not redirect the user to the account section and display message
+			 */
+			} elseif(
+				$oControllerAction instanceof Mage_Checkout_MultishippingController
+				||
+				$oControllerAction instanceof Mage_Checkout_OnepageController
+			) {
+				if (!$oHelper->hasValidCart()) {
+					// Stop the default action from being dispatched
+					$oControllerAction->setFlag('', 'no-dispatch', true);
+					/*
+					 * Set the appropriate error message to the user session
+					 */
+					if (Mage::getStoreConfig('b2bprofessional/languagesettings/languageoverride') == 1) {
+						Mage::getSingleton('customer/session')->addError(Mage::getStoreConfig('b2bprofessional/languagesettings/errortext'));
+					} else {
+						Mage::getSingleton('customer/session')->addError($oHelper->__('Your account is not allowed to access this store.'));
+					}
+					/*
+					 * Redirect to the account login url
+					 */
+					Mage::app()->getResponse()->setRedirect(Mage::getUrl('customer/account/login'))->sendHeaders();
 				}
 			}
 		}
