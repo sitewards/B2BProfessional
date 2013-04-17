@@ -316,4 +316,20 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 		}
 		return $bValidCart;
 	}
+
+	/**
+	 * Get the message to replace prices with
+	 *  - Check for admin language override
+	 *
+	 * @return string
+	 */
+	public function getPriceMessage() {
+		// text displayed instead of price
+		if (Mage::getStoreConfig('b2bprofessional/languagesettings/languageoverride') == 1) {
+			$sReplacementText = Mage::getStoreConfig('b2bprofessional/languagesettings/logintext');
+		} else {
+			$sReplacementText = $this->__('Please login');
+		}
+		return $sReplacementText;
+	}
 }

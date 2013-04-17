@@ -91,14 +91,7 @@ class Sitewards_B2BProfessional_Model_Observer {
 				if ($iCurrentProductId != self::$_iLastProductId) {
 					self::$_iLastProductId = $iCurrentProductId;
 
-					// text displayed instead of price
-					if (Mage::getStoreConfig('b2bprofessional/languagesettings/languageoverride') == 1) {
-						$sReplacementText = Mage::getStoreConfig('b2bprofessional/languagesettings/logintext');
-					} else {
-						$sReplacementText = $oB2BHelper->__('Please login');
-					}
-
-					$oTransport->setHtml($sReplacementText);
+					$oTransport->setHtml($oB2BHelper->getPriceMessage());
 				} else {
 					$oTransport->setHtml('');
 				}
@@ -126,7 +119,7 @@ class Sitewards_B2BProfessional_Model_Observer {
 			 */
 			$sBlockHtml = $oTransport->getHtml();
 			if (!$oB2BHelper->hasValidCart()) {
-				$sBlockHtml = preg_replace('@<span class="price"[^>]*?>.*?</span>@siu',$oB2BHelper->getRequireLoginMessage(), $sBlockHtml);
+				$sBlockHtml = preg_replace('@<span class="price"[^>]*?>.*?</span>@siu',$oB2BHelper->getPriceMessage(), $sBlockHtml);
 			}
 			$oTransport->setHtml($sBlockHtml);
 		} elseif ($oBlock instanceof Mage_Checkout_Block_Cart_Sidebar) {
@@ -138,7 +131,7 @@ class Sitewards_B2BProfessional_Model_Observer {
 						'@<div class="actions"[^>]*?>.*?</div>@siu',
 					),
 					array(
-						$oB2BHelper->getRequireLoginMessage(),
+						$oB2BHelper->getPriceMessage(),
 						''
 					),
 					$sBlockHtml
