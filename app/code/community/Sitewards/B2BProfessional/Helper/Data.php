@@ -351,14 +351,21 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	/**
 	 * When we have an invalid cart
 	 *  - Perform a preg_replace with a given set of patterns and replacements on a string
+	 *  - When product id is given check for valid product
+	 *  - When no product id is given then check to complete cart
 	 *
 	 * @param array $aPatterns
 	 * @param array $aReplacements
 	 * @param string $sBlockHtml
+	 * @param int $iProductId
 	 * @return string
 	 */
-	public function replaceOnInvalidCart($aPatterns, $aReplacements, $sBlockHtml) {
-		if (!$this->hasValidCart()) {
+	public function replaceOnInvalidCart($aPatterns, $aReplacements, $sBlockHtml, $iProductId = null) {
+		if (
+			is_null($iProductId) && !$this->hasValidCart()
+			||
+			$this->checkActive($iProductId)
+		) {
 			$sBlockHtml = preg_replace(
 				$aPatterns,
 				$aReplacements,

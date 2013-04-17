@@ -5,6 +5,8 @@
  */
 $this->setTemplate('checkout/cart/item/default.phtml');
 $sCoreHtml = $this->renderView();
+$iProductId = $this->getItem()->getProductId();
+
 /*
  * Check the default html for
  *  - <span class="price">something</span>
@@ -15,6 +17,7 @@ $oB2BHelper = Mage::helper('b2bprofessional');
 echo $oB2BHelper->replaceOnInvalidCart(
 	array('@<span class="price"[^>]*?>.*?</span>@siu'),
 	array($oB2BHelper->getPriceMessage()),
-	$sCoreHtml
+	$sCoreHtml,
+	$iProductId
 );
 ?>
