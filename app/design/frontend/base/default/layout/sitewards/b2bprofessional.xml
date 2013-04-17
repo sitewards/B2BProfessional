@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout>
+	<default>
+		<reference name="cart_sidebar">
+			<action method="setTemplate"><template>sitewards/b2bprofessional/checkout/cart/sidebar.phtml</template></action>
+			<action method="addItemRender"><type>simple</type><block>checkout/cart_item_renderer</block><template>sitewards/b2bprofessional/checkout/cart/sidebar/default.phtml</template></action>
+			<action method="addItemRender"><type>grouped</type><block>checkout/cart_item_renderer_grouped</block><template>sitewards/b2bprofessional/checkout/cart/sidebar/default.phtml</template></action>
+			<action method="addItemRender"><type>configurable</type><block>checkout/cart_item_renderer_configurable</block><template>sitewards/b2bprofessional/checkout/cart/sidebar/default.phtml</template></action>
+			<action method="addItemRender"><type>bundle</type><block>bundle/checkout_cart_item_renderer</block><template>sitewards/b2bprofessional/checkout/cart/sidebar/default.phtml</template></action>
+		</reference>
+	</default>
+	<checkout_cart_index>
+		<reference name="checkout.cart">
+			<action method="addItemRender"><type>simple</type><block>checkout/cart_item_renderer</block><template>sitewards/b2bprofessional/checkout/cart/item/default.phtml</template></action>
+			<action method="addItemRender"><type>grouped</type><block>checkout/cart_item_renderer_grouped</block><template>sitewards/b2bprofessional/checkout/cart/item/default.phtml</template></action>
+			<action method="addItemRender"><type>configurable</type><block>checkout/cart_item_renderer_configurable</block><template>sitewards/b2bprofessional/checkout/cart/item/default.phtml</template></action>
+			<action method="addItemRender"><type>bundle</type><block>bundle/checkout_cart_item_renderer</block><template>sitewards/b2bprofessional/checkout/cart/item/default.phtml</template></action>
+		</reference>
+	</checkout_cart_index>
+</layout>

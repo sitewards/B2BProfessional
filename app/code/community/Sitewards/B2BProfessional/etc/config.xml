@@ -101,6 +101,13 @@
 		</rewrite>
 	</global>
 	<frontend>
+		<layout>
+			<updates>
+				<b2bprofessional>
+					<file>sitewards/b2bprofessional.xml</file>
+				</b2bprofessional>
+			</updates>
+		</layout>
 		<routers>
 			<Sitewards_B2BProfessional>
 				<use>standard</use>

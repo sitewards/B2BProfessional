@@ -347,4 +347,24 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 		}
 		return $sCheckoutMessage;
 	}
+
+	/**
+	 * When we have an invalid cart
+	 *  - Perform a preg_replace with a given set of patterns and replacements on a string
+	 *
+	 * @param array $aPatterns
+	 * @param array $aReplacements
+	 * @param string $sBlockHtml
+	 * @return string
+	 */
+	public function replaceOnInvalidCart($aPatterns, $aReplacements, $sBlockHtml) {
+		if (!$this->hasValidCart()) {
+			$sBlockHtml = preg_replace(
+				$aPatterns,
+				$aReplacements,
+				$sBlockHtml
+			);
+		}
+		return $sBlockHtml;
+	}
 }

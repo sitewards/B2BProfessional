@@ -1,0 +1,28 @@
+<?php /* @var $this Mage_Checkout_Block_Cart_Sidebar */ ?>
+<?php
+/*
+ * Set and render the magento default template for checkout items
+ */
+$this->setTemplate('checkout/cart/sidebar.phtml');
+$sCoreHtml = $this->renderView();
+/*
+ * Check the default html for
+ *  - <p class="subtotal">something</p>
+ *  - replace with the B2B price message when cart is invalid
+ *  - <div class="actions">something</div>
+ *  - replace with an empty string
+ */
+/* @var $oB2BHelper Sitewards_B2BProfessional_Helper_Data */
+$oB2BHelper = Mage::helper('b2bprofessional');
+echo $oB2BHelper->replaceOnInvalidCart(
+	array(
+		'@<p class="subtotal"[^>]*?>.*?</p>@siu',
+		'@<div class="actions"[^>]*?>.*?</div>@siu',
+	),
+	array(
+		$oB2BHelper->getPriceMessage(),
+		''
+	),
+	$sCoreHtml
+);
+?>

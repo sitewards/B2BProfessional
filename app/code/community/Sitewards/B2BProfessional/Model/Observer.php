@@ -140,32 +140,6 @@ class Sitewards_B2BProfessional_Model_Observer {
 			if (!$oB2BHelper->hasValidCart()) {
 				$oTransport->setHtml('');
 			}
-		} elseif ($oBlock instanceof Mage_Checkout_Block_Cart_Item_Renderer) {
-			/*
-			 * Review the price section of the cart item
-			 * When cart is invalid
-			 */
-			$sBlockHtml = $oTransport->getHtml();
-			if (!$oB2BHelper->hasValidCart()) {
-				$sBlockHtml = preg_replace('@<span class="price"[^>]*?>.*?</span>@siu',$oB2BHelper->getPriceMessage(), $sBlockHtml);
-			}
-			$oTransport->setHtml($sBlockHtml);
-		} elseif ($oBlock instanceof Mage_Checkout_Block_Cart_Sidebar) {
-			$sBlockHtml = $oTransport->getHtml();
-			if (!$oB2BHelper->hasValidCart()) {
-				$sBlockHtml = preg_replace(
-					array(
-						'@<p class="subtotal"[^>]*?>.*?</p>@siu',
-						'@<div class="actions"[^>]*?>.*?</div>@siu',
-					),
-					array(
-						$oB2BHelper->getPriceMessage(),
-						''
-					),
-					$sBlockHtml
-				);
-			}
-			$oTransport->setHtml($sBlockHtml);
 		}
 	}
 

@@ -13,7 +13,7 @@ class Sitewards_B2BProfessional_Block_Checkout_Links extends Mage_Checkout_Block
 	 *  - when inactive remove the link
 	 *  - when active continue to the parent function
 	 *
-	 * @return $this|Mage_Checkout_Block_Links
+	 * @return Mage_Checkout_Block_Links
 	 */
 	public function addCheckoutLink() {
 		/* @var $oB2BHelper Sitewards_B2BProfessional_Helper_Data */
