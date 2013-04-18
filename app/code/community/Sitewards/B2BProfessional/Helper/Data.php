@@ -16,6 +16,11 @@
  */
 class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	/**
+	 * Regular expression for replacements
+	 */
+	const PATTERN_BASE = '@<%1$s %2$s="%3$s"[^>]*?>.*?</%1$s>@siu';
+
+	/**
 	 * Check to see if the website is set-up to require a user login to view pages
 	 *
 	 * @return boolean
@@ -373,5 +378,76 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 			);
 		}
 		return $sBlockHtml;
+	}
+
+	/**
+	 * From a given config section
+	 *  - Load all the config
+	 *  - remove unused sections
+	 *  - perform a sprintf on given config items
+	 *
+	 * @param string $sConfigSection
+	 * @return string
+	 */
+	public function getPattern($sConfigSection) {
+		// Load config array and unset unused information
+		$aSectionConfig = Mage::getStoreConfig('b2bprofessional/'.$sConfigSection);
+		unset($aSectionConfig['replace']);
+		unset($aSectionConfig['remove']);
+
+		// Replace the tag, id and value sections of the regular expression
+		return sprintf($this::PATTERN_BASE, $aSectionConfig['tag'], $aSectionConfig['id'], $aSectionConfig['value']);
+	}
+
+	/**
+	 * Get replacement text for a given config section
+	 *
+	 * @param string $sConfigSection
+	 * @return string
+	 */
+	public function getReplacement($sConfigSection) {
+		// Check for the remove flag
+		if(!Mage::getStoreConfigFlag('b2bprofessional/'.$sConfigSection.'/remove')) {
+			// If the remove flag is not set then get the module's price message
+			return $this->getPriceMessage();
+		}
+	}
+
+	/**
+	 * Check if a given config section should be replaced
+	 *
+	 * @param string $sConfigSection
+	 * @return bool
+	 */
+	public function replaceSection($sConfigSection) {
+		return Mage::getStoreConfigFlag('b2bprofessional/'.$sConfigSection.'/replace');
+	}
+
+	/**
+	 * Build two arrays,
+	 *  - one for patterns
+	 *  - one for replacements,
+	 * Using these two array call to replace the patterns when the cart is invalid
+	 *
+	 * @param array $aSections
+	 * @param string $sHtml
+	 * @param int $iProductId
+	 * @return string
+	 */
+	public function replaceSections($aSections, $sHtml, $iProductId = null) {
+		$aPatterns = array();
+		$aReplacements = array();
+		/*
+		 * Foreach section to replace
+		 *  - add the pattern
+		 *  - add the replacement
+		 */
+		foreach($aSections as $sReplaceSection) {
+			if($this->replaceSection($sReplaceSection)) {
+				$aPatterns[] = $this->getPattern($sReplaceSection);
+				$aReplacements[] = $this->getReplacement($sReplaceSection);
+			}
+		}
+		return $this->replaceOnInvalidCart($aPatterns, $aReplacements, $sHtml, $iProductId);
 	}
 }

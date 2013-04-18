@@ -140,6 +140,24 @@ class Sitewards_B2BProfessional_Model_Observer {
 			if (!$oB2BHelper->hasValidCart()) {
 				$oTransport->setHtml('');
 			}
+		} elseif (
+			$oBlock instanceof Mage_Checkout_Block_Cart_Sidebar
+		) {
+			$aSections = array(
+				'cart_sidebar_totals',
+				'cart_sidebar_actions'
+			);
+			$sOriginalHtml = $oB2BHelper->replaceSections($aSections, $oTransport->getHtml());
+			$oTransport->setHtml($sOriginalHtml);
+		} elseif (
+			$oBlock instanceof Mage_Checkout_Block_Cart_Item_Renderer
+		) {
+			$iProductId = $oBlock->getItem()->getProductId();
+			$aSections = array(
+				'cart_item_price'
+			);
+			$sOriginalHtml = $oB2BHelper->replaceSections($aSections, $oTransport->getHtml(), $iProductId);
+			$oTransport->setHtml($sOriginalHtml);
 		}
 	}
 
