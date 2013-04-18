@@ -26,13 +26,14 @@ class Sitewards_B2BProfessional_Model_Observer {
 		/* @var $oHelper Sitewards_B2BProfessional_Helper_Data */
 		$oHelper = Mage::helper('b2bprofessional');
 		if($oHelper->checkGlobalActive() == true) {
+			/* @var $oControllerAction Mage_Core_Controller_Front_Action */
+			$oControllerAction = $oObserver->getData('controller_action');
+
 			/*
 			 * Check to see if the system requires a login
 			 * And there is no logged in user
 			 */
 			if($oHelper->checkRequireLogin() == true && !Mage::getSingleton('customer/session')->isLoggedIn()) {
-				/* @var $oControllerAction Mage_Core_Controller_Front_Action */
-				$oControllerAction = $oObserver->getData('controller_action');
 				/*
 				 * Check to see if the controller is:
 				 * 	1) Cms related for cms pages,
@@ -63,6 +64,33 @@ class Sitewards_B2BProfessional_Model_Observer {
 					$oSession->addNotice($oHelper->getRequireLoginMessage());
 					session_write_close();
 				}
+			/*
+			 * On Multishipping or Onepage actions
+			 *  - validate that the cart is valid
+			 *  - if not redirect the user to the account section and display message
+			 */
+			} elseif(
+				$oControllerAction instanceof Mage_Checkout_MultishippingController
+				||
+				$oControllerAction instanceof Mage_Checkout_OnepageController
+			) {
+				if (!$oHelper->hasValidCart()) {
+					// Stop the default action from being dispatched
+					$oControllerAction->setFlag('', 'no-dispatch', true);
+					//Set the appropriate error message to the user session
+					Mage::getSingleton('customer/session')->addError($oHelper->getCheckoutMessage());
+					//Redirect to the account login url
+					Mage::app()->getResponse()->setRedirect(Mage::getUrl('customer/account/login'))->sendHeaders();
+				}
+			/*
+			 * On Cart action
+			 *  - validate that the cart is valid
+			 *  - add message to the checkout session
+			 */
+			} elseif($oControllerAction instanceof Mage_Checkout_CartController) {
+				if (!$oHelper->hasValidCart()) {
+					Mage::getSingleton('checkout/session')->addError($oHelper->getCheckoutMessage());
+				}
 			}
 		}
 	}
@@ -79,32 +107,57 @@ class Sitewards_B2BProfessional_Model_Observer {
 		$oBlock = $oObserver->getData('block');
 		$oTransport = $oObserver->getData('transport');
 
+		/* @var $oB2BHelper Sitewards_B2BProfessional_Helper_Data */
+		$oB2BHelper = Mage::helper('b2bprofessional');
+
 		if($oBlock instanceof Mage_Catalog_Block_Product_Price) {
 			$oProduct = $oBlock->getProduct();
 			$iCurrentProductId = $oProduct->getId();
-
-			/* @var $oB2BHelper Sitewards_B2BProfessional_Helper_Data */
-			$oB2BHelper = Mage::helper('b2bprofessional');
 
 			if ($oB2BHelper->checkActive($iCurrentProductId)) {
 				// To stop duplicate information being displayed validate that we only do this once per product
 				if ($iCurrentProductId != self::$_iLastProductId) {
 					self::$_iLastProductId = $iCurrentProductId;
 
-					// text displayed instead of price
-					if (Mage::getStoreConfig('b2bprofessional/languagesettings/languageoverride') == 1) {
-						$sReplacementText = Mage::getStoreConfig('b2bprofessional/languagesettings/logintext');
-					} else {
-						$sReplacementText = $oB2BHelper->__('Please login');
-					}
-
-					$oTransport->setHtml($sReplacementText);
+					$oTransport->setHtml($oB2BHelper->getPriceMessage());
 				} else {
 					$oTransport->setHtml('');
 				}
 				// Set can show price to false to stop tax being displayed via Symmetrics_TweaksGerman_Block_Tax
 				$oProduct->setCanShowPrice(false);
 			}
+		} elseif(
+			$oBlock instanceof Mage_Checkout_Block_Cart_Totals
+			||
+			$oBlock instanceof Mage_Checkout_Block_Onepage_Link
+			||
+			$oBlock instanceof Mage_Checkout_Block_Multishipping_Link
+		) {
+			/*
+			 * If the current cart is not valid
+			 *  - remove the block html
+			 */
+			if (!$oB2BHelper->hasValidCart()) {
+				$oTransport->setHtml('');
+			}
+		} elseif (
+			$oBlock instanceof Mage_Checkout_Block_Cart_Sidebar
+		) {
+			$aSections = array(
+				'cart_sidebar_totals',
+				'cart_sidebar_actions'
+			);
+			$sOriginalHtml = $oB2BHelper->replaceSections($aSections, $oTransport->getHtml());
+			$oTransport->setHtml($sOriginalHtml);
+		} elseif (
+			$oBlock instanceof Mage_Checkout_Block_Cart_Item_Renderer
+		) {
+			$iProductId = $oBlock->getItem()->getProductId();
+			$aSections = array(
+				'cart_item_price'
+			);
+			$sOriginalHtml = $oB2BHelper->replaceSections($aSections, $oTransport->getHtml(), $iProductId);
+			$oTransport->setHtml($sOriginalHtml);
 		}
 	}
 
@@ -130,7 +183,7 @@ class Sitewards_B2BProfessional_Model_Observer {
 
 	/**
 	 * On the event catalog_product_type_configurable_price
-	 * Set the COnfigurable price of a product to 0 to stop the changed price showing up in the drop down
+	 * Set the Configurable price of a product to 0 to stop the changed price showing up in the drop down
 	 *
 	 * @param Varien_Event_Observer $oObserver
 	 */

@@ -26,19 +26,15 @@ class Sitewards_B2BProfessional_Block_Bundle_Catalog_Price extends Mage_Bundle_B
 		$sPriceHtml = parent::_toHtml();
 		$iCurrentProductId = $this->getProduct()->getId();
 
-		if (Mage::helper('b2bprofessional')->checkActive($iCurrentProductId)) {
+		/* @var $oB2BHelper Sitewards_B2BProfessional_Helper_Data */
+		$oB2BHelper = Mage::helper('b2bprofessional');
+		if ($oB2BHelper->checkActive($iCurrentProductId)) {
 			if ($iCurrentProductId == self::$_iLastProductId) {
 				return '';
 			}
 			self::$_iLastProductId = $iCurrentProductId;
 
-			// text displayed instead of price
-			if (Mage::getStoreConfig('b2bprofessional/languagesettings/languageoverride') == 1) {
-				$sReplacementText = Mage::getStoreConfig('b2bprofessional/languagesettings/logintext');
-			} else {
-				$sReplacementText = $this->__('Please login');
-			}
-			return $sReplacementText;
+			return $oB2BHelper->getPriceMessage();
 		}
 		return $sPriceHtml;
 	}
