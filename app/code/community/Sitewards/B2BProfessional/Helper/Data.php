@@ -18,7 +18,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	/**
 	 * Regular expression for replacements
 	 */
-	const PATTERN_BASE = '@<%1$s %2$s="%3$s"[^>]*?>.*?</%1$s>@siu';
+	const PATTERN_BASE = '@<%1$s [^>]*?%2$s="%3$s"[^>]*?>.*?</%1$s>@siu';
 
 	/**
 	 * Check to see if the website is set-up to require a user login to view pages
@@ -381,6 +381,30 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	}
 
 	/**
+	 * When we have an invalid user
+	 *  - Perform a preg_replace with a given set of patterns and replacements on a string
+	 *  - Use only global checkActive
+	 *
+	 * @param array $aPatterns
+	 * @param array $aReplacements
+	 * @param string $sBlockHtml
+	 * @param int $iProductId
+	 * @return string
+	 */
+	public function replaceGlobal($aPatterns, $aReplacements, $sBlockHtml, $iProductId = null) {
+		if (
+			$this->checkActive($iProductId)
+		) {
+			$sBlockHtml = preg_replace(
+				$aPatterns,
+				$aReplacements,
+				$sBlockHtml
+			);
+		}
+		return $sBlockHtml;
+	}
+
+	/**
 	 * From a given config section
 	 *  - Load all the config
 	 *  - remove unused sections
@@ -424,6 +448,16 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	}
 
 	/**
+	 * Check if a given config section should check if the cart is valid
+	 *
+	 * @param $sConfigSection
+	 * @return bool
+	 */
+	public function checkInvalidCart($sConfigSection) {
+		return Mage::getStoreConfigFlag('b2bprofessional/'.$sConfigSection.'/check_cart');
+	}
+
+	/**
 	 * Build two arrays,
 	 *  - one for patterns
 	 *  - one for replacements,
@@ -442,12 +476,21 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 		 *  - add the pattern
 		 *  - add the replacement
 		 */
+		$bCheckInvalidCart = false;
 		foreach($aSections as $sReplaceSection) {
 			if($this->replaceSection($sReplaceSection)) {
 				$aPatterns[] = $this->getPattern($sReplaceSection);
 				$aReplacements[] = $this->getReplacement($sReplaceSection);
+				if($this->checkInvalidCart($sReplaceSection)) {
+					$bCheckInvalidCart = true;
+				}
 			}
 		}
-		return $this->replaceOnInvalidCart($aPatterns, $aReplacements, $sHtml, $iProductId);
+
+		if($bCheckInvalidCart == true) {
+			return $this->replaceOnInvalidCart($aPatterns, $aReplacements, $sHtml, $iProductId);
+		} else {
+			return $this->replaceGlobal($aPatterns, $aReplacements, $sHtml, $iProductId);
+		}
 	}
 }

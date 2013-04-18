@@ -158,6 +158,18 @@ class Sitewards_B2BProfessional_Model_Observer {
 			);
 			$sOriginalHtml = $oB2BHelper->replaceSections($aSections, $oTransport->getHtml(), $iProductId);
 			$oTransport->setHtml($sOriginalHtml);
+		} elseif (
+			$oBlock instanceof Mage_Catalog_Block_Product_List
+			||
+			$oBlock instanceof Mage_Catalog_Block_Product_New
+			||
+			$oBlock instanceof Mage_Reports_Block_Product_Viewed
+		) {
+			$aSections = array(
+				'add_to_cart'
+			);
+			$sOriginalHtml = $oB2BHelper->replaceSections($aSections, $oTransport->getHtml());
+			$oTransport->setHtml($sOriginalHtml);
 		}
 	}
 

@@ -147,6 +147,7 @@
 					id: the type of identifier for this tag (id, class, href)
 					value: what to look for in the identifier
 					remove: if the section is removed or replaced by text
+					check_cart: flag to check for invalid cart
 			-->
 			<cart_sidebar_totals>
 				<replace>1</replace>
@@ -154,6 +155,7 @@
 				<id>class</id>
 				<value>subtotal</value>
 				<remove />
+				<check_cart>1</check_cart>
 			</cart_sidebar_totals>
 			<cart_sidebar_actions>
 				<replace>1</replace>
@@ -161,6 +163,7 @@
 				<id>class</id>
 				<value>actions</value>
 				<remove>1</remove>
+				<check_cart>1</check_cart>
 			</cart_sidebar_actions>
 			<cart_item_price>
 				<replace>1</replace>
@@ -168,7 +171,16 @@
 				<id>class</id>
 				<value>price</value>
 				<remove />
+				<check_cart>1</check_cart>
 			</cart_item_price>
+			<add_to_cart>
+				<replace>1</replace>
+				<tag>button</tag>
+				<id>class</id>
+				<value>button btn-cart</value>
+				<remove />
+				<check_cart />
+			</add_to_cart>
 		</b2bprofessional>
 	</default>
 </config>
