@@ -22,7 +22,6 @@
 				<Mage_Catalog />
 				<Mage_Checkout />
 				<Mage_Customer />
-				<Mage_Reports />
 				<Netzarbeiter_CustomerActivation />
 			</depends>
 		</Sitewards_B2BProfessional>
