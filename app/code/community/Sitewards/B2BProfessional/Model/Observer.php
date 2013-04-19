@@ -142,6 +142,16 @@ class Sitewards_B2BProfessional_Model_Observer {
 				$oTransport->setHtml('');
 			}
 		/*
+		 * Check to see if we should remove the add to cart button on the wishlist item
+		 */
+		} elseif (
+			$oBlock instanceof Mage_Wishlist_Block_Customer_Wishlist_Item_Column_Cart
+		) {
+			$iCurrentProductId = $oBlock->getItem()->getProduct()->getId();
+			if ($oB2BHelper->checkActive($iCurrentProductId) && $oB2BHelper->replaceSection('add_to_cart')) {
+				$oTransport->setHtml($oB2BHelper->getPriceMessage());
+			}
+		/*
 		 * Check to see if we should remove totals and actions from the cart
 		 */
 		} elseif(
