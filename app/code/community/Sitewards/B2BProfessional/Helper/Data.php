@@ -18,7 +18,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	/**
 	 * Regular expression for replacements
 	 */
-	const PATTERN_BASE = '@<%1$s [^>]*?%2$s="%3$s"[^>]*?>.*?</%1$s>@siu';
+	const PATTERN_BASE = '@<%1$s [^>]*?%2$s="[^"]*?%3$s[^"]*?"[^>]*?>.*?</%1$s>@siu';
 
 	/**
 	 * Check to see if the website is set-up to require a user login to view pages
@@ -492,5 +492,24 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 		} else {
 			return $this->replaceGlobal($aPatterns, $aReplacements, $sHtml, $iProductId);
 		}
+	}
+
+	/**
+	 * Get the replacement text for the add to cart url
+	 *
+	 * @return string
+	 */
+	public function getReplaceAddToCartUrl() {
+		return Mage::getStoreConfig('b2bprofessional/add_to_cart/value');
+	}
+
+	/**
+	 * Check if the add to cart button should be replaced
+	 *
+	 * @param int $iProductId
+	 * @return bool
+	 */
+	public function replaceAddToCart($iProductId) {
+		return (bool) $this->checkActive($iProductId) && $this->replaceSection('add_to_cart');
 	}
 }
