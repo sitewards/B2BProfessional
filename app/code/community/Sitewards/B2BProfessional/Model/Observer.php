@@ -61,7 +61,7 @@ class Sitewards_B2BProfessional_Model_Observer {
 					 */
 					/* @var $oSession Mage_Core_Model_Session */
 					$oSession = Mage::getSingleton('core/session');
-					$oSession->addNotice($oHelper->getRequireLoginMessage());
+					$oSession->addNotice($oHelper->getMessage($oHelper::MESSAGE_TYPE_LOGIN));
 					session_write_close();
 				}
 			/*
@@ -78,7 +78,7 @@ class Sitewards_B2BProfessional_Model_Observer {
 					// Stop the default action from being dispatched
 					$oControllerAction->setFlag('', 'no-dispatch', true);
 					//Set the appropriate error message to the user session
-					Mage::getSingleton('customer/session')->addError($oHelper->getCheckoutMessage());
+					Mage::getSingleton('customer/session')->addError($oHelper->getMessage($oHelper::MESSAGE_TYPE_CHECKOUT));
 					//Redirect to the account login url
 					Mage::app()->getResponse()->setRedirect(Mage::getUrl('customer/account/login'))->sendHeaders();
 				}
@@ -89,7 +89,7 @@ class Sitewards_B2BProfessional_Model_Observer {
 			 */
 			} elseif($oControllerAction instanceof Mage_Checkout_CartController) {
 				if (!$oHelper->hasValidCart()) {
-					Mage::getSingleton('checkout/session')->addError($oHelper->getCheckoutMessage());
+					Mage::getSingleton('checkout/session')->addError($oHelper->getMessage($oHelper::MESSAGE_TYPE_CHECKOUT));
 				}
 			}
 		}
@@ -119,7 +119,7 @@ class Sitewards_B2BProfessional_Model_Observer {
 				if ($iCurrentProductId != self::$_iLastProductId) {
 					self::$_iLastProductId = $iCurrentProductId;
 
-					$oTransport->setHtml($oB2BHelper->getPriceMessage());
+					$oTransport->setHtml($oB2BHelper->getMessage($oB2BHelper::MESSAGE_TYPE_PRICE));
 				} else {
 					$oTransport->setHtml('');
 				}
