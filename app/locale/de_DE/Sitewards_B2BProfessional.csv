@@ -40,3 +40,5 @@
 "Cart Items Price","Preis der Produkte im Warenkorb"
 "Replace the cart item prices","Preis der Produkte im Warenkorb ersetzen"
 "What tag wraps the cart item prices?","Welcher Tag umschließt die Preise der Produkte im Warenkorb?"
+"On 'Add To Cart' Redirect User To Page","Seite, auf die Nutzer nach dem Hinzufügen eines Produkts zum Warenkorb weitergeleitet werden"
+"Select which page to redirect a user to when they try to add an invalid product to their cart.","Wählen Sie eine Seite, zu ein Nutzer weitergeleitet werden soll, wenn versucht wurde, ein ungültiges Produkt in den Warenkorb zu legen."

@@ -26,7 +26,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	 * @return boolean
 	 */
 	public function checkRequireLogin() {
-		return Mage::getStoreConfigFlag('b2bprofessional/generalsettings/requirelogin');
+		return Mage::getStoreConfigFlag('b2bprofessional/requirelogin/requirelogin');
 	}
 
 	/**
@@ -292,7 +292,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	 */
 	public function getRequireLoginRedirect() {
 		$sRedirectPath = '/';
-		$sConfigVar = Mage::getStoreConfig('b2bprofessional/generalsettings/requireloginredirect');
+		$sConfigVar = Mage::getStoreConfig('b2bprofessional/requirelogin/requireloginredirect');
 		if (isset($sConfigVar)) {
 			$sRedirectPath = $sConfigVar;
 		}
@@ -449,5 +449,19 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 			}
 		}
 		return $this->replaceOnInvalidCart($aPatterns, $aReplacements, $sHtml, $iProductId);
+	}
+
+	/**
+	 * Get the url of the add to cart redirect
+	 *
+	 * @return string
+	 */
+	public function getAddToCartRedirect() {
+		$sRedirectPath = '/';
+		$sConfigVar = Mage::getStoreConfig('b2bprofessional/generalsettings/addtocartredirect');
+		if (isset($sConfigVar)) {
+			$sRedirectPath = $sConfigVar;
+		}
+		return Mage::getUrl($sRedirectPath);
 	}
 }

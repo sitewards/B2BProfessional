@@ -39,7 +39,7 @@ class Sitewards_B2BProfessional_CartController extends Mage_Checkout_CartControl
 		if ((!empty($iProductId) && $oB2BHelper->checkActive($iProductId)) || ! $bAllowed) {
 			$this->setFlag('', 'no-dispatch', true);
 			Mage::getSingleton('customer/session')->addError($oB2BHelper->getCheckoutMessage());
-			Mage::app()->getResponse()->setRedirect(Mage::getUrl('customer/account/login'))->sendHeaders();
+			Mage::app()->getResponse()->setRedirect($oB2BHelper->getAddToCartRedirect())->sendHeaders();
 		}
 	}
 }
