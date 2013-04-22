@@ -30,26 +30,71 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	}
 
 	/**
-	 * Check to see if the user is allowed on the current store
-	 * 
-	 * @return boolean
+	 * Check to see if the extension has the "global customer activation"
+	 *
+	 * @return bool
 	 */
-	public function checkAllowed() {
-		// if option is not active return true!
-		if (Mage::getStoreConfig('b2bprofessional/generalsettings/activecustomers')) {
-			return true;
-		}
+	public function isCustomerActivationGlobal() {
+		return Mage::getStoreConfigFlag('b2bprofessional/generalsettings/activecustomers');
+	}
 
-		$bCreatedViaAdmin = false;
-		$oCustomer = Mage::getSingleton('customer/session')->getCustomer();
+	/**
+	 * Check to see if the user has been created via the admin section
+	 *
+	 * @param $oCustomer Mage_Customer_Model_Customer
+	 * @return bool
+	 */
+	public function isUserAdminCreation($oCustomer) {
 		if($oCustomer->getCreatedIn() == 'Admin') {
-			$bCreatedViaAdmin = true;
-		}
-		$iUserStoreId		= $oCustomer->getStoreId();
-		$iCurrentStoreId	= Mage::app()->getStore()->getId();
-
-		if ($iUserStoreId == $iCurrentStoreId || $bCreatedViaAdmin == true) {
 			return true;
+		}
+	}
+
+	/**
+	 * Check to see if the user is allowed on the current store
+	 *  - Check if the customer is logged in,
+	 *   - Check if the extension is set to have global customer activation,
+	 *   - Check if the user was created via the admin section
+	 *    - NOTE: users created via the admin section cannot be attached to a front end store and so have global activation
+	 *   - Check if the user's store id matches the current magento store id
+	 *
+	 * @return bool
+	 */
+	public function isCustomerAllowedInStore() {
+		/* @var $oCustomerSession Mage_Customer_Model_Session */
+		$oCustomerSession = Mage::getSingleton('customer/session');
+		if ($oCustomerSession->isLoggedIn()) {
+			/*
+			 * If customer activation is global
+			 *  - then any customer can access any store
+			 */
+			if ($this->isCustomerActivationGlobal()) {
+				return true;
+			}
+			/* @var $oCustomer Mage_Customer_Model_Customer */
+			$oCustomer = $oCustomerSession->getCustomer();
+
+			/*
+			 * Check to see if the user was created via the admin section
+			 *  - Note: users created via the admin section cannot be attached to a front end store
+			 */
+			if ($this->isUserAdminCreation($oCustomer) == true) {
+				return true;
+			} else {
+				/*
+				 * Get user's store and current store for comparison
+				 */
+				$iUserStoreId		= $oCustomer->getStoreId();
+				$iCurrentStoreId	= Mage::app()->getStore()->getId();
+
+				/*
+				 * Return true if:
+				 *  - the user's store id matches the current store id
+				 */
+				if ($iUserStoreId == $iCurrentStoreId) {
+					return true;
+				}
+			}
 		}
 	}
 
@@ -158,21 +203,6 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	}
 
 	/**
-	 * Check that a customer is logged in,
-	 * 	- If they are logged in validate their account usint the checkAllowed function
-	 * 
-	 * @return boolean
-	 */
-	public function checkLoggedIn() {
-		$bLoggedIn = Mage::getSingleton('customer/session')->isLoggedIn();
-
-		if (!$this->checkAllowed()) {
-			$bLoggedIn = false;
-		}
-		return $bLoggedIn;
-	}
-
-	/**
 	 * Check that the product/customer is activated
 	 * 
 	 * @param int $iProductId
@@ -183,7 +213,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 		// global extension activation
 		if ($this->isExtensionActive()) {
 			// check user logged in and has store access
-			if ($this->checkLoggedIn()) {
+			if ($this->isCustomerAllowedInStore()) {
 				$bIsLoggedIn = true;
 			}
 
