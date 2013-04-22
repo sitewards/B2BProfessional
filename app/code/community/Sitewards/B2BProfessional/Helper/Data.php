@@ -370,9 +370,24 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	}
 
 	/**
-	 * Check that the product/customer is activated
+	 * Check that the price can be displayed when no product id is given
+	 *  - Check that the extension is active
+	 *  - Check that the customer is allowed in the store
+	 *  - When the extension is activated by customer group and category
+	 *   - Check that:
+	 *    - The category is active
+	 *    - AND The customer is active
+	 *  - When the extension is activated by customer group
+	 *   - Check that:
+	 *    - The customer is active
+	 *  - When the extension is activated by category
+	 *   - Check that:
+	 *    - The category is active
+	 *    - AND the user is logged in
+	 *  - Else
+	 *   - Check if the user is logged in
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isActive() {
 		$bIsLoggedIn = false;
