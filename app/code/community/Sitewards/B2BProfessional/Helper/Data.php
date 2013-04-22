@@ -339,7 +339,6 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	 * @return bool
 	 */
 	public function isProductActive($iProductId) {
-		//die('isProductActive');
 		$bIsLoggedIn = false;
 		// global extension activation
 		if ($this->isExtensionActive()) {
