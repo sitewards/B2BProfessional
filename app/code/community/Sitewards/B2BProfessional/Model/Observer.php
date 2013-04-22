@@ -110,6 +110,9 @@ class Sitewards_B2BProfessional_Model_Observer {
 		/* @var $oB2BHelper Sitewards_B2BProfessional_Helper_Data */
 		$oB2BHelper = Mage::helper('b2bprofessional');
 
+		/*
+		 * Check to see if we should remove the product price
+		 */
 		if($oBlock instanceof Mage_Catalog_Block_Product_Price) {
 			$oProduct = $oBlock->getProduct();
 			$iCurrentProductId = $oProduct->getId();
@@ -126,6 +129,31 @@ class Sitewards_B2BProfessional_Model_Observer {
 				// Set can show price to false to stop tax being displayed via Symmetrics_TweaksGerman_Block_Tax
 				$oProduct->setCanShowPrice(false);
 			}
+		/*
+		 * Check to see if we should remove the add to cart button on the product page
+		 */
+		} elseif(
+			$oBlock instanceof Mage_Catalog_Block_Product_View
+			&&
+			$oBlock->getNameInLayout() == 'product.info.addtocart'
+		) {
+			$iCurrentProductId = $oBlock->getProduct()->getId();
+			if ($oB2BHelper->checkActive($iCurrentProductId) && $oB2BHelper->replaceSection('add_to_cart')) {
+				$oTransport->setHtml('');
+			}
+		/*
+		 * Check to see if we should remove the add to cart button on the wishlist item
+		 */
+		} elseif (
+			$oBlock instanceof Mage_Wishlist_Block_Customer_Wishlist_Item_Column_Cart
+		) {
+			$iCurrentProductId = $oBlock->getItem()->getProduct()->getId();
+			if ($oB2BHelper->checkActive($iCurrentProductId) && $oB2BHelper->replaceSection('add_to_cart')) {
+				$oTransport->setHtml($oB2BHelper->getPriceMessage());
+			}
+		/*
+		 * Check to see if we should remove totals and actions from the cart
+		 */
 		} elseif(
 			$oBlock instanceof Mage_Checkout_Block_Cart_Totals
 			||
@@ -140,6 +168,9 @@ class Sitewards_B2BProfessional_Model_Observer {
 			if (!$oB2BHelper->hasValidCart()) {
 				$oTransport->setHtml('');
 			}
+		/*
+		 * Check to see if we should replace totals and actions from the cart sidebar
+		 */
 		} elseif (
 			$oBlock instanceof Mage_Checkout_Block_Cart_Sidebar
 		) {
@@ -149,6 +180,9 @@ class Sitewards_B2BProfessional_Model_Observer {
 			);
 			$sOriginalHtml = $oB2BHelper->replaceSections($aSections, $oTransport->getHtml());
 			$oTransport->setHtml($sOriginalHtml);
+		/*
+		 * Check to see if we should replace item price from the cart
+		 */
 		} elseif (
 			$oBlock instanceof Mage_Checkout_Block_Cart_Item_Renderer
 		) {
@@ -157,6 +191,19 @@ class Sitewards_B2BProfessional_Model_Observer {
 				'cart_item_price'
 			);
 			$sOriginalHtml = $oB2BHelper->replaceSections($aSections, $oTransport->getHtml(), $iProductId);
+			$oTransport->setHtml($sOriginalHtml);
+		/*
+		 * Check to see if we should replace the add to cart button on product blocks
+		 */
+		} elseif (
+			$oBlock instanceof Mage_Catalog_Block_Product_Abstract
+			||
+			$oBlock instanceof Mage_Catalog_Block_Product_Compare_Abstract
+		) {
+			$aSections = array(
+				'add_to_cart'
+			);
+			$sOriginalHtml = $oB2BHelper->replaceSections($aSections, $oTransport->getHtml());
 			$oTransport->setHtml($sOriginalHtml);
 		}
 	}
