@@ -175,7 +175,7 @@ class Sitewards_B2BProfessional_Model_Observer {
 			/* @var $oB2BHelper Sitewards_B2BProfessional_Helper_Data */
 			$oB2BHelper = Mage::helper('b2bprofessional');
 
-			if($oB2BHelper->checkActive()) {
+			if($oB2BHelper->isActive()) {
 				$oBlock->removeOrderFromAvailableOrders('price');
 			}
 		}
@@ -225,7 +225,7 @@ class Sitewards_B2BProfessional_Model_Observer {
 			}
 			Mage::register('b2bprof_category_filters', $aCategoryOptions);
 
-			if($oB2BHelper->checkActive()) {
+			if($oB2BHelper->isActive()) {
 				$aFilterableAttributes = $oBlock->getData('_filterable_attributes');
 				$aNewFilterableAttributes = array();
 				foreach ($aFilterableAttributes as $oFilterableAttribute) {

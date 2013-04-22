@@ -154,71 +154,82 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	}
 
 	/**
-	 * Validate that the category of a give product is activated in the module
+	 * Get the category ids of each category filter set
+	 *
+	 * @param array $aB2BProfFilters
+	 * @return array
+	 */
+	public function getCategoryIdsByB2BProfFilters($aB2BProfFilters) {
+		$aCurrentCategories = $aB2BProfFilters;
+		foreach($aB2BProfFilters as $iCategoryId) {
+			/* @var $oCategory Mage_Catalog_Model_Category */
+			$oCategory = Mage::getModel('catalog/category')->load($iCategoryId);
+
+			$aCurrentCategories = array_merge($aCurrentCategories, $oCategory->getAllChildren(true));
+		}
+		return $aCurrentCategories;
+	}
+
+	/**
+	 * Get the current category object
+	 *  - Use the "filter category" if set
+	 *  - Use the "current_category" if set
+	 *  - Use the store root category
+	 *
+	 * @return Mage_Catalog_Model_Category
+	 */
+	public function getCurrentCategory() {
+		/* @var $oCategory Mage_Catalog_Model_Category */
+		$oCategory = Mage::registry('current_category_filter');
+		if(is_null($oCategory)) {
+			$oCategory = Mage::registry('current_category');
+			if(is_null($oCategory)) {
+				$oCategory = Mage::getModel('catalog/category')->load(Mage::app()->getStore()->getRootCategoryId());
+			}
+		}
+		return $oCategory;
+	}
+
+	/**
+	 * Get the current category id and all children ids
+	 *
+	 * @return array
+	 */
+	public function getCurrentCategoryIds() {
+		/* @var $oCategory Mage_Catalog_Model_Category */
+		$oCategory = $this->getCurrentCategoryIds();
+
+		$aCurrentCategories = $oCategory->getAllChildren(true);
+		$aCurrentCategories[] = $oCategory->getId();
+
+		return $aCurrentCategories;
+	}
+
+	/**
+	 * Validate that the category is activated in the module
 	 * 
-	 * @param int $iProductId
 	 * @return boolean
 	 */
-	public function checkCategoryIsActive($iProductId = null) {
-		$aCurrentCategories = array ();
-
-		// activate by category
-		if ($iProductId !== null) {
-			/* @var $oProduct Mage_Catalog_Model_Product */
-			$oProduct = Mage::getModel('catalog/product')->load($iProductId);
-			$aParentProductIds = $oProduct->loadParentProductIds()->getData('parent_product_ids');
-			if (!empty($aParentProductIds) && $oProduct->isGrouped()) {
-				foreach ($aParentProductIds as $iParentProductId) {
-					/* @var $oParentProduct Mage_Catalog_Model_Product */
-					$oParentProduct = Mage::getModel('catalog/product')->load($iParentProductId);
-					$aParentProductCategories = $oParentProduct->getCategoryIds();
-					$aCurrentCategories = array_merge($aCurrentCategories, $aParentProductCategories);
-				}
-			} else {
-				$aCurrentCategories = $oProduct->getCategoryIds();
-			}
+	public function isCategoryActive() {
+		/*
+		 * Check if there is a filtered category
+		 * 	- If not check for a current_category,
+		 * 		- If not load the store default category,
+		 */
+		$aB2BProfFilters = Mage::registry('b2bprof_category_filters');
+		if(empty($aB2BProfFilters)) {
+			$aCurrentCategories = $this->getCurrentCategoryIds();
 		} else {
-			/*
-			 * Check if there is a filtered category
-			 * 	- If not check for a current_category,
-			 * 		- If not load the store default category,
-			 */
-			$aB2BProfFilters = Mage::registry('b2bprof_category_filters');
-			if(empty($aB2BProfFilters)) {
-				/* @var $oCategory Mage_Catalog_Model_Category */
-				$oCategory = Mage::registry('current_category_filter');
-				if(is_null($oCategory)) {
-					$oCategory = Mage::registry('current_category');
-					if(is_null($oCategory)) {
-						$oCategory = Mage::getModel('catalog/category')->load(Mage::app()->getStore()->getRootCategoryId());
-					}
-				}
-				$aCurrentCategories = $oCategory->getAllChildren(true);
-				$aCurrentCategories[] = $oCategory->getId();
-			} else {
-				$aCurrentCategories = $aB2BProfFilters;
-				foreach($aB2BProfFilters as $iCategoryId) {
-					$oCategory = Mage::getModel('catalog/category')->load($iCategoryId);
-
-					$aCurrentCategories = array_merge($aCurrentCategories, $oCategory->getAllChildren(true));
-				}
-			}
+			$aCurrentCategories = $this->getCategoryIdsByB2BProfFilters($aB2BProfFilters);
 		}
 		$aCurrentCategories = array_unique($aCurrentCategories);
 
-		$aActiveCategories = $this->getActiveCategories();
 		if (!is_array($aCurrentCategories)) {
 			$aCurrentCategories = array (
 				$aCurrentCategories
 			);
 		}
-		$bActive = false;
-		foreach ($aCurrentCategories as $iCategoryId) {
-			if (in_array($iCategoryId, $aActiveCategories)) {
-				$bActive = true;
-			}
-		}
-		return $bActive;
+		return $this->hasActiveCategory($aCurrentCategories);
 	}
 
 	/**
@@ -308,7 +319,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	 *    - AND the user is logged in
 	 *  - Else
 	 *   - Check if the user is logged in
-	 * 
+	 *
 	 * @param int $iProductId
 	 * @return bool
 	 */
@@ -360,11 +371,10 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 
 	/**
 	 * Check that the product/customer is activated
-	 * 
-	 * @param int $iProductId
+	 *
 	 * @return boolean
 	 */
-	public function checkActive($iProductId = null) {
+	public function isActive() {
 		$bIsLoggedIn = false;
 		// global extension activation
 		if ($this->isExtensionActive()) {
@@ -378,7 +388,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 
 			if($bCheckUser == true && $bCheckCategory == true) {
 				// check both the category and customer group is active via the extension
-				if ($this->checkCategoryIsActive($iProductId) && $this->isCustomerActive()) {
+				if ($this->isCategoryActive() && $this->isCustomerActive()) {
 					$bIsActive = true;
 				} else {
 					$bIsActive = false;
@@ -392,7 +402,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 				}
 			} elseif ($bCheckCategory == true) {
 				// check category is active via the extension
-				if (!$this->checkCategoryIsActive($iProductId) || $bIsLoggedIn == true) {
+				if (!$this->isCategoryActive() || $bIsLoggedIn == true) {
 					$bIsActive = false;
 				} else {
 					$bIsActive = true;
