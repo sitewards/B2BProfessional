@@ -34,7 +34,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	 *
 	 * @return bool
 	 */
-	public function isCustomerActivationGlobal() {
+	private function isCustomerActivationGlobal() {
 		return Mage::getStoreConfigFlag('b2bprofessional/generalsettings/activecustomers');
 	}
 
@@ -44,7 +44,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	 * @param $oCustomer Mage_Customer_Model_Customer
 	 * @return bool
 	 */
-	public function isUserAdminCreation($oCustomer) {
+	private function isUserAdminCreation($oCustomer) {
 		if($oCustomer->getCreatedIn() == 'Admin') {
 			return true;
 		}
@@ -54,13 +54,11 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	 * Check to see if the user is allowed on the current store
 	 *  - Check if the customer is logged in,
 	 *   - Check if the extension is set to have global customer activation,
-	 *   - Check if the user was created via the admin section
-	 *    - NOTE: users created via the admin section cannot be attached to a front end store and so have global activation
-	 *   - Check if the user's store id matches the current magento store id
+	 *   - Check if the user is active for the current store
 	 *
 	 * @return bool
 	 */
-	public function isCustomerAllowedInStore() {
+	private function isCustomerAllowedInStore() {
 		/* @var $oCustomerSession Mage_Customer_Model_Session */
 		$oCustomerSession = Mage::getSingleton('customer/session');
 		if ($oCustomerSession->isLoggedIn()) {
@@ -71,30 +69,43 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 			if ($this->isCustomerActivationGlobal()) {
 				return true;
 			}
+
 			/* @var $oCustomer Mage_Customer_Model_Customer */
 			$oCustomer = $oCustomerSession->getCustomer();
-
-			/*
-			 * Check to see if the user was created via the admin section
-			 *  - Note: users created via the admin section cannot be attached to a front end store
-			 */
-			if ($this->isUserAdminCreation($oCustomer) == true) {
+			if($this->isUserActiveForStore($oCustomer)) {
 				return true;
-			} else {
-				/*
-				 * Get user's store and current store for comparison
-				 */
-				$iUserStoreId		= $oCustomer->getStoreId();
-				$iCurrentStoreId	= Mage::app()->getStore()->getId();
-
-				/*
-				 * Return true if:
-				 *  - the user's store id matches the current store id
-				 */
-				if ($iUserStoreId == $iCurrentStoreId) {
-					return true;
-				}
 			}
+		}
+	}
+
+	/**
+	 * Check to see if the user is active for current store
+	 *  NOTE: users created via the admin section cannot be attached to a front end store and so have global activation
+	 *
+	 * @param $oCustomer Mage_Customer_Model_Customer
+	 * @return bool
+	 */
+	private function isUserActiveForStore($oCustomer) {
+		/*
+		 * Check to see if the user was created via the admin section
+		 *  - Note: users created via the admin section cannot be attached to a front end store
+		 */
+		if ($this->isUserAdminCreation($oCustomer)) {
+			return true;
+		}
+
+		/*
+		 * Get user's store and current store for comparison
+		 */
+		$iUserStoreId		= $oCustomer->getStoreId();
+		$iCurrentStoreId	= Mage::app()->getStore()->getId();
+
+		/*
+		 * Return true if:
+		 *  - the user's store id matches the current store id
+		 */
+		if ($iUserStoreId == $iCurrentStoreId) {
+			return true;
 		}
 	}
 
@@ -104,7 +115,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	 * @param int $iProductId
 	 * @return boolean
 	 */
-	public function isCategoryIsActiveByProduct($iProductId) {
+	private function isCategoryActiveByProduct($iProductId) {
 		/* @var $oProduct Mage_Catalog_Model_Product */
 		$oProduct = Mage::getModel('catalog/product')->load($iProductId);
 		$aCurrentCategories = $oProduct->getCategoryIds();
@@ -144,7 +155,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	 * @param array $aCategoryIds
 	 * @return bool
 	 */
-	public function hasActiveCategory($aCategoryIds) {
+	private function hasActiveCategory($aCategoryIds) {
 		$aActiveCategoryIds = $this->getActiveCategories();
 		foreach ($aCategoryIds as $iCategoryId) {
 			if (in_array($iCategoryId, $aActiveCategoryIds)) {
@@ -157,9 +168,13 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	 * Get the category ids of each category filter set
 	 *
 	 * @param array $aB2BProfFilters
+	 * array(
+	 *  cat_id_1,
+	 *  cat_id_2
+	 * )
 	 * @return array
 	 */
-	public function getCategoryIdsByB2BProfFilters($aB2BProfFilters) {
+	private function getCategoryIdsByB2BProfFilters($aB2BProfFilters) {
 		$aCurrentCategories = $aB2BProfFilters;
 		foreach($aB2BProfFilters as $iCategoryId) {
 			/* @var $oCategory Mage_Catalog_Model_Category */
@@ -178,7 +193,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	 *
 	 * @return Mage_Catalog_Model_Category
 	 */
-	public function getCurrentCategory() {
+	private function getCurrentCategory() {
 		/* @var $oCategory Mage_Catalog_Model_Category */
 		$oCategory = Mage::registry('current_category_filter');
 		if(is_null($oCategory)) {
@@ -195,9 +210,9 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	 *
 	 * @return array
 	 */
-	public function getCurrentCategoryIds() {
+	private function getCurrentCategoryIds() {
 		/* @var $oCategory Mage_Catalog_Model_Category */
-		$oCategory = $this->getCurrentCategoryIds();
+		$oCategory = $this->getCurrentCategory();
 
 		$aCurrentCategories = $oCategory->getAllChildren(true);
 		$aCurrentCategories[] = $oCategory->getId();
@@ -210,7 +225,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	 * 
 	 * @return boolean
 	 */
-	public function isCategoryActive() {
+	private function isCategoryActive() {
 		/*
 		 * Check if there is a filtered category
 		 * 	- If not check for a current_category,
@@ -238,7 +253,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	 *
 	 * @return array
 	 */
-	public function getActivatedCustomerGroupIds() {
+	private function getActivatedCustomerGroupIds() {
 		/*
 		 * Customer group ids are saved in the config in format
 		 *  - "group1,group2"
@@ -263,7 +278,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	 * 
 	 * @return boolean
 	 */
-	public function isCustomerActive() {
+	private function isCustomerActive() {
 		/* @var $oCustomerSession Mage_Customer_Model_Session */
 		$oCustomerSession = Mage::getModel('customer/session');
 		$iCurrentCustomerGroupId = $oCustomerSession->getCustomerGroupId();
@@ -289,7 +304,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	 *
 	 * @return bool
 	 */
-	public function isExtensionActivatedByCustomer() {
+	private function isExtensionActivatedByCustomer() {
 		return Mage::getStoreConfigFlag('b2bprofessional/activatebycustomersettings/activebycustomer');
 	}
 
@@ -298,7 +313,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	 *
 	 * @return bool
 	 */
-	public function isExtensionActivatedByCategory() {
+	private function isExtensionActivatedByCategory() {
 		return Mage::getStoreConfigFlag('b2bprofessional/activatebycategorysettings/activebycategory');
 	}
 
@@ -316,14 +331,15 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	 *  - When the extension is activated by category
 	 *   - Check that:
 	 *    - The category is active by product
-	 *    - AND the user is logged in
+	 *    - AND the user is not logged in
 	 *  - Else
-	 *   - Check if the user is logged in
+	 *   - Check if the user is not logged in
 	 *
 	 * @param int $iProductId
 	 * @return bool
 	 */
 	public function isProductActive($iProductId) {
+		//die('isProductActive');
 		$bIsLoggedIn = false;
 		// global extension activation
 		if ($this->isExtensionActive()) {
@@ -336,32 +352,13 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 			$bCheckCategory	= $this->isExtensionActivatedByCategory();
 
 			if($bCheckUser == true && $bCheckCategory == true) {
-				// check both the category and customer group is active via the extension
-				if ($this->isCategoryIsActiveByProduct($iProductId) && $this->isCustomerActive()) {
-					$bIsActive = true;
-				} else {
-					$bIsActive = false;
-				}
+				$bIsActive = $this->isCategoryActiveByProduct($iProductId) && $this->isCustomerActive();
 			} elseif($bCheckUser == true) {
-				// check user group is active via the extension
-				if ($this->isCustomerActive()) {
-					$bIsActive = true;
-				} else {
-					$bIsActive = false;
-				}
+				$bIsActive = $this->isCustomerActive();
 			} elseif ($bCheckCategory == true) {
-				// check category is active via the extension
-				if (!$this->isCategoryIsActiveByProduct($iProductId) || $bIsLoggedIn == true) {
-					$bIsActive = false;
-				} else {
-					$bIsActive = true;
-				}
+				$bIsActive = $this->isCategoryActiveByProduct($iProductId) && !$bIsLoggedIn;
 			} else {
-				if ($bIsLoggedIn == false) {
-					$bIsActive = true;
-				} else {
-					$bIsActive = false;
-				}
+				$bIsActive = !$bIsLoggedIn;
 			}
 		} else {
 			$bIsActive = false;
@@ -383,9 +380,9 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	 *  - When the extension is activated by category
 	 *   - Check that:
 	 *    - The category is active
-	 *    - AND the user is logged in
+	 *    - AND the user is not logged in
 	 *  - Else
-	 *   - Check if the user is logged in
+	 *   - Check if the user not is logged in
 	 *
 	 * @return bool
 	 */
@@ -402,32 +399,13 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 			$bCheckCategory	= $this->isExtensionActivatedByCategory();
 
 			if($bCheckUser == true && $bCheckCategory == true) {
-				// check both the category and customer group is active via the extension
-				if ($this->isCategoryActive() && $this->isCustomerActive()) {
-					$bIsActive = true;
-				} else {
-					$bIsActive = false;
-				}
+				$bIsActive = $this->isCategoryActive() && $this->isCustomerActive();
 			} elseif($bCheckUser == true) {
-				// check user group is active via the extension
-				if ($this->isCustomerActive()) {
-					$bIsActive = true;
-				} else {
-					$bIsActive = false;
-				}
+				$bIsActive = $this->isCustomerActive();
 			} elseif ($bCheckCategory == true) {
-				// check category is active via the extension
-				if (!$this->isCategoryActive() || $bIsLoggedIn == true) {
-					$bIsActive = false;
-				} else {
-					$bIsActive = true;
-				}
+				$bIsActive = $this->isCategoryActive() && !$bIsLoggedIn;
 			} else {
-				if ($bIsLoggedIn == false) {
-					$bIsActive = true;
-				} else {
-					$bIsActive = false;
-				}
+				$bIsActive = !$bIsLoggedIn;
 			}
 		} else {
 			$bIsActive = false;
@@ -440,7 +418,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	 *
 	 * @return array
 	 */
-	public function getActivatedCategoryIds() {
+	private function getActivatedCategoryIds() {
 		/*
 		 * Category Ids are saved in the config in format
 		 *  - "category1,category2"
@@ -459,7 +437,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	 *  cat_id_2
 	 * )
 	 */
-	public function getActiveCategories() {
+	private function getActiveCategories() {
 		$aCurrentActiveCategories = $this->getActivatedCategoryIds();
 
 		/**
@@ -487,7 +465,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	 * 		cat_id_2
 	 * 	)
 	 */
-	public function addCategoryChildren($iCategoryId, $aCurrentCategories = array()) {
+	private function addCategoryChildren($iCategoryId, $aCurrentCategories = array()) {
 		/* @var $oCurrentCategory Mage_Catalog_Model_Category */
 		$oCurrentCategory = Mage::getModel('catalog/category');
 		$oCurrentCategory = $oCurrentCategory->load($iCategoryId);
@@ -585,7 +563,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	 * @param string $sBlockHtml
 	 * @return mixed
 	 */
-	public function getNewBlockHtml($aPatterns, $aReplacements, $sBlockHtml) {
+	private function getNewBlockHtml($aPatterns, $aReplacements, $sBlockHtml) {
 		return preg_replace(
 			$aPatterns,
 			$aReplacements,
@@ -604,7 +582,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	 * @param string $sBlockHtml
 	 * @return string
 	 */
-	public function replaceOnInvalidCart($aPatterns, $aReplacements, $sBlockHtml) {
+	private function replaceOnInvalidCart($aPatterns, $aReplacements, $sBlockHtml) {
 		/*
 		 * If you have no product id provided and an invalid cart
 		 *
@@ -629,7 +607,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	 * @param int $iProductId
 	 * @return string
 	 */
-	public function replaceOnInvalidCartByProductId($aPatterns, $aReplacements, $sBlockHtml, $iProductId) {
+	private function replaceOnInvalidCartByProductId($aPatterns, $aReplacements, $sBlockHtml, $iProductId) {
 		/*
 		 * If you have a product id provided and it is invalid
 		 *
@@ -651,7 +629,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	 * @param string $sConfigSection
 	 * @return string
 	 */
-	public function getPattern($sConfigSection) {
+	private function getPattern($sConfigSection) {
 		// Load config array and unset unused information
 		$aSectionConfig = Mage::getStoreConfig('b2bprofessional/'.$sConfigSection);
 		unset($aSectionConfig['replace']);
@@ -667,7 +645,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	 * @param string $sConfigSection
 	 * @return string
 	 */
-	public function getReplacement($sConfigSection) {
+	private function getReplacement($sConfigSection) {
 		// Check for the remove flag
 		if(!Mage::getStoreConfigFlag('b2bprofessional/'.$sConfigSection.'/remove')) {
 			// If the remove flag is not set then get the module's price message
@@ -681,7 +659,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	 * @param string $sConfigSection
 	 * @return bool
 	 */
-	public function replaceSection($sConfigSection) {
+	private function replaceSection($sConfigSection) {
 		return Mage::getStoreConfigFlag('b2bprofessional/'.$sConfigSection.'/replace');
 	}
 
