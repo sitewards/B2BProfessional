@@ -25,7 +25,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	 *
 	 * @return boolean
 	 */
-	public function checkRequireLogin() {
+	public function isLoginRequired() {
 		return Mage::getStoreConfigFlag('b2bprofessional/generalsettings/requirelogin');
 	}
 
@@ -116,7 +116,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 			$aParentProductIds = $oGroupedProductModel->getParentIdsByChild($iProductId);
 		} elseif($oProduct->isConfigurable()) {
 			/* @var $oConfigurableProductModel Mage_Catalog_Model_Product_Type_Configurable */
-			$oConfigurableProductModel = Mage::getModel('catalog/product_type_grouped');
+			$oConfigurableProductModel = Mage::getModel('catalog/product_type_configurable');
 			$aParentProductIds = $oConfigurableProductModel->getParentIdsByChild($iProductId);
 		}
 
@@ -563,6 +563,46 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	}
 
 	/**
+	 * Perform a preg_replace with the pattern and replacements given
+	 *
+	 * @param array $aPatterns
+	 * @param array $aReplacements
+	 * @param string $sBlockHtml
+	 * @return mixed
+	 */
+	public function getNewBlockHtml($aPatterns, $aReplacements, $sBlockHtml) {
+		return preg_replace(
+			$aPatterns,
+			$aReplacements,
+			$sBlockHtml
+		);
+	}
+
+	/**
+	 * When we have an invalid cart
+	 *  - Perform a preg_replace with a given set of patterns and replacements on a string
+	 *  - When product id is given check for valid product
+	 *  - When no product id is given then check to complete cart
+	 *
+	 * @param array $aPatterns
+	 * @param array $aReplacements
+	 * @param string $sBlockHtml
+	 * @return string
+	 */
+	public function replaceOnInvalidCart($aPatterns, $aReplacements, $sBlockHtml) {
+		/*
+		 * If you have no product id provided and an invalid cart
+		 *
+		 * THEN
+		 * Perform the preg_replace
+		 */
+		if (!$this->hasValidCart()) {
+			$sBlockHtml = $this->getNewBlockHtml($aPatterns, $aReplacements, $sBlockHtml);
+		}
+		return $sBlockHtml;
+	}
+
+	/**
 	 * When we have an invalid cart
 	 *  - Perform a preg_replace with a given set of patterns and replacements on a string
 	 *  - When product id is given check for valid product
@@ -574,25 +614,15 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	 * @param int $iProductId
 	 * @return string
 	 */
-	public function replaceOnInvalidCart($aPatterns, $aReplacements, $sBlockHtml, $iProductId = null) {
+	public function replaceOnInvalidCartByProductId($aPatterns, $aReplacements, $sBlockHtml, $iProductId) {
 		/*
-		 * If you have no product id provided and an invalid cart
-		 * OR
 		 * If you have a product id provided and it is invalid
 		 *
 		 * THEN
 		 * Perform the preg_replace
 		 */
-		if (
-			is_null($iProductId) && !$this->hasValidCart()
-			||
-			!is_null($iProductId) && $this->isProductActive($iProductId)
-		) {
-			$sBlockHtml = preg_replace(
-				$aPatterns,
-				$aReplacements,
-				$sBlockHtml
-			);
+		if ($this->isProductActive($iProductId)) {
+			$sBlockHtml = $this->getNewBlockHtml($aPatterns, $aReplacements, $sBlockHtml);
 		}
 		return $sBlockHtml;
 	}
@@ -648,10 +678,9 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	 *
 	 * @param array $aSections
 	 * @param string $sHtml
-	 * @param int $iProductId
 	 * @return string
 	 */
-	public function replaceSections($aSections, $sHtml, $iProductId = null) {
+	public function replaceSections($aSections, $sHtml) {
 		$aPatterns = array();
 		$aReplacements = array();
 		/*
@@ -665,6 +694,34 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 				$aReplacements[] = $this->getReplacement($sReplaceSection);
 			}
 		}
-		return $this->replaceOnInvalidCart($aPatterns, $aReplacements, $sHtml, $iProductId);
+		return $this->replaceOnInvalidCart($aPatterns, $aReplacements, $sHtml);
+	}
+
+	/**
+	 * Build two arrays,
+	 *  - one for patterns
+	 *  - one for replacements,
+	 * Using these two array call to replace the patterns when the cart is invalid
+	 *
+	 * @param array $aSections
+	 * @param string $sHtml
+	 * @param int $iProductId
+	 * @return string
+	 */
+	public function replaceSectionsByProductId($aSections, $sHtml, $iProductId) {
+		$aPatterns = array();
+		$aReplacements = array();
+		/*
+		 * Foreach section to replace
+		 *  - add the pattern
+		 *  - add the replacement
+		 */
+		foreach($aSections as $sReplaceSection) {
+			if($this->replaceSection($sReplaceSection)) {
+				$aPatterns[] = $this->getPattern($sReplaceSection);
+				$aReplacements[] = $this->getReplacement($sReplaceSection);
+			}
+		}
+		return $this->replaceOnInvalidCartByProductId($aPatterns, $aReplacements, $sHtml, $iProductId);
 	}
 }

@@ -33,7 +33,7 @@ class Sitewards_B2BProfessional_Model_Observer {
 			 * Check to see if the system requires a login
 			 * And there is no logged in user
 			 */
-			if($oHelper->checkRequireLogin() == true && !Mage::getSingleton('customer/session')->isLoggedIn()) {
+			if($oHelper->isLoginRequired() == true && !Mage::getSingleton('customer/session')->isLoggedIn()) {
 				/*
 				 * Check to see if the controller is:
 				 * 	1) Cms related for cms pages,
@@ -156,7 +156,7 @@ class Sitewards_B2BProfessional_Model_Observer {
 			$aSections = array(
 				'cart_item_price'
 			);
-			$sOriginalHtml = $oB2BHelper->replaceSections($aSections, $oTransport->getHtml(), $iProductId);
+			$sOriginalHtml = $oB2BHelper->replaceSectionsByProductId($aSections, $oTransport->getHtml(), $iProductId);
 			$oTransport->setHtml($sOriginalHtml);
 		}
 	}
