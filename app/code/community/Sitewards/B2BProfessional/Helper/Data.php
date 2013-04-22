@@ -100,6 +100,61 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 
 	/**
 	 * Validate that the category of a give product is activated in the module
+	 *
+	 * @param int $iProductId
+	 * @return boolean
+	 */
+	public function isCategoryIsActiveByProduct($iProductId) {
+		/* @var $oProduct Mage_Catalog_Model_Product */
+		$oProduct = Mage::getModel('catalog/product')->load($iProductId);
+		$aCurrentCategories = $oProduct->getCategoryIds();
+		$aParentProductIds = array();
+
+		if($oProduct->isGrouped()) {
+			/* @var $oGroupedProductModel Mage_Catalog_Model_Product_Type_Grouped */
+			$oGroupedProductModel = Mage::getModel('catalog/product_type_grouped');
+			$aParentProductIds = $oGroupedProductModel->getParentIdsByChild($iProductId);
+		} elseif($oProduct->isConfigurable()) {
+			/* @var $oConfigurableProductModel Mage_Catalog_Model_Product_Type_Configurable */
+			$oConfigurableProductModel = Mage::getModel('catalog/product_type_grouped');
+			$aParentProductIds = $oConfigurableProductModel->getParentIdsByChild($iProductId);
+		}
+
+		if(!empty($aParentProductIds)) {
+			foreach ($aParentProductIds as $iParentProductId) {
+				/* @var $oParentProduct Mage_Catalog_Model_Product */
+				$oParentProduct = Mage::getModel('catalog/product')->load($iParentProductId);
+				$aParentProductCategories = $oParentProduct->getCategoryIds();
+				$aCurrentCategories = array_merge($aCurrentCategories, $aParentProductCategories);
+			}
+		}
+		$aCurrentCategories = array_unique($aCurrentCategories);
+
+		if (!is_array($aCurrentCategories)) {
+			$aCurrentCategories = array (
+				$aCurrentCategories
+			);
+		}
+		return $this->hasActiveCategory($aCurrentCategories);
+	}
+
+	/**
+	 * Check that at least one of the given category ids is active
+	 *
+	 * @param array $aCategoryIds
+	 * @return bool
+	 */
+	public function hasActiveCategory($aCategoryIds) {
+		$aActiveCategoryIds = $this->getActiveCategories();
+		foreach ($aCategoryIds as $iCategoryId) {
+			if (in_array($iCategoryId, $aActiveCategoryIds)) {
+				return true;
+			}
+		}
+	}
+
+	/**
+	 * Validate that the category of a give product is activated in the module
 	 * 
 	 * @param int $iProductId
 	 * @return boolean
@@ -172,9 +227,9 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	 *
 	 * @return array
 	 */
-	public function getActivatedCustomerGroups() {
+	public function getActivatedCustomerGroupIds() {
 		/*
-		 * Customer groups as saved in the config in fromat
+		 * Customer group ids are saved in the config in format
 		 *  - "group1,group2"
 		 */
 		$sActivatedCustomerGroups = Mage::getStoreConfig('b2bprofessional/activatebycustomersettings/activecustomers');
@@ -201,7 +256,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 		/* @var $oCustomerSession Mage_Customer_Model_Session */
 		$oCustomerSession = Mage::getModel('customer/session');
 		$iCurrentCustomerGroupId = $oCustomerSession->getCustomerGroupId();
-		$aActiveCustomerGroupIds = $this->getActivatedCustomerGroups();
+		$aActiveCustomerGroupIds = $this->getActivatedCustomerGroupIds();
 
 		if (in_array($iCurrentCustomerGroupId, $aActiveCustomerGroupIds)) {
 			return true;
@@ -234,6 +289,73 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	 */
 	public function isExtensionActivatedByCategory() {
 		return Mage::getStoreConfigFlag('b2bprofessional/activatebycategorysettings/activebycategory');
+	}
+
+	/**
+	 * Check that the price can be displayed for the given product id
+	 *  - Check that the extension is active
+	 *  - Check that the customer is allowed in the store
+	 *  - When the extension is activated by customer group and category
+	 *   - Check that:
+	 *    - The category is active by product
+	 *    - AND The customer is active
+	 *  - When the extension is activated by customer group
+	 *   - Check that:
+	 *    - The customer is active
+	 *  - When the extension is activated by category
+	 *   - Check that:
+	 *    - The category is active by product
+	 *    - AND the user is logged in
+	 *  - Else
+	 *   - Check if the user is logged in
+	 * 
+	 * @param int $iProductId
+	 * @return bool
+	 */
+	public function isProductActive($iProductId) {
+		$bIsLoggedIn = false;
+		// global extension activation
+		if ($this->isExtensionActive()) {
+			// check user logged in and has store access
+			if ($this->isCustomerAllowedInStore()) {
+				$bIsLoggedIn = true;
+			}
+
+			$bCheckUser		= $this->isExtensionActivatedByCustomer();
+			$bCheckCategory	= $this->isExtensionActivatedByCategory();
+
+			if($bCheckUser == true && $bCheckCategory == true) {
+				// check both the category and customer group is active via the extension
+				if ($this->isCategoryIsActiveByProduct($iProductId) && $this->isCustomerActive()) {
+					$bIsActive = true;
+				} else {
+					$bIsActive = false;
+				}
+			} elseif($bCheckUser == true) {
+				// check user group is active via the extension
+				if ($this->isCustomerActive()) {
+					$bIsActive = true;
+				} else {
+					$bIsActive = false;
+				}
+			} elseif ($bCheckCategory == true) {
+				// check category is active via the extension
+				if (!$this->isCategoryIsActiveByProduct($iProductId) || $bIsLoggedIn == true) {
+					$bIsActive = false;
+				} else {
+					$bIsActive = true;
+				}
+			} else {
+				if ($bIsLoggedIn == false) {
+					$bIsActive = true;
+				} else {
+					$bIsActive = false;
+				}
+			}
+		} else {
+			$bIsActive = false;
+		}
+		return $bIsActive;
 	}
 
 	/**
@@ -289,21 +411,35 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	}
 
 	/**
-	 * Get all active categories
-	 * 	- allow for sub categories also
-	 * @param boolean $bIncludeSubCategories
+	 * Get an array of category ids activated via the admin config section
+	 *
 	 * @return array
-	 * 	array(
-	 * 		cat_id_1,
-	 * 		cat_id_2
-	 * 	)
 	 */
-	public function getActiveCategories($bIncludeSubCategories = true) {
-		$aCurrentActiveCategories = explode(',', Mage::getStoreConfig('b2bprofessional/activatebycategorysettings/activecategories'));
-		if($bIncludeSubCategories == false) {
-			return $aCurrentActiveCategories;
-		}
+	public function getActivatedCategoryIds() {
+		/*
+		 * Category Ids are saved in the config in format
+		 *  - "category1,category2"
+		 */
+		$sActivatedCategoryIds = Mage::getStoreConfig('b2bprofessional/activatebycategorysettings/activecategories');
+		return explode(',', $sActivatedCategoryIds);
+	}
 
+	/**
+	 * Get all category ids activated via the system config
+	 *  - Include the children category ids
+	 *
+	 * @return array
+	 * array(
+	 *  cat_id_1,
+	 *  cat_id_2
+	 * )
+	 */
+	public function getActiveCategories() {
+		$aCurrentActiveCategories = $this->getActivatedCategoryIds();
+
+		/**
+		 * Loop through each activated category ids and add children category ids
+		 */
 		$aSubActiveCategories = array();
 		foreach ($aCurrentActiveCategories as $iCategoryId) {
 			$aSubActiveCategories = $this->addCategoryChildren($iCategoryId, $aSubActiveCategories);
@@ -378,7 +514,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 			/*
 			 * For each item check if it is active for the current user
 			 */
-			if ($this->checkActive($iProductId)) {
+			if ($this->isProductActive($iProductId)) {
 				$bValidCart = false;
 			}
 		}
@@ -440,7 +576,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 		if (
 			is_null($iProductId) && !$this->hasValidCart()
 			||
-			!is_null($iProductId) && $this->checkActive($iProductId)
+			!is_null($iProductId) && $this->isProductActive($iProductId)
 		) {
 			$sBlockHtml = preg_replace(
 				$aPatterns,

@@ -114,7 +114,7 @@ class Sitewards_B2BProfessional_Model_Observer {
 			$oProduct = $oBlock->getProduct();
 			$iCurrentProductId = $oProduct->getId();
 
-			if ($oB2BHelper->checkActive($iCurrentProductId)) {
+			if ($oB2BHelper->isProductActive($iCurrentProductId)) {
 				// To stop duplicate information being displayed validate that we only do this once per product
 				if ($iCurrentProductId != self::$_iLastProductId) {
 					self::$_iLastProductId = $iCurrentProductId;
@@ -192,7 +192,7 @@ class Sitewards_B2BProfessional_Model_Observer {
 		/* @var $oB2BHelper Sitewards_B2BProfessional_Helper_Data */
 		$oB2BHelper = Mage::helper('b2bprofessional');
 
-		if ($oB2BHelper->checkActive($oProduct->getId())) {
+		if ($oB2BHelper->isProductActive($oProduct->getId())) {
 			$oProduct->setConfigurablePrice(0);
 		}
 	}
