@@ -167,28 +167,44 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	}
 
 	/**
-	 * Check that the current customer has an active group id
+	 * Get an array of all the activated customer group ids
+	 *  - always include the 'NOT LOGGED IN' group
+	 *
+	 * @return array
+	 */
+	public function getActivatedCustomerGroups() {
+		/*
+		 * Customer groups as saved in the config in fromat
+		 *  - "group1,group2"
+		 */
+		$sActivatedCustomerGroups = Mage::getStoreConfig('b2bprofessional/activatebycustomersettings/activecustomers');
+		$aActivatedCustomerGroupIds = explode(',', $sActivatedCustomerGroups);
+
+		/*
+		 * Always add the guest user group id when activated by customer group
+		 * Note: the the group code for the guest user can not be changed via the admin section
+		 */
+		/* @var $oCustomerGroup Mage_Customer_Model_Group */
+		$oCustomerGroup = Mage::getModel('customer/group');
+		$iGuestGroupId = $oCustomerGroup->load('NOT LOGGED IN', 'customer_group_code')->getId();
+		$aActivatedCustomerGroupIds[] = $iGuestGroupId;
+
+		return $aActivatedCustomerGroupIds;
+	}
+
+	/**
+	 * Check that the current customer's group id is in the list of active group ids
 	 * 
 	 * @return boolean
 	 */
-	public function checkCustomerIsActive() {
-		// activate by customer group
+	public function isCustomerActive() {
 		/* @var $oCustomerSession Mage_Customer_Model_Session */
 		$oCustomerSession = Mage::getModel('customer/session');
 		$iCurrentCustomerGroupId = $oCustomerSession->getCustomerGroupId();
-		$aActiveCustomerGroupIds = explode(',', Mage::getStoreConfig('b2bprofessional/activatebycustomersettings/activecustomers'));
-
-		/*
-		 * Always add the guest user when activated by customer group
-		 * Note: the the group code for the guest user can not be changed via the admin section 
-		 */
-		$iGuestGroupId = Mage::getModel('customer/group')->load('NOT LOGGED IN', 'customer_group_code')->getId();
-		$aActiveCustomerGroupIds[] = $iGuestGroupId;
+		$aActiveCustomerGroupIds = $this->getActivatedCustomerGroups();
 
 		if (in_array($iCurrentCustomerGroupId, $aActiveCustomerGroupIds)) {
 			return true;
-		} else {
-			return false;
 		}
 	}
 
@@ -200,6 +216,24 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	 */
 	public function isExtensionActive() {
 		return Mage::getStoreConfigFlag('b2bprofessional/generalsettings/active');
+	}
+
+	/**
+	 * Check to see if the extension is activated by customer
+	 *
+	 * @return bool
+	 */
+	public function isExtensionActivatedByCustomer() {
+		return Mage::getStoreConfigFlag('b2bprofessional/activatebycustomersettings/activebycustomer');
+	}
+
+	/**
+	 * Check to see if the extension is activated by category
+	 *
+	 * @return bool
+	 */
+	public function isExtensionActivatedByCategory() {
+		return Mage::getStoreConfigFlag('b2bprofessional/activatebycategorysettings/activebycategory');
 	}
 
 	/**
@@ -217,19 +251,19 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 				$bIsLoggedIn = true;
 			}
 
-			$bCheckUser = Mage::getStoreConfigFlag('b2bprofessional/activatebycustomersettings/activebycustomer');
-			$bCheckCategory = Mage::getStoreConfigFlag('b2bprofessional/activatebycategorysettings/activebycategory');
+			$bCheckUser		= $this->isExtensionActivatedByCustomer();
+			$bCheckCategory	= $this->isExtensionActivatedByCategory();
 
 			if($bCheckUser == true && $bCheckCategory == true) {
 				// check both the category and customer group is active via the extension
-				if ($this->checkCategoryIsActive($iProductId) && $this->checkCustomerIsActive()) {
+				if ($this->checkCategoryIsActive($iProductId) && $this->isCustomerActive()) {
 					$bIsActive = true;
 				} else {
 					$bIsActive = false;
 				}
 			} elseif($bCheckUser == true) {
 				// check user group is active via the extension
-				if ($this->checkCustomerIsActive()) {
+				if ($this->isCustomerActive()) {
 					$bIsActive = true;
 				} else {
 					$bIsActive = false;
