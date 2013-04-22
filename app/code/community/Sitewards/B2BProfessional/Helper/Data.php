@@ -148,14 +148,13 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	}
 
 	/**
-	 * Check the global active flag
-	 * 
-	 * @return boolean
+	 * Check to see if the extension is active
+	 * Returns the extension's general setting "active"
+	 *
+	 * @return bool
 	 */
-	public function checkGlobalActive() {
-		if (Mage::getStoreConfig('b2bprofessional/generalsettings/active') == 1) {
-			return true;
-		}
+	public function isExtensionActive() {
+		return Mage::getStoreConfigFlag('b2bprofessional/generalsettings/active');
 	}
 
 	/**
@@ -182,7 +181,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	public function checkActive($iProductId = null) {
 		$bIsLoggedIn = false;
 		// global extension activation
-		if ($this->checkGlobalActive()) {
+		if ($this->isExtensionActive()) {
 			// check user logged in and has store access
 			if ($this->checkLoggedIn()) {
 				$bIsLoggedIn = true;

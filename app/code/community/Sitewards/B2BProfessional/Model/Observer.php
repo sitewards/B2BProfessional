@@ -25,7 +25,7 @@ class Sitewards_B2BProfessional_Model_Observer {
 	public function onControllerActionPreDispatch(Varien_Event_Observer $oObserver) {
 		/* @var $oHelper Sitewards_B2BProfessional_Helper_Data */
 		$oHelper = Mage::helper('b2bprofessional');
-		if($oHelper->checkGlobalActive() == true) {
+		if($oHelper->isExtensionActive() == true) {
 			/* @var $oControllerAction Mage_Core_Controller_Front_Action */
 			$oControllerAction = $oObserver->getData('controller_action');
 
