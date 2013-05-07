@@ -200,10 +200,17 @@ class Sitewards_B2BProfessional_Model_Observer {
 			||
 			$oBlock instanceof Mage_Catalog_Block_Product_Compare_Abstract
 		) {
+			// Check for the block's product so we can filter on product id
+			$oCurrentProduct = $oBlock->getProduct();
+			if(!is_null($oCurrentProduct)) {
+				$iCurrentProductId = $oBlock->getProduct()->getId();
+			} else {
+				$iCurrentProductId = null;
+			}
 			$aSections = array(
 				'add_to_cart'
 			);
-			$sOriginalHtml = $oB2BHelper->replaceSections($aSections, $oTransport->getHtml());
+			$sOriginalHtml = $oB2BHelper->replaceSections($aSections, $oTransport->getHtml(), $iCurrentProductId);
 			$oTransport->setHtml($sOriginalHtml);
 		}
 	}
