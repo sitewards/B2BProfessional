@@ -646,6 +646,26 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	}
 
 	/**
+	 * When we have an invalid user
+	 *  - Perform a preg_replace with a given set of patterns and replacements on a string
+	 *  - Use only global isActive
+	 *
+	 * @param array $aPatterns
+	 * @param array $aReplacements
+	 * @param string $sBlockHtml
+	 * @return string
+	 */
+	public function replaceGlobal($aPatterns, $aReplacements, $sBlockHtml) {
+		if (
+			$this->isActive()
+		) {
+			$sBlockHtml = $this->getNewBlockHtml($aPatterns, $aReplacements, $sBlockHtml);
+		}
+		return $sBlockHtml;
+	}
+
+
+	/**
 	 * From a given config section
 	 *  - Load all the config
 	 *  - remove unused sections
@@ -706,13 +726,21 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 		 *  - add the pattern
 		 *  - add the replacement
 		 */
+		$bReplaceOnInvalidCart = false;
 		foreach($aSections as $sReplaceSection) {
 			if($this->replaceSection($sReplaceSection)) {
 				$aPatterns[] = $this->getPattern($sReplaceSection);
 				$aReplacements[] = $this->getReplacement($sReplaceSection);
+				if($this->checkInvalidCart($sReplaceSection)) {
+					$bReplaceOnInvalidCart = true;
+				}
 			}
 		}
-		return $this->replaceOnInvalidCart($aPatterns, $aReplacements, $sHtml);
+		if($bReplaceOnInvalidCart == true) {
+			return $this->replaceOnInvalidCart($aPatterns, $aReplacements, $sHtml);
+		} else {
+			return $this->replaceGlobal($aPatterns, $aReplacements, $sHtml);
+		}
 	}
 
 	/**
