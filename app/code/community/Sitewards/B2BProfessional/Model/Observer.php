@@ -25,7 +25,7 @@ class Sitewards_B2BProfessional_Model_Observer {
 	public function onControllerActionPreDispatch(Varien_Event_Observer $oObserver) {
 		/* @var $oHelper Sitewards_B2BProfessional_Helper_Data */
 		$oHelper = Mage::helper('b2bprofessional');
-		if($oHelper->checkGlobalActive() == true) {
+		if($oHelper->isExtensionActive() == true) {
 			/* @var $oControllerAction Mage_Core_Controller_Front_Action */
 			$oControllerAction = $oObserver->getData('controller_action');
 
@@ -33,7 +33,7 @@ class Sitewards_B2BProfessional_Model_Observer {
 			 * Check to see if the system requires a login
 			 * And there is no logged in user
 			 */
-			if($oHelper->checkRequireLogin() == true && !Mage::getSingleton('customer/session')->isLoggedIn()) {
+			if($oHelper->isLoginRequired() == true && !Mage::getSingleton('customer/session')->isLoggedIn()) {
 				/*
 				 * Check to see if the controller is:
 				 * 	1) Cms related for cms pages,
@@ -117,7 +117,7 @@ class Sitewards_B2BProfessional_Model_Observer {
 			$oProduct = $oBlock->getProduct();
 			$iCurrentProductId = $oProduct->getId();
 
-			if ($oB2BHelper->checkActive($iCurrentProductId)) {
+			if ($oB2BHelper->isProductActive($iCurrentProductId)) {
 				// To stop duplicate information being displayed validate that we only do this once per product
 				if ($iCurrentProductId != self::$_iLastProductId) {
 					self::$_iLastProductId = $iCurrentProductId;
@@ -138,7 +138,7 @@ class Sitewards_B2BProfessional_Model_Observer {
 			$oBlock->getNameInLayout() == 'product.info.addtocart'
 		) {
 			$iCurrentProductId = $oBlock->getProduct()->getId();
-			if ($oB2BHelper->checkActive($iCurrentProductId) && $oB2BHelper->replaceSection('add_to_cart')) {
+			if ($oB2BHelper->replaceAddToCart($iCurrentProductId)) {
 				$oTransport->setHtml('');
 			}
 		/*
@@ -148,7 +148,7 @@ class Sitewards_B2BProfessional_Model_Observer {
 			$oBlock instanceof Mage_Wishlist_Block_Customer_Wishlist_Item_Column_Cart
 		) {
 			$iCurrentProductId = $oBlock->getItem()->getProduct()->getId();
-			if ($oB2BHelper->checkActive($iCurrentProductId) && $oB2BHelper->replaceSection('add_to_cart')) {
+			if ($oB2BHelper->replaceAddToCart($iCurrentProductId)) {
 				$oTransport->setHtml($oB2BHelper->getPriceMessage());
 			}
 		/*
@@ -190,7 +190,7 @@ class Sitewards_B2BProfessional_Model_Observer {
 			$aSections = array(
 				'cart_item_price'
 			);
-			$sOriginalHtml = $oB2BHelper->replaceSections($aSections, $oTransport->getHtml(), $iProductId);
+			$sOriginalHtml = $oB2BHelper->replaceSectionsByProductId($aSections, $oTransport->getHtml(), $iProductId);
 			$oTransport->setHtml($sOriginalHtml);
 		/*
 		 * Check to see if we should replace the add to cart button on product blocks
@@ -229,7 +229,7 @@ class Sitewards_B2BProfessional_Model_Observer {
 			/* @var $oB2BHelper Sitewards_B2BProfessional_Helper_Data */
 			$oB2BHelper = Mage::helper('b2bprofessional');
 
-			if($oB2BHelper->checkActive()) {
+			if($oB2BHelper->isActive()) {
 				$oBlock->removeOrderFromAvailableOrders('price');
 			}
 		}
@@ -246,7 +246,7 @@ class Sitewards_B2BProfessional_Model_Observer {
 		/* @var $oB2BHelper Sitewards_B2BProfessional_Helper_Data */
 		$oB2BHelper = Mage::helper('b2bprofessional');
 
-		if ($oB2BHelper->checkActive($oProduct->getId())) {
+		if ($oB2BHelper->isProductActive($oProduct->getId())) {
 			$oProduct->setConfigurablePrice(0);
 		}
 	}
@@ -266,7 +266,7 @@ class Sitewards_B2BProfessional_Model_Observer {
 			/*
 			 * Get all possible category filters
 			 * Assign to value b2bprof_category_filters to be used in
-			 * Sitewards_B2BProfessional_Helper_Data->checkCategoryIsActive
+			 * Sitewards_B2BProfessional_Helper_Data->isCategoryActive
 			 */
 			/* @var $oCategoryFilter Mage_Catalog_Block_Layer_Filter_Category */
 			$oCategoryFilter = $oBlock->getChild('category_filter');
@@ -279,7 +279,7 @@ class Sitewards_B2BProfessional_Model_Observer {
 			}
 			Mage::register('b2bprof_category_filters', $aCategoryOptions);
 
-			if($oB2BHelper->checkActive()) {
+			if($oB2BHelper->isActive()) {
 				$aFilterableAttributes = $oBlock->getData('_filterable_attributes');
 				$aNewFilterableAttributes = array();
 				foreach ($aFilterableAttributes as $oFilterableAttribute) {

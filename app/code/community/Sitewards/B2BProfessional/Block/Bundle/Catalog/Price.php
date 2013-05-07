@@ -28,7 +28,7 @@ class Sitewards_B2BProfessional_Block_Bundle_Catalog_Price extends Mage_Bundle_B
 
 		/* @var $oB2BHelper Sitewards_B2BProfessional_Helper_Data */
 		$oB2BHelper = Mage::helper('b2bprofessional');
-		if ($oB2BHelper->checkActive($iCurrentProductId)) {
+		if ($oB2BHelper->isProductActive($iCurrentProductId)) {
 			if ($iCurrentProductId == self::$_iLastProductId) {
 				return '';
 			}

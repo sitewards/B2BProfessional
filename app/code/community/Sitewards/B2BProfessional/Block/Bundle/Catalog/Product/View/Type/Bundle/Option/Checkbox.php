@@ -16,7 +16,7 @@ class Sitewards_B2BProfessional_Block_Bundle_Catalog_Product_View_Type_Bundle_Op
 	 * @return string
 	 */
 	public function getSelectionTitlePrice($oBundleSelection, $bIncludeContainer = true) {
-		if (Mage::helper('b2bprofessional')->checkActive()) {
+		if (Mage::helper('b2bprofessional')->isActive()) {
 			return $oBundleSelection->getName();
 		} else {
 			return parent::getSelectionTitlePrice($oBundleSelection, $bIncludeContainer);
@@ -31,7 +31,7 @@ class Sitewards_B2BProfessional_Block_Bundle_Catalog_Product_View_Type_Bundle_Op
 	 * @return string
 	 */
 	public function getSelectionQtyTitlePrice($oBundleSelection, $bIncludeContainer = true) {
-		if (Mage::helper ( 'b2bprofessional' )->checkActive ()) {
+		if (Mage::helper('b2bprofessional')->isActive()) {
 			return $oBundleSelection->getSelectionQty() * 1 . ' x ' . $oBundleSelection->getName();
 		} else {
 			return parent::getSelectionQtyTitlePrice($oBundleSelection, $bIncludeContainer);

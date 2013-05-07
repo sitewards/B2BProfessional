@@ -29,14 +29,14 @@ class Sitewards_B2BProfessional_CartController extends Mage_Checkout_CartControl
 		if (!empty($aMultiProducts)) {
 			foreach ($aMultiProducts as $iMultiProductId => $iMultiProductValue) {
 				if ($iMultiProductValue > 0) {
-					if ($oB2BHelper->checkActive($iMultiProductId)) {
+					if ($oB2BHelper->isProductActive($iMultiProductId)) {
 						$bAllowed = false;
 					}
 				}
 			}
 		}
 
-		if ((!empty($iProductId) && $oB2BHelper->checkActive($iProductId)) || ! $bAllowed) {
+		if ((!empty($iProductId) && $oB2BHelper->isProductActive($iProductId)) || ! $bAllowed) {
 			$this->setFlag('', 'no-dispatch', true);
 			Mage::getSingleton('customer/session')->addError($oB2BHelper->getMessage($oB2BHelper::MESSAGE_TYPE_CHECKOUT));
 			Mage::app()->getResponse()->setRedirect($oB2BHelper->getAddToCartRedirect())->sendHeaders();
