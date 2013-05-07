@@ -655,7 +655,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	 * @param string $sBlockHtml
 	 * @return string
 	 */
-	public function replaceGlobal($aPatterns, $aReplacements, $sBlockHtml) {
+	public function replaceOnIsActive($aPatterns, $aReplacements, $sBlockHtml) {
 		if (
 			$this->isActive()
 		) {
@@ -663,7 +663,6 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 		}
 		return $sBlockHtml;
 	}
-
 
 	/**
 	 * From a given config section
@@ -739,7 +738,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 		if($bReplaceOnInvalidCart == true) {
 			return $this->replaceOnInvalidCart($aPatterns, $aReplacements, $sHtml);
 		} else {
-			return $this->replaceGlobal($aPatterns, $aReplacements, $sHtml);
+			return $this->replaceOnIsActive($aPatterns, $aReplacements, $sHtml);
 		}
 	}
 
