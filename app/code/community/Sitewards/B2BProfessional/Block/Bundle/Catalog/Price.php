@@ -34,7 +34,7 @@ class Sitewards_B2BProfessional_Block_Bundle_Catalog_Price extends Mage_Bundle_B
 			}
 			self::$_iLastProductId = $iCurrentProductId;
 
-			return $oB2BHelper->getPriceMessage();
+			return $oB2BHelper->getMessage($oB2BHelper::MESSAGE_TYPE_PRICE);
 		}
 		return $sPriceHtml;
 	}
