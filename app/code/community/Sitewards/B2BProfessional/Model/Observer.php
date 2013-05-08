@@ -116,6 +116,8 @@ class Sitewards_B2BProfessional_Model_Observer {
 		$oB2BHelper = Mage::helper('b2bprofessional');
 		/* @var $oB2BMessagesHelper Sitewards_B2BProfessional_Helper_Messages */
 		$oB2BMessagesHelper = Mage::helper('b2bprofessional/messages');
+		/* @var $oB2BReplacementsHelper Sitewards_B2BProfessional_Helper_Replacements */
+		$oB2BReplacementsHelper = Mage::helper('b2bprofessional/replacements');
 
 		/*
 		 * Check to see if we should remove the product price
@@ -185,7 +187,7 @@ class Sitewards_B2BProfessional_Model_Observer {
 				'cart_sidebar_totals',
 				'cart_sidebar_actions'
 			);
-			$sOriginalHtml = $oB2BHelper->replaceSections($aSections, $oTransport->getHtml());
+			$sOriginalHtml = $oB2BReplacementsHelper->replaceSections($aSections, $oTransport->getHtml());
 			$oTransport->setHtml($sOriginalHtml);
 		/*
 		 * Check to see if we should replace item price from the cart
@@ -197,7 +199,7 @@ class Sitewards_B2BProfessional_Model_Observer {
 			$aSections = array(
 				'cart_item_price'
 			);
-			$sOriginalHtml = $oB2BHelper->replaceSectionsByProductId($aSections, $oTransport->getHtml(), $iProductId);
+			$sOriginalHtml = $oB2BReplacementsHelper->replaceSectionsByProductId($aSections, $oTransport->getHtml(), $iProductId);
 			$oTransport->setHtml($sOriginalHtml);
 		/*
 		 * Check to see if we should replace the add to cart button on product blocks
@@ -214,9 +216,9 @@ class Sitewards_B2BProfessional_Model_Observer {
 			$oCurrentProduct = $oBlock->getProduct();
 			if(!is_null($oCurrentProduct)) {
 				$iCurrentProductId = $oBlock->getProduct()->getId();
-				$sOriginalHtml = $oB2BHelper->replaceSectionsByProductId($aSections, $oTransport->getHtml(), $iCurrentProductId);
+				$sOriginalHtml = $oB2BReplacementsHelper->replaceSectionsByProductId($aSections, $oTransport->getHtml(), $iCurrentProductId);
 			} else {
-				$sOriginalHtml = $oB2BHelper->replaceSections($aSections, $oTransport->getHtml());
+				$sOriginalHtml = $oB2BReplacementsHelper->replaceSections($aSections, $oTransport->getHtml());
 			}
 			$oTransport->setHtml($sOriginalHtml);
 		}
