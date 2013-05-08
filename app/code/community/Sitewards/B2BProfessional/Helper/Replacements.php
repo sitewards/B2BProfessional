@@ -16,6 +16,7 @@ class Sitewards_B2BProfessional_Helper_Replacements extends Mage_Core_Helper_Abs
 
 	/**
 	 * Object for the main sitewards b2bprofessional helper
+	 *
 	 * @var Sitewards_B2BProfessional_Helper_Data
 	 */
 	protected $oB2BHelper;

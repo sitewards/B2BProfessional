@@ -16,92 +16,17 @@
  */
 class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	/**
-	 * Check to see if the website is set-up to require a user login to view pages
+	 * Object for the sitewards b2bprofessional customer helper
 	 *
-	 * @return boolean
+	 * @var Sitewards_B2BProfessional_Helper_Customer
 	 */
-	public function isLoginRequired() {
-		return Mage::getStoreConfigFlag('b2bprofessional/requirelogin/requirelogin');
-	}
+	protected $oB2BCustomerHelper;
 
 	/**
-	 * Check to see if the extension has the "global customer activation"
-	 *
-	 * @return bool
+	 * Create an instance of the sitewards b2bprofessional customer helper
 	 */
-	private function isCustomerActivationGlobal() {
-		return Mage::getStoreConfigFlag('b2bprofessional/generalsettings/activecustomers');
-	}
-
-	/**
-	 * Check to see if the user has been created via the admin section
-	 *
-	 * @param $oCustomer Mage_Customer_Model_Customer
-	 * @return bool
-	 */
-	private function isUserAdminCreation($oCustomer) {
-		if($oCustomer->getCreatedIn() == 'Admin') {
-			return true;
-		}
-	}
-
-	/**
-	 * Check to see if the user is allowed on the current store
-	 *  - Check if the customer is logged in,
-	 *   - Check if the extension is set to have global customer activation,
-	 *   - Check if the user is active for the current store
-	 *
-	 * @return bool
-	 */
-	private function isCustomerAllowedInStore() {
-		/* @var $oCustomerSession Mage_Customer_Model_Session */
-		$oCustomerSession = Mage::getSingleton('customer/session');
-		if ($oCustomerSession->isLoggedIn()) {
-			/*
-			 * If customer activation is global
-			 *  - then any customer can access any store
-			 */
-			if ($this->isCustomerActivationGlobal()) {
-				return true;
-			}
-
-			/* @var $oCustomer Mage_Customer_Model_Customer */
-			$oCustomer = $oCustomerSession->getCustomer();
-			if($this->isUserActiveForStore($oCustomer)) {
-				return true;
-			}
-		}
-	}
-
-	/**
-	 * Check to see if the user is active for current store
-	 *  NOTE: users created via the admin section cannot be attached to a front end store and so have global activation
-	 *
-	 * @param $oCustomer Mage_Customer_Model_Customer
-	 * @return bool
-	 */
-	private function isUserActiveForStore($oCustomer) {
-		/*
-		 * Check to see if the user was created via the admin section
-		 *  - Note: users created via the admin section cannot be attached to a front end store
-		 */
-		if ($this->isUserAdminCreation($oCustomer)) {
-			return true;
-		}
-
-		/*
-		 * Get user's store and current store for comparison
-		 */
-		$iUserStoreId		= $oCustomer->getStoreId();
-		$iCurrentStoreId	= Mage::app()->getStore()->getId();
-
-		/*
-		 * Return true if:
-		 *  - the user's store id matches the current store id
-		 */
-		if ($iUserStoreId == $iCurrentStoreId) {
-			return true;
-		}
+	public function __construct() {
+		$this->oB2BCustomerHelper = Mage::helper('b2bprofessional/customer');
 	}
 
 	/**
@@ -243,48 +168,6 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	}
 
 	/**
-	 * Get an array of all the activated customer group ids
-	 *  - always include the 'NOT LOGGED IN' group
-	 *
-	 * @return array
-	 */
-	private function getActivatedCustomerGroupIds() {
-		/*
-		 * Customer group ids are saved in the config in format
-		 *  - "group1,group2"
-		 */
-		$sActivatedCustomerGroups = Mage::getStoreConfig('b2bprofessional/activatebycustomersettings/activecustomers');
-		$aActivatedCustomerGroupIds = explode(',', $sActivatedCustomerGroups);
-
-		/*
-		 * Always add the guest user group id when activated by customer group
-		 * Note: the the group code for the guest user can not be changed via the admin section
-		 */
-		/* @var $oCustomerGroup Mage_Customer_Model_Group */
-		$oCustomerGroup = Mage::getModel('customer/group');
-		$iGuestGroupId = $oCustomerGroup->load('NOT LOGGED IN', 'customer_group_code')->getId();
-		$aActivatedCustomerGroupIds[] = $iGuestGroupId;
-
-		return $aActivatedCustomerGroupIds;
-	}
-
-	/**
-	 * Check that the current customer's group id is in the list of active group ids
-	 * 
-	 * @return boolean
-	 */
-	private function isCustomerActive() {
-		/* @var $oCustomerSession Mage_Customer_Model_Session */
-		$oCustomerSession = Mage::getModel('customer/session');
-		$iCurrentCustomerGroupId = $oCustomerSession->getCustomerGroupId();
-		$aActiveCustomerGroupIds = $this->getActivatedCustomerGroupIds();
-
-		if (in_array($iCurrentCustomerGroupId, $aActiveCustomerGroupIds)) {
-			return true;
-		}
-	}
-
-	/**
 	 * Check to see if the extension is active
 	 * Returns the extension's general setting "active"
 	 *
@@ -292,15 +175,6 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	 */
 	public function isExtensionActive() {
 		return Mage::getStoreConfigFlag('b2bprofessional/generalsettings/active');
-	}
-
-	/**
-	 * Check to see if the extension is activated by customer
-	 *
-	 * @return bool
-	 */
-	private function isExtensionActivatedByCustomer() {
-		return Mage::getStoreConfigFlag('b2bprofessional/activatebycustomersettings/activebycustomer');
 	}
 
 	/**
@@ -338,17 +212,17 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 		// global extension activation
 		if ($this->isExtensionActive()) {
 			// check user logged in and has store access
-			if ($this->isCustomerAllowedInStore()) {
+			if ($this->oB2BCustomerHelper->isCustomerAllowedInStore()) {
 				$bIsLoggedIn = true;
 			}
 
-			$bCheckUser		= $this->isExtensionActivatedByCustomer();
+			$bCheckUser		= $this->oB2BCustomerHelper->isExtensionActivatedByCustomer();
 			$bCheckCategory	= $this->isExtensionActivatedByCategory();
 
 			if($bCheckUser == true && $bCheckCategory == true) {
-				$bIsActive = $this->isCategoryActiveByProduct($iProductId) && $this->isCustomerActive();
+				$bIsActive = $this->isCategoryActiveByProduct($iProductId) && $this->oB2BCustomerHelper->isCustomerActive();
 			} elseif($bCheckUser == true) {
-				$bIsActive = $this->isCustomerActive();
+				$bIsActive = $this->oB2BCustomerHelper->isCustomerActive();
 			} elseif ($bCheckCategory == true) {
 				$bIsActive = $this->isCategoryActiveByProduct($iProductId) && !$bIsLoggedIn;
 			} else {
@@ -385,17 +259,17 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 		// global extension activation
 		if ($this->isExtensionActive()) {
 			// check user logged in and has store access
-			if ($this->isCustomerAllowedInStore()) {
+			if ($this->oB2BCustomerHelper->isCustomerAllowedInStore()) {
 				$bIsLoggedIn = true;
 			}
 
-			$bCheckUser		= $this->isExtensionActivatedByCustomer();
+			$bCheckUser		= $this->oB2BCustomerHelper->isExtensionActivatedByCustomer();
 			$bCheckCategory	= $this->isExtensionActivatedByCategory();
 
 			if($bCheckUser == true && $bCheckCategory == true) {
-				$bIsActive = $this->isCategoryActive() && $this->isCustomerActive();
+				$bIsActive = $this->isCategoryActive() && $this->oB2BCustomerHelper->isCustomerActive();
 			} elseif($bCheckUser == true) {
-				$bIsActive = $this->isCustomerActive();
+				$bIsActive = $this->oB2BCustomerHelper->isCustomerActive();
 			} elseif ($bCheckCategory == true) {
 				$bIsActive = $this->isCategoryActive() && !$bIsLoggedIn;
 			} else {

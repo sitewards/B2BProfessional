@@ -33,12 +33,14 @@ class Sitewards_B2BProfessional_Model_Observer {
 			$oB2BMessagesHelper = Mage::helper('b2bprofessional/messages');
 			/* @var $oB2BRedirectsHelper Sitewards_B2BProfessional_Helper_Redirects */
 			$oB2BRedirectsHelper = Mage::helper('b2bprofessional/redirects');
+			/* @var $oB2BCustomerHelper Sitewards_B2BProfessional_Helper_Customer */
+			$oB2BCustomerHelper = Mage::helper('b2bprofessional/customer');
 
 			/*
 			 * Check to see if the system requires a login
 			 * And there is no logged in user
 			 */
-			if($oHelper->isLoginRequired() == true && !Mage::getSingleton('customer/session')->isLoggedIn()) {
+			if($oB2BCustomerHelper->isLoginRequired() == true && !Mage::getSingleton('customer/session')->isLoggedIn()) {
 				/*
 				 * Check to see if the controller is:
 				 * 	1) Cms related for cms pages,
