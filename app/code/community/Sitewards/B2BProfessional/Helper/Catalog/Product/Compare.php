@@ -16,11 +16,11 @@ class Sitewards_B2BProfessional_Helper_Catalog_Product_Compare extends Mage_Cata
 	 * @return string
 	 */
 	public function getAddToCartUrl($oProduct) {
-		/* @var $oB2BHelper Sitewards_B2BProfessional_Helper_Data */
-		$oB2BHelper = Mage::helper('b2bprofessional');
+		/* @var $oB2BReplacementsHelper Sitewards_B2BProfessional_Helper_Replacements */
+		$oB2BReplacementsHelper = Mage::helper('b2bprofessional/replacements');
 
-		if ($oB2BHelper->replaceAddToCart($oProduct->getId())) {
-			return $oB2BHelper->getReplaceAddToCartUrl();
+		if ($oB2BReplacementsHelper->replaceAddToCart($oProduct->getId())) {
+			return $oB2BReplacementsHelper->getReplaceAddToCartUrl();
 		}
 		return parent::getAddToCartUrl($oProduct);
 	}

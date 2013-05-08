@@ -2,6 +2,8 @@
 /**
  * Class Sitewards_B2BProfessional_Helper_Replacements
  *  - contains the replacement pattern regular expression
+ *  - function to get add to cart replacement string
+ *  - function to check if product needs add to cart button replaced
  *  - functions to replace given sections
  *
  * @category    Sitewards
@@ -26,6 +28,25 @@ class Sitewards_B2BProfessional_Helper_Replacements extends Mage_Core_Helper_Abs
 	 */
 	public function __construct() {
 		$this->oB2BHelper = Mage::helper('b2bprofessional');
+	}
+
+	/**
+	 * Get the replacement text for the add to cart url
+	 *
+	 * @return string
+	 */
+	public function getReplaceAddToCartUrl() {
+		return Mage::getStoreConfig('b2bprofessional/add_to_cart/value');
+	}
+
+	/**
+	 * Check if the add to cart button should be replaced
+	 *
+	 * @param int $iProductId
+	 * @return bool
+	 */
+	public function replaceAddToCart($iProductId) {
+		return (bool) $this->oB2BHelper->isProductActive($iProductId) && $this->replaceSection('add_to_cart');
 	}
 
 	/**

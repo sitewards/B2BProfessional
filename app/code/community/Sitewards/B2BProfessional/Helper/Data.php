@@ -143,27 +143,6 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	}
 
 	/**
-	 * Get the replacement text for the add to cart url
-	 *
-	 * @return string
-	 */
-	public function getReplaceAddToCartUrl() {
-		return Mage::getStoreConfig('b2bprofessional/add_to_cart/value');
-	}
-
-	/**
-	 * Check if the add to cart button should be replaced
-	 *
-	 * @param int $iProductId
-	 * @return bool
-	 */
-	public function replaceAddToCart($iProductId) {
-		/* @var $oB2BReplacementsHelper Sitewards_B2BProfessional_Helper_Replacements */
-		$oB2BReplacementsHelper = Mage::helper('b2bprofessional/replacements');
-		return (bool) $this->isProductActive($iProductId) && $oB2BReplacementsHelper->replaceSection('add_to_cart');
-	}
-
-	/**
 	 * Validate that the current quote in the checkout session is valid for the user
 	 *  - Check each item in the quote against the function checkActive
 	 *

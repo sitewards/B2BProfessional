@@ -149,7 +149,7 @@ class Sitewards_B2BProfessional_Model_Observer {
 			$oBlock->getNameInLayout() == 'product.info.addtocart'
 		) {
 			$iCurrentProductId = $oBlock->getProduct()->getId();
-			if ($oB2BHelper->replaceAddToCart($iCurrentProductId)) {
+			if ($oB2BReplacementsHelper->replaceAddToCart($iCurrentProductId)) {
 				$oTransport->setHtml('');
 			}
 		/*
@@ -159,7 +159,7 @@ class Sitewards_B2BProfessional_Model_Observer {
 			$oBlock instanceof Mage_Wishlist_Block_Customer_Wishlist_Item_Column_Cart
 		) {
 			$iCurrentProductId = $oBlock->getItem()->getProduct()->getId();
-			if ($oB2BHelper->replaceAddToCart($iCurrentProductId)) {
+			if ($oB2BReplacementsHelper->replaceAddToCart($iCurrentProductId)) {
 				$oTransport->setHtml($oB2BMessagesHelper->getMessage($oB2BMessagesHelper::MESSAGE_TYPE_PRICE));
 			}
 		/*
