@@ -5,7 +5,7 @@
  *
  * @category    Sitewards
  * @package     Sitewards_B2BProfessional
- * @copyright   Copyright (c) 2012 Sitewards GmbH (http://www.sitewards.com/)
+ * @copyright   Copyright (c) 2013 Sitewards GmbH (http://www.sitewards.com/)
  */
 class Sitewards_B2BProfessional_Model_Customer extends Mage_Customer_Model_Customer {
 	const XML_PATH_DISTRIBUTOR_EMAIL_TEMPLATE = 'customer/create_account/email_distributor_template';

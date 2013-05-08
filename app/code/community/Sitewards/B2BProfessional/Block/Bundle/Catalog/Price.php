@@ -6,7 +6,7 @@
  * @author      david.manners <david.manners@sitewards.com>
  * @category    Sitewards
  * @package     Sitewards_B2BProfessional
- * @copyright   Copyright (c) 2012 Sitewards GmbH (http://www.sitewards.com/)
+ * @copyright   Copyright (c) 2013 Sitewards GmbH (http://www.sitewards.com/)
  */
 class Sitewards_B2BProfessional_Block_Bundle_Catalog_Price extends Mage_Bundle_Block_Catalog_Product_Price {
 	/**

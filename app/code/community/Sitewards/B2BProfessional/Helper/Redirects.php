@@ -8,7 +8,7 @@
  * @package     Sitewards_B2BProfessional
  * @copyright   Copyright (c) 2013 Sitewards GmbH (http://www.sitewards.com/)
  */
-class Sitewards_B2BProfessional_Helper_Redirects extends Sitewards_B2BProfessional_Helper_Core {
+class Sitewards_B2BProfessional_Helper_Redirects extends Mage_Core_Helper_Abstract {
 	/**
 	 * String containing the configuration path for the login redirect
 	 */
@@ -28,7 +28,7 @@ class Sitewards_B2BProfessional_Helper_Redirects extends Sitewards_B2BProfession
 	 * @return string
 	 */
 	public function getRedirect($sConfigPath) {
-		$sConfigPath = $this::CONFIG_B2B_PROFESSIONAL_NODE . '/' . $sConfigPath;
+		$sConfigPath = Sitewards_B2BProfessional_Helper_Core::CONFIG_B2B_PROFESSIONAL_NODE . '/' . $sConfigPath;
 		$sRedirectPath = '/';
 		$sConfigVar = Mage::getStoreConfig($sConfigPath);
 		if (isset($sConfigVar)) {

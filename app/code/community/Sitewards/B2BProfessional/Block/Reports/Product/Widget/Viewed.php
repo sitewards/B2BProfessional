@@ -5,7 +5,7 @@
  *
  * @category    Sitewards
  * @package     Sitewards_B2BProfessional
- * @copyright   Copyright (c) 2012 Sitewards GmbH (http://www.sitewards.com/)
+ * @copyright   Copyright (c) 2013 Sitewards GmbH (http://www.sitewards.com/)
  */
 class Sitewards_B2BProfessional_Block_Reports_Product_Widget_Viewed extends Mage_Reports_Block_Product_Widget_Viewed {
 	/**
@@ -19,10 +19,6 @@ class Sitewards_B2BProfessional_Block_Reports_Product_Widget_Viewed extends Mage
 	public function getAddToCartUrl($oProduct, $aAdditional = array()) {
 		/* @var $oB2BReplacementsHelper Sitewards_B2BProfessional_Helper_Replacements */
 		$oB2BReplacementsHelper = Mage::helper('b2bprofessional/replacements');
-
-		if ($oB2BReplacementsHelper->replaceAddToCart($oProduct->getId())) {
-			return $oB2BReplacementsHelper->getReplaceAddToCartUrl();
-		}
-		return parent::getAddToCartUrl($oProduct, $aAdditional);
+		return $oB2BReplacementsHelper->replaceAddToCart($oProduct->getId(), parent::getAddToCartUrl($oProduct, $aAdditional));
 	}
 }

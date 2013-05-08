@@ -31,8 +31,6 @@ class Sitewards_B2BProfessional_Model_Observer {
 
 			/* @var $oB2BMessagesHelper Sitewards_B2BProfessional_Helper_Messages */
 			$oB2BMessagesHelper = Mage::helper('b2bprofessional/messages');
-			/* @var $oB2BRedirectsHelper Sitewards_B2BProfessional_Helper_Redirects */
-			$oB2BRedirectsHelper = Mage::helper('b2bprofessional/redirects');
 			/* @var $oB2BCustomerHelper Sitewards_B2BProfessional_Helper_Customer */
 			$oB2BCustomerHelper = Mage::helper('b2bprofessional/customer');
 
@@ -57,6 +55,8 @@ class Sitewards_B2BProfessional_Model_Observer {
 					!$oControllerAction instanceof Mage_Customer_AccountController
 				){
 					// Redirect to the homepage
+					/* @var $oB2BRedirectsHelper Sitewards_B2BProfessional_Helper_Redirects */
+					$oB2BRedirectsHelper = Mage::helper('b2bprofessional/redirects');
 					/* @var $oResponse Mage_Core_Controller_Response_Http */
 					$oResponse = $oControllerAction->getResponse();
 					$oResponse->setRedirect($oB2BRedirectsHelper->getRedirect($oB2BRedirectsHelper::REDIRECT_TYPE_LOGIN));
@@ -149,7 +149,7 @@ class Sitewards_B2BProfessional_Model_Observer {
 			$oBlock->getNameInLayout() == 'product.info.addtocart'
 		) {
 			$iCurrentProductId = $oBlock->getProduct()->getId();
-			if ($oB2BReplacementsHelper->replaceAddToCart($iCurrentProductId)) {
+			if ($oB2BReplacementsHelper->isAddToCartToBeReplaced($iCurrentProductId)) {
 				$oTransport->setHtml('');
 			}
 		/*
@@ -159,7 +159,7 @@ class Sitewards_B2BProfessional_Model_Observer {
 			$oBlock instanceof Mage_Wishlist_Block_Customer_Wishlist_Item_Column_Cart
 		) {
 			$iCurrentProductId = $oBlock->getItem()->getProduct()->getId();
-			if ($oB2BReplacementsHelper->replaceAddToCart($iCurrentProductId)) {
+			if ($oB2BReplacementsHelper->isAddToCartToBeReplaced($iCurrentProductId)) {
 				$oTransport->setHtml($oB2BMessagesHelper->getMessage($oB2BMessagesHelper::MESSAGE_TYPE_PRICE));
 			}
 		/*

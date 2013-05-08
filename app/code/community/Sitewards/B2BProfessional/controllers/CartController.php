@@ -5,7 +5,7 @@
  *
  * @category    Sitewards
  * @package     Sitewards_B2BProfessional
- * @copyright   Copyright (c) 2012 Sitewards GmbH (http://www.sitewards.com/)
+ * @copyright   Copyright (c) 2013 Sitewards GmbH (http://www.sitewards.com/)
  */
 require_once 'Mage/Checkout/controllers/CartController.php';
 class Sitewards_B2BProfessional_CartController extends Mage_Checkout_CartController {

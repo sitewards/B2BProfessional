@@ -12,31 +12,9 @@
  *
  * @category    Sitewards
  * @package     Sitewards_B2BProfessional
- * @copyright   Copyright (c) 2012 Sitewards GmbH (http://www.sitewards.com/)
+ * @copyright   Copyright (c) 2013 Sitewards GmbH (http://www.sitewards.com/)
  */
-class Sitewards_B2BProfessional_Helper_Data extends Sitewards_B2BProfessional_Helper_Core {
-	/**
-	 * Object for the sitewards b2bprofessional customer helper
-	 *
-	 * @var Sitewards_B2BProfessional_Helper_Customer
-	 */
-	protected $oB2BCustomerHelper;
-
-	/**
-	 * Object for the sitewards b2bprofessional category helper
-	 *
-	 * @var Sitewards_B2BProfessional_Helper_Category
-	 */
-	protected $oB2BCategoryHelper;
-
-	/**
-	 * Create an instance of the sitewards b2bprofessional customer helper
-	 */
-	public function __construct() {
-		$this->oB2BCustomerHelper = Mage::helper('b2bprofessional/customer');
-		$this->oB2BCategoryHelper = Mage::helper('b2bprofessional/category');
-	}
-
+class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	/**
 	 * Check to see if the extension is active
 	 * Returns the extension's general setting "active"
@@ -44,7 +22,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Sitewards_B2BProfessional_He
 	 * @return bool
 	 */
 	public function isExtensionActive() {
-		return Mage::getStoreConfigFlag($this::CONFIG_B2B_PROFESSIONAL_NODE . '/' . $this::CONFIG_GENERAL_SETTINGS_NODE . '/active');
+		return Mage::getStoreConfigFlag(Sitewards_B2BProfessional_Helper_Core::CONFIG_B2B_PROFESSIONAL_NODE . '/' . Sitewards_B2BProfessional_Helper_Core::CONFIG_GENERAL_SETTINGS_NODE . '/active');
 	}
 
 	/**
@@ -72,20 +50,25 @@ class Sitewards_B2BProfessional_Helper_Data extends Sitewards_B2BProfessional_He
 		$bIsLoggedIn = false;
 		// global extension activation
 		if ($this->isExtensionActive()) {
+			/** @var $oB2BCustomerHelper Sitewards_B2BProfessional_Helper_Customer */
+			$oB2BCustomerHelper = Mage::helper('b2bprofessional/customer');
+			/** @var $oB2BCategoryHelper Sitewards_B2BProfessional_Helper_Category */
+			$oB2BCategoryHelper = Mage::helper('b2bprofessional/category');
+
 			// check user logged in and has store access
-			if ($this->oB2BCustomerHelper->isCustomerAllowedInStore()) {
+			if ($oB2BCustomerHelper->isCustomerAllowedInStore()) {
 				$bIsLoggedIn = true;
 			}
 
-			$bCheckUser		= $this->oB2BCustomerHelper->isExtensionActivatedByCustomer();
-			$bCheckCategory	= $this->oB2BCategoryHelper->isExtensionActivatedByCategory();
+			$bCheckUser		= $oB2BCustomerHelper->isExtensionActivatedByCustomer();
+			$bCheckCategory	= $oB2BCategoryHelper->isExtensionActivatedByCategory();
 
 			if($bCheckUser == true && $bCheckCategory == true) {
-				$bIsActive = $this->oB2BCategoryHelper->isCategoryActiveByProduct($iProductId) && $this->oB2BCustomerHelper->isCustomerActive();
+				$bIsActive = $oB2BCategoryHelper->isCategoryActiveByProduct($iProductId) && $oB2BCustomerHelper->isCustomerActive();
 			} elseif($bCheckUser == true) {
-				$bIsActive = $this->oB2BCustomerHelper->isCustomerActive();
+				$bIsActive = $oB2BCustomerHelper->isCustomerActive();
 			} elseif ($bCheckCategory == true) {
-				$bIsActive = $this->oB2BCategoryHelper->isCategoryActiveByProduct($iProductId) && !$bIsLoggedIn;
+				$bIsActive = $oB2BCategoryHelper->isCategoryActiveByProduct($iProductId) && !$bIsLoggedIn;
 			} else {
 				$bIsActive = !$bIsLoggedIn;
 			}
@@ -119,20 +102,25 @@ class Sitewards_B2BProfessional_Helper_Data extends Sitewards_B2BProfessional_He
 		$bIsLoggedIn = false;
 		// global extension activation
 		if ($this->isExtensionActive()) {
+			/** @var $oB2BCustomerHelper Sitewards_B2BProfessional_Helper_Customer */
+			$oB2BCustomerHelper = Mage::helper('b2bprofessional/customer');
+			/** @var $oB2BCategoryHelper Sitewards_B2BProfessional_Helper_Category */
+			$oB2BCategoryHelper = Mage::helper('b2bprofessional/category');
+
 			// check user logged in and has store access
-			if ($this->oB2BCustomerHelper->isCustomerAllowedInStore()) {
+			if ($oB2BCustomerHelper->isCustomerAllowedInStore()) {
 				$bIsLoggedIn = true;
 			}
 
-			$bCheckUser		= $this->oB2BCustomerHelper->isExtensionActivatedByCustomer();
-			$bCheckCategory	= $this->oB2BCategoryHelper->isExtensionActivatedByCategory();
+			$bCheckUser		= $oB2BCustomerHelper->isExtensionActivatedByCustomer();
+			$bCheckCategory	= $oB2BCategoryHelper->isExtensionActivatedByCategory();
 
 			if($bCheckUser == true && $bCheckCategory == true) {
-				$bIsActive = $this->oB2BCategoryHelper->isCategoryActive() && $this->oB2BCustomerHelper->isCustomerActive();
+				$bIsActive = $oB2BCategoryHelper->isCategoryActive() && $oB2BCustomerHelper->isCustomerActive();
 			} elseif($bCheckUser == true) {
-				$bIsActive = $this->oB2BCustomerHelper->isCustomerActive();
+				$bIsActive = $oB2BCustomerHelper->isCustomerActive();
 			} elseif ($bCheckCategory == true) {
-				$bIsActive = $this->oB2BCategoryHelper->isCategoryActive() && !$bIsLoggedIn;
+				$bIsActive = $oB2BCategoryHelper->isCategoryActive() && !$bIsLoggedIn;
 			} else {
 				$bIsActive = !$bIsLoggedIn;
 			}
