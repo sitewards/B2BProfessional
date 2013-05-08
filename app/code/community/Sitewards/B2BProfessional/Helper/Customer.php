@@ -14,14 +14,14 @@
  * @package     Sitewards_B2BProfessional
  * @copyright   Copyright (c) 2013 Sitewards GmbH (http://www.sitewards.com/)
  */
-class Sitewards_B2BProfessional_Helper_Customer extends Mage_Core_Helper_Abstract {
+class Sitewards_B2BProfessional_Helper_Customer extends Sitewards_B2BProfessional_Helper_Core {
 	/**
 	 * Check to see if the extension is activated by customer
 	 *
 	 * @return bool
 	 */
 	public function isExtensionActivatedByCustomer() {
-		return Mage::getStoreConfigFlag('b2bprofessional/activatebycustomersettings/activebycustomer');
+		return Mage::getStoreConfigFlag($this::CONFIG_B2B_PROFESSIONAL_NODE . '/' . $this::CONFIG_CUSTOMER_SETTINGS_NODE . '/activebycustomer');
 	}
 
 	/**
@@ -30,7 +30,7 @@ class Sitewards_B2BProfessional_Helper_Customer extends Mage_Core_Helper_Abstrac
 	 * @return boolean
 	 */
 	public function isLoginRequired() {
-		return Mage::getStoreConfigFlag('b2bprofessional/requirelogin/requirelogin');
+		return Mage::getStoreConfigFlag($this::CONFIG_B2B_PROFESSIONAL_NODE . '/requirelogin/requirelogin');
 	}
 
 	/**
@@ -83,7 +83,7 @@ class Sitewards_B2BProfessional_Helper_Customer extends Mage_Core_Helper_Abstrac
 	 * @return bool
 	 */
 	private function isCustomerActivationGlobal() {
-		return Mage::getStoreConfigFlag('b2bprofessional/generalsettings/activecustomers');
+		return Mage::getStoreConfigFlag($this::CONFIG_B2B_PROFESSIONAL_NODE . '/' . $this::CONFIG_GENERAL_SETTINGS_NODE . '/activecustomers');
 	}
 
 	/**
@@ -140,7 +140,7 @@ class Sitewards_B2BProfessional_Helper_Customer extends Mage_Core_Helper_Abstrac
 		 * Customer group ids are saved in the config in format
 		 *  - "group1,group2"
 		 */
-		$sActivatedCustomerGroups = Mage::getStoreConfig('b2bprofessional/activatebycustomersettings/activecustomers');
+		$sActivatedCustomerGroups = Mage::getStoreConfig($this::CONFIG_B2B_PROFESSIONAL_NODE . '/' . $this::CONFIG_CUSTOMER_SETTINGS_NODE . '/activecustomers');
 		$aActivatedCustomerGroupIds = explode(',', $sActivatedCustomerGroups);
 
 		/*

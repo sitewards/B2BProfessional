@@ -10,7 +10,7 @@
  * @package     Sitewards_B2BProfessional
  * @copyright   Copyright (c) 2013 Sitewards GmbH (http://www.sitewards.com/)
  */
-class Sitewards_B2BProfessional_Helper_Replacements extends Mage_Core_Helper_Abstract {
+class Sitewards_B2BProfessional_Helper_Replacements extends Sitewards_B2BProfessional_Helper_Core {
 	/**
 	 * Regular expression for replacements
 	 */
@@ -36,7 +36,7 @@ class Sitewards_B2BProfessional_Helper_Replacements extends Mage_Core_Helper_Abs
 	 * @return string
 	 */
 	public function getReplaceAddToCartUrl() {
-		return Mage::getStoreConfig('b2bprofessional/add_to_cart/value');
+		return Mage::getStoreConfig($this::CONFIG_B2B_PROFESSIONAL_NODE . '/add_to_cart/value');
 	}
 
 	/**
@@ -119,7 +119,7 @@ class Sitewards_B2BProfessional_Helper_Replacements extends Mage_Core_Helper_Abs
 	 * @return bool
 	 */
 	public function replaceSection($sConfigSection) {
-		return Mage::getStoreConfigFlag('b2bprofessional/'.$sConfigSection.'/replace');
+		return Mage::getStoreConfigFlag($this::CONFIG_B2B_PROFESSIONAL_NODE . '/' . $sConfigSection . '/replace');
 	}
 
 	/**
@@ -133,7 +133,7 @@ class Sitewards_B2BProfessional_Helper_Replacements extends Mage_Core_Helper_Abs
 	 */
 	private function getPattern($sConfigSection) {
 		// Load config array and unset unused information
-		$aSectionConfig = Mage::getStoreConfig('b2bprofessional/'.$sConfigSection);
+		$aSectionConfig = Mage::getStoreConfig($this::CONFIG_B2B_PROFESSIONAL_NODE . '/' . $sConfigSection);
 		unset($aSectionConfig['replace']);
 		unset($aSectionConfig['remove']);
 
@@ -149,7 +149,7 @@ class Sitewards_B2BProfessional_Helper_Replacements extends Mage_Core_Helper_Abs
 	 */
 	private function getReplacement($sConfigSection) {
 		// Check for the remove flag
-		if(!Mage::getStoreConfigFlag('b2bprofessional/'.$sConfigSection.'/remove')) {
+		if(!Mage::getStoreConfigFlag($this::CONFIG_B2B_PROFESSIONAL_NODE . '/' . $sConfigSection . '/remove')) {
 			// If the remove flag is not set then get the module's price message
 			/* @var $oB2BMessagesHelper Sitewards_B2BProfessional_Helper_Messages */
 			$oB2BMessagesHelper = Mage::helper('b2bprofessional/messages');
@@ -164,7 +164,7 @@ class Sitewards_B2BProfessional_Helper_Replacements extends Mage_Core_Helper_Abs
 	 * @return bool
 	 */
 	private function checkInvalidCart($sConfigSection) {
-		return Mage::getStoreConfigFlag('b2bprofessional/'.$sConfigSection.'/check_cart');
+		return Mage::getStoreConfigFlag($this::CONFIG_B2B_PROFESSIONAL_NODE . '/' . $sConfigSection . '/check_cart');
 	}
 
 	/**

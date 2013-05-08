@@ -14,7 +14,7 @@
  * @package     Sitewards_B2BProfessional
  * @copyright   Copyright (c) 2012 Sitewards GmbH (http://www.sitewards.com/)
  */
-class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
+class Sitewards_B2BProfessional_Helper_Data extends Sitewards_B2BProfessional_Helper_Core {
 	/**
 	 * Object for the sitewards b2bprofessional customer helper
 	 *
@@ -44,7 +44,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	 * @return bool
 	 */
 	public function isExtensionActive() {
-		return Mage::getStoreConfigFlag('b2bprofessional/generalsettings/active');
+		return Mage::getStoreConfigFlag($this::CONFIG_B2B_PROFESSIONAL_NODE . '/' . $this::CONFIG_GENERAL_SETTINGS_NODE . '/active');
 	}
 
 	/**

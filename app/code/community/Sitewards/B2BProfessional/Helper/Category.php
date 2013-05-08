@@ -16,14 +16,14 @@
  * @package     Sitewards_B2BProfessional
  * @copyright   Copyright (c) 2013 Sitewards GmbH (http://www.sitewards.com/)
  */
-class Sitewards_B2BProfessional_Helper_Category extends Mage_Core_Helper_Abstract {
+class Sitewards_B2BProfessional_Helper_Category extends Sitewards_B2BProfessional_Helper_Core {
 	/**
 	 * Check to see if the extension is activated by category
 	 *
 	 * @return bool
 	 */
 	public function isExtensionActivatedByCategory() {
-		return Mage::getStoreConfigFlag('b2bprofessional/activatebycategorysettings/activebycategory');
+		return Mage::getStoreConfigFlag($this::CONFIG_B2B_PROFESSIONAL_NODE . '/' . $this::CONFIG_CATEGORY_SETTINGS_NODE . '/activebycategory');
 	}
 
 	/**
@@ -197,7 +197,7 @@ class Sitewards_B2BProfessional_Helper_Category extends Mage_Core_Helper_Abstrac
 		 * Category Ids are saved in the config in format
 		 *  - "category1,category2"
 		 */
-		$sActivatedCategoryIds = Mage::getStoreConfig('b2bprofessional/activatebycategorysettings/activecategories');
+		$sActivatedCategoryIds = Mage::getStoreConfig($this::CONFIG_B2B_PROFESSIONAL_NODE . '/' . $this::CONFIG_CATEGORY_SETTINGS_NODE . '/activecategories');
 		return explode(',', $sActivatedCategoryIds);
 	}
 

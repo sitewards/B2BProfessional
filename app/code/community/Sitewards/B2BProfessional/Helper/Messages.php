@@ -14,7 +14,7 @@
  * @package     Sitewards_B2BProfessional
  * @copyright   Copyright (c) 2013 Sitewards GmbH (http://www.sitewards.com/)
  */
-class Sitewards_B2BProfessional_Helper_Messages extends Mage_Core_Helper_Abstract {
+class Sitewards_B2BProfessional_Helper_Messages extends Sitewards_B2BProfessional_Helper_Core {
 	/**
 	 * Array id for the checkout message
 	 */
@@ -39,15 +39,15 @@ class Sitewards_B2BProfessional_Helper_Messages extends Mage_Core_Helper_Abstrac
 	 */
 	protected $aMessages = array(
 		array(
-			'config'	=> 'b2bprofessional/languagesettings/errortext',
+			'config'	=> 'errortext',
 			'default'	=> 'Your account is not allowed to access this store.'
 		),
 		array(
-			'config'	=> 'b2bprofessional/languagesettings/logintext',
+			'config'	=> 'logintext',
 			'default'	=> 'Please login'
 		),
 		array(
-			'config'	=> 'b2bprofessional/languagesettings/requireloginmessage',
+			'config'	=> 'requireloginmessage',
 			'default'	=> 'You do not have access to view this store.'
 		)
 	);
@@ -62,8 +62,8 @@ class Sitewards_B2BProfessional_Helper_Messages extends Mage_Core_Helper_Abstrac
 	 * @return string
 	 */
 	public function getMessage($iMessageType) {
-		if (Mage::getStoreConfigFlag('b2bprofessional/languagesettings/languageoverride')) {
-			$sMessage = Mage::getStoreConfig($this->aMessages[$iMessageType]['config']);
+		if (Mage::getStoreConfigFlag($this::CONFIG_B2B_PROFESSIONAL_NODE . '/' . $this::CONFIG_LANGUAGE_SETTINGS_NODE . '/languageoverride')) {
+			$sMessage = Mage::getStoreConfig($this::CONFIG_B2B_PROFESSIONAL_NODE . '/' . $this::CONFIG_LANGUAGE_SETTINGS_NODE . '/' . $this->aMessages[$iMessageType]['config']);
 		} else {
 			$sMessage = $this->__($this->aMessages[$iMessageType]['default']);
 		}
