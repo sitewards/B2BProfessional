@@ -21,43 +21,6 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	const PATTERN_BASE = '@<%1$s [^>]*?%2$s="[^"]*?%3$s[^"]*?"[^>]*?>.*?</%1$s>@siu';
 
 	/**
-	 * Array id for the checkout message
-	 */
-	const MESSAGE_TYPE_CHECKOUT = 0;
-
-	/**
-	 * Array id for the price message
-	 */
-	const MESSAGE_TYPE_PRICE = 1;
-
-	/**
-	 * Array id for the login message
-	 */
-	const MESSAGE_TYPE_LOGIN = 2;
-
-	/**
-	 * Array containing
-	 *  - all the message config paths
-	 *  - the default message for each type
-	 *
-	 * @var array
-	 */
-	protected $_aMessages = array(
-		array(
-			'config'	=> 'b2bprofessional/languagesettings/errortext',
-			'default'	=> 'Your account is not allowed to access this store.'
-		),
-		array(
-			'config'	=> 'b2bprofessional/languagesettings/logintext',
-			'default'	=> 'Please login'
-		),
-		array(
-			'config'	=> 'b2bprofessional/languagesettings/requireloginmessage',
-			'default'	=> 'You do not have access to view this store.'
-		)
-	);
-
-	/**
 	 * Check to see if the website is set-up to require a user login to view pages
 	 *
 	 * @return boolean
@@ -565,22 +528,6 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	}
 
 	/**
-	 * Get the error message from the type
-	 *  - Check for admin language override
-	 *
-	 * @param int $iMessageType
-	 * @return string
-	 */
-	public function getMessage($iMessageType) {
-		if (Mage::getStoreConfig('b2bprofessional/languagesettings/languageoverride') == 1) {
-			$sMessage = Mage::getStoreConfig($this->_aMessages[$iMessageType]['config']);
-		} else {
-			$sMessage = $this->__($this->_aMessages[$iMessageType]['default']);
-		}
-		return $sMessage;
-	}
-
-	/**
 	 * Perform a preg_replace with the pattern and replacements given
 	 *
 	 * @param array $aPatterns
@@ -693,7 +640,9 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 		// Check for the remove flag
 		if(!Mage::getStoreConfigFlag('b2bprofessional/'.$sConfigSection.'/remove')) {
 			// If the remove flag is not set then get the module's price message
-			return $this->getMessage($this::MESSAGE_TYPE_PRICE);
+			/* @var $oB2BMessagesHelper Sitewards_B2BProfessional_Helper_Messages */
+			$oB2BMessagesHelper = Mage::helper('b2bprofessional/messages');
+			return $oB2BMessagesHelper->getMessage($oB2BMessagesHelper::MESSAGE_TYPE_PRICE);
 		}
 	}
 

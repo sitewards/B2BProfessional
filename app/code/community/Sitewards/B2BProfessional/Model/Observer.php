@@ -29,6 +29,9 @@ class Sitewards_B2BProfessional_Model_Observer {
 			/* @var $oControllerAction Mage_Core_Controller_Front_Action */
 			$oControllerAction = $oObserver->getData('controller_action');
 
+			/* @var $oB2BMessagesHelper Sitewards_B2BProfessional_Helper_Messages */
+			$oB2BMessagesHelper = Mage::helper('b2bprofessional/messages');
+
 			/*
 			 * Check to see if the system requires a login
 			 * And there is no logged in user
@@ -61,7 +64,7 @@ class Sitewards_B2BProfessional_Model_Observer {
 					 */
 					/* @var $oSession Mage_Core_Model_Session */
 					$oSession = Mage::getSingleton('core/session');
-					$oSession->addNotice($oHelper->getMessage($oHelper::MESSAGE_TYPE_LOGIN));
+					$oSession->addNotice($oB2BMessagesHelper->getMessage($oB2BMessagesHelper::MESSAGE_TYPE_LOGIN));
 					session_write_close();
 				}
 			/*
@@ -78,7 +81,7 @@ class Sitewards_B2BProfessional_Model_Observer {
 					// Stop the default action from being dispatched
 					$oControllerAction->setFlag('', 'no-dispatch', true);
 					//Set the appropriate error message to the user session
-					Mage::getSingleton('customer/session')->addError($oHelper->getMessage($oHelper::MESSAGE_TYPE_CHECKOUT));
+					Mage::getSingleton('customer/session')->addError($oB2BMessagesHelper->getMessage($oB2BMessagesHelper::MESSAGE_TYPE_CHECKOUT));
 					//Redirect to the account login url
 					Mage::app()->getResponse()->setRedirect(Mage::getUrl('customer/account/login'))->sendHeaders();
 				}
@@ -89,7 +92,7 @@ class Sitewards_B2BProfessional_Model_Observer {
 			 */
 			} elseif($oControllerAction instanceof Mage_Checkout_CartController) {
 				if (!$oHelper->hasValidCart()) {
-					Mage::getSingleton('checkout/session')->addError($oHelper->getMessage($oHelper::MESSAGE_TYPE_CHECKOUT));
+					Mage::getSingleton('checkout/session')->addError($oB2BMessagesHelper->getMessage($oB2BMessagesHelper::MESSAGE_TYPE_CHECKOUT));
 				}
 			}
 		}
@@ -109,6 +112,8 @@ class Sitewards_B2BProfessional_Model_Observer {
 
 		/* @var $oB2BHelper Sitewards_B2BProfessional_Helper_Data */
 		$oB2BHelper = Mage::helper('b2bprofessional');
+		/* @var $oB2BMessagesHelper Sitewards_B2BProfessional_Helper_Messages */
+		$oB2BMessagesHelper = Mage::helper('b2bprofessional/messages');
 
 		/*
 		 * Check to see if we should remove the product price
@@ -122,7 +127,7 @@ class Sitewards_B2BProfessional_Model_Observer {
 				if ($iCurrentProductId != self::$_iLastProductId) {
 					self::$_iLastProductId = $iCurrentProductId;
 
-					$oTransport->setHtml($oB2BHelper->getMessage($oB2BHelper::MESSAGE_TYPE_PRICE));
+					$oTransport->setHtml($oB2BMessagesHelper->getMessage($oB2BMessagesHelper::MESSAGE_TYPE_PRICE));
 				} else {
 					$oTransport->setHtml('');
 				}
@@ -149,7 +154,7 @@ class Sitewards_B2BProfessional_Model_Observer {
 		) {
 			$iCurrentProductId = $oBlock->getItem()->getProduct()->getId();
 			if ($oB2BHelper->replaceAddToCart($iCurrentProductId)) {
-				$oTransport->setHtml($oB2BHelper->getPriceMessage());
+				$oTransport->setHtml($oB2BMessagesHelper->getMessage($oB2BMessagesHelper::MESSAGE_TYPE_PRICE));
 			}
 		/*
 		 * Check to see if we should remove totals and actions from the cart

@@ -34,7 +34,9 @@ class Sitewards_B2BProfessional_Block_Bundle_Catalog_Price extends Mage_Bundle_B
 			}
 			self::$_iLastProductId = $iCurrentProductId;
 
-			return $oB2BHelper->getMessage($oB2BHelper::MESSAGE_TYPE_PRICE);
+			/* @var $oB2BMessagesHelper Sitewards_B2BProfessional_Helper_Messages */
+			$oB2BMessagesHelper = Mage::helper('b2bprofessional/messages');
+			return $oB2BMessagesHelper->getMessage($oB2BMessagesHelper::MESSAGE_TYPE_PRICE);
 		}
 		return $sPriceHtml;
 	}
