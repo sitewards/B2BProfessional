@@ -31,6 +31,8 @@ class Sitewards_B2BProfessional_Model_Observer {
 
 			/* @var $oB2BMessagesHelper Sitewards_B2BProfessional_Helper_Messages */
 			$oB2BMessagesHelper = Mage::helper('b2bprofessional/messages');
+			/* @var $oB2BRedirectsHelper Sitewards_B2BProfessional_Helper_Redirects */
+			$oB2BRedirectsHelper = Mage::helper('b2bprofessional/redirects');
 
 			/*
 			 * Check to see if the system requires a login
@@ -55,7 +57,7 @@ class Sitewards_B2BProfessional_Model_Observer {
 					// Redirect to the homepage
 					/* @var $oResponse Mage_Core_Controller_Response_Http */
 					$oResponse = $oControllerAction->getResponse();
-					$oResponse->setRedirect($oHelper->getRequireLoginRedirect());
+					$oResponse->setRedirect($oB2BRedirectsHelper->getRedirect($oB2BRedirectsHelper::REDIRECT_TYPE_LOGIN));
 
 					/*
 					 * Add message to the session

@@ -491,20 +491,6 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	}
 
 	/**
-	 * Get the url of the require login redirect
-	 *
-	 * @return string
-	 */
-	public function getRequireLoginRedirect() {
-		$sRedirectPath = '/';
-		$sConfigVar = Mage::getStoreConfig('b2bprofessional/requirelogin/requireloginredirect');
-		if (isset($sConfigVar)) {
-			$sRedirectPath = $sConfigVar;
-		}
-		return Mage::getUrl($sRedirectPath);
-	}
-
-	/**
 	 * Validate that the current quote in the checkout session is valid for the user
 	 *  - Check each item in the quote against the function checkActive
 	 *
@@ -717,20 +703,6 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 			}
 		}
 		return $this->replaceOnInvalidCartByProductId($aPatterns, $aReplacements, $sHtml, $iProductId);
-	}
-
-	/**
-	 * Get the url of the add to cart redirect
-	 *
-	 * @return string
-	 */
-	public function getAddToCartRedirect() {
-		$sRedirectPath = '/';
-		$sConfigVar = Mage::getStoreConfig('b2bprofessional/generalsettings/addtocartredirect');
-		if (isset($sConfigVar)) {
-			$sRedirectPath = $sConfigVar;
-		}
-		return Mage::getUrl($sRedirectPath);
 	}
 
 	/**
