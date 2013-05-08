@@ -277,7 +277,7 @@ class Sitewards_B2BProfessional_Model_Observer {
 			/*
 			 * Get all possible category filters
 			 * Assign to value b2bprof_category_filters to be used in
-			 * Sitewards_B2BProfessional_Helper_Data->isCategoryActive
+			 * Sitewards_B2BProfessional_Helper_Category->isCategoryActive
 			 */
 			/* @var $oCategoryFilter Mage_Catalog_Block_Layer_Filter_Category */
 			$oCategoryFilter = $oBlock->getChild('category_filter');
