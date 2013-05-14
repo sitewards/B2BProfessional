@@ -16,6 +16,30 @@
  */
 class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 	/**
+	 * Object for the sitewards b2bprofessional category helper
+	 *
+	 * @var Sitewards_B2BProfessional_Helper_Category
+	 */
+	protected $oB2BCategoryHelper;
+
+	/**
+	 * Object for the sitewards b2bprofessional customer helper
+	 *
+	 * @var Sitewards_B2BProfessional_Helper_Customer
+	 */
+	protected $oB2BCustomerHelper;
+
+	/**
+	 * Create instances of the sitewards b2bprofessional category and customer helpers
+	 */
+	protected function _prepareHelpers() {
+		/** @var $this->oB2BCategoryHelper Sitewards_B2BProfessional_Helper_Category */
+		$this->oB2BCategoryHelper = Mage::helper('b2bprofessional/category');
+		/** @var $this->oB2BCustomerHelper Sitewards_B2BProfessional_Helper_Customer */
+		$this->oB2BCustomerHelper = Mage::helper('b2bprofessional/customer');
+	}
+
+	/**
 	 * Check to see if the extension is active
 	 * Returns the extension's general setting "active"
 	 *
@@ -50,25 +74,22 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 		$bIsLoggedIn = false;
 		// global extension activation
 		if ($this->isExtensionActive()) {
-			/** @var $oB2BCustomerHelper Sitewards_B2BProfessional_Helper_Customer */
-			$oB2BCustomerHelper = Mage::helper('b2bprofessional/customer');
-			/** @var $oB2BCategoryHelper Sitewards_B2BProfessional_Helper_Category */
-			$oB2BCategoryHelper = Mage::helper('b2bprofessional/category');
+			$this->_prepareHelpers();
 
 			// check user logged in and has store access
-			if ($oB2BCustomerHelper->isCustomerAllowedInStore()) {
+			if ($this->oB2BCustomerHelper->isCustomerAllowedInStore()) {
 				$bIsLoggedIn = true;
 			}
 
-			$bCheckUser		= $oB2BCustomerHelper->isExtensionActivatedByCustomer();
-			$bCheckCategory	= $oB2BCategoryHelper->isExtensionActivatedByCategory();
+			$bCheckUser		= $this->oB2BCustomerHelper->isExtensionActivatedByCustomer();
+			$bCheckCategory	= $this->oB2BCategoryHelper->isExtensionActivatedByCategory();
 
 			if($bCheckUser == true && $bCheckCategory == true) {
-				$bIsActive = $oB2BCategoryHelper->isCategoryActiveByProduct($iProductId) && $oB2BCustomerHelper->isCustomerActive();
+				$bIsActive = $this->oB2BCategoryHelper->isCategoryActiveByProduct($iProductId) && $this->oB2BCustomerHelper->isCustomerActive();
 			} elseif($bCheckUser == true) {
-				$bIsActive = $oB2BCustomerHelper->isCustomerActive();
+				$bIsActive = $this->oB2BCustomerHelper->isCustomerActive();
 			} elseif ($bCheckCategory == true) {
-				$bIsActive = $oB2BCategoryHelper->isCategoryActiveByProduct($iProductId) && !$bIsLoggedIn;
+				$bIsActive = $this->oB2BCategoryHelper->isCategoryActiveByProduct($iProductId) && !$bIsLoggedIn;
 			} else {
 				$bIsActive = !$bIsLoggedIn;
 			}
@@ -102,25 +123,22 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 		$bIsLoggedIn = false;
 		// global extension activation
 		if ($this->isExtensionActive()) {
-			/** @var $oB2BCustomerHelper Sitewards_B2BProfessional_Helper_Customer */
-			$oB2BCustomerHelper = Mage::helper('b2bprofessional/customer');
-			/** @var $oB2BCategoryHelper Sitewards_B2BProfessional_Helper_Category */
-			$oB2BCategoryHelper = Mage::helper('b2bprofessional/category');
+			$this->_prepareHelpers();
 
 			// check user logged in and has store access
-			if ($oB2BCustomerHelper->isCustomerAllowedInStore()) {
+			if ($this->oB2BCustomerHelper->isCustomerAllowedInStore()) {
 				$bIsLoggedIn = true;
 			}
 
-			$bCheckUser		= $oB2BCustomerHelper->isExtensionActivatedByCustomer();
-			$bCheckCategory	= $oB2BCategoryHelper->isExtensionActivatedByCategory();
+			$bCheckUser		= $this->oB2BCustomerHelper->isExtensionActivatedByCustomer();
+			$bCheckCategory	= $this->oB2BCategoryHelper->isExtensionActivatedByCategory();
 
 			if($bCheckUser == true && $bCheckCategory == true) {
-				$bIsActive = $oB2BCategoryHelper->isCategoryActive() && $oB2BCustomerHelper->isCustomerActive();
+				$bIsActive = $this->oB2BCategoryHelper->isCategoryActive() && $this->oB2BCustomerHelper->isCustomerActive();
 			} elseif($bCheckUser == true) {
-				$bIsActive = $oB2BCustomerHelper->isCustomerActive();
+				$bIsActive = $this->oB2BCustomerHelper->isCustomerActive();
 			} elseif ($bCheckCategory == true) {
-				$bIsActive = $oB2BCategoryHelper->isCategoryActive() && !$bIsLoggedIn;
+				$bIsActive = $this->oB2BCategoryHelper->isCategoryActive() && !$bIsLoggedIn;
 			} else {
 				$bIsActive = !$bIsLoggedIn;
 			}

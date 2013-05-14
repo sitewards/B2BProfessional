@@ -55,11 +55,9 @@ class Sitewards_B2BProfessional_Model_Observer {
 					!$oControllerAction instanceof Mage_Customer_AccountController
 				){
 					// Redirect to the homepage
-					/* @var $oB2BRedirectsHelper Sitewards_B2BProfessional_Helper_Redirects */
-					$oB2BRedirectsHelper = Mage::helper('b2bprofessional/redirects');
 					/* @var $oResponse Mage_Core_Controller_Response_Http */
 					$oResponse = $oControllerAction->getResponse();
-					$oResponse->setRedirect($oB2BRedirectsHelper->getRedirect($oB2BRedirectsHelper::REDIRECT_TYPE_LOGIN));
+					$oResponse->setRedirect(Sitewards_B2BProfessional_Helper_Redirects::getRedirect(Sitewards_B2BProfessional_Helper_Redirects::REDIRECT_TYPE_LOGIN));
 
 					/*
 					 * Add message to the session

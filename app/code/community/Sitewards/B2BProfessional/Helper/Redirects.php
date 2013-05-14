@@ -27,7 +27,7 @@ class Sitewards_B2BProfessional_Helper_Redirects extends Mage_Core_Helper_Abstra
 	 * @param string $sConfigPath
 	 * @return string
 	 */
-	public function getRedirect($sConfigPath) {
+	public static function getRedirect($sConfigPath) {
 		$sConfigPath = Sitewards_B2BProfessional_Helper_Core::CONFIG_B2B_PROFESSIONAL_NODE . '/' . $sConfigPath;
 		$sRedirectPath = '/';
 		$sConfigVar = Mage::getStoreConfig($sConfigPath);
