@@ -155,7 +155,7 @@ class Sitewards_B2BProfessional_Helper_Replacements extends Mage_Core_Helper_Abs
 		unset($aSectionConfig['remove']);
 
 		// Replace the tag, id and value sections of the regular expression
-		return sprintf($this::PATTERN_BASE, $aSectionConfig['tag'], $aSectionConfig['id'], $aSectionConfig['value']);
+		return sprintf(self::PATTERN_BASE, $aSectionConfig['tag'], $aSectionConfig['id'], $aSectionConfig['value']);
 	}
 
 	/**
