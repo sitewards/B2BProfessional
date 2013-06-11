@@ -32,7 +32,6 @@ File list
 * app\code\community\Sitewards\B2BProfessional\etc\adminhtml.xml
 	* Create magento access control list for this module
 * app\code\community\Sitewards\B2BProfessional\etc\config.xml
-	* Set-up block rewrites for bundle products
 	* Set-up helper, block and model declaration
 	* Set-up event observers for module
 		* controller_action_predispatch
@@ -60,24 +59,6 @@ File list
 		* Language settings
 		* Activate by category
 		* Activate by customer group
-* app\code\community\Sitewards\B2BProfessional\Block\Bundle\Catalog\Price.php
-	* Override the Mage_Bundle_Block_Catalog_Product_Price _toHtml function
-		* Check that the current product is active
-		* Override the text with the module text
-* app\code\community\Sitewards\B2BProfessional\Block\Bundle\Catalog\Product\View\Type\Bundle\Option\Checkbox.php
-	* Override the Mage_Bundle_Block_Catalog_Product_View_Type_Bundle_Option_Checkbox getSelectionTitlePrice function
-		* Validate the it is active then display the selection name
-	* Override the Mage_Bundle_Block_Catalog_Product_View_Type_Bundle_Option_Checkbox getSelectionQtyTitlePrice function
-		* Validate the it is active then display the selection quantity and name
-* app\code\community\Sitewards\B2BProfessional\Block\Bundle\Catalog\Product\View\Type\Bundle\Option\Multi.php
-	* Override the Mage_Bundle_Block_Catalog_Product_View_Type_Bundle_Option_Multi getSelectionTitlePrice function
-		* Validate that the selection is active and display custom information
-* app\code\community\Sitewards\B2BProfessional\Block\Bundle\Catalog\Product\View\Type\Bundle\Option\Radio.php
-	* Override the Mage_Bundle_Block_Catalog_Product_View_Type_Bundle_Option_Radio getSelectionTitlePrice function
-		* Validate that the selection is active and display custom information
-* app\code\community\Sitewards\B2BProfessional\Block\Bundle\Catalog\Product\View\Type\Bundle\Option\Select.php
-	* Override the Mage_Bundle_Block_Catalog_Product_View_Type_Bundle_Option_Select getSelectionTitlePrice function
-		* Validate that the selection is active and display custom information
 * app\code\community\Sitewards\B2BProfessional\controllers\CartController.php
 	* On checkout cart controller preDispatch
 		* Validate that all products are active for customer/customer group,
@@ -126,11 +107,25 @@ File list
 		* Set the COnfigurable price of a product to 0 to stop the changed price showing up in the drop down
 	* onCoreBlockAbstractToHtmlBefore
 		* On the event core_block_abstract_to_html_before
+			* Check extension is active
 			* Check for the block type Mage_Catalog_Block_Product_List_Toolbar
-			* Remove the price order when required
+			* Remove the price order
+			* Check for the block type Mage_Bundle_Block_Catalog_Product_View_Type_Bundle_Option_Checkbox
+			* Check for the block type Mage_Bundle_Block_Catalog_Product_View_Type_Bundle_Option_Multi
+			* Check for the block type Mage_Bundle_Block_Catalog_Product_View_Type_Bundle_Option_Radio
+			* Check for the block type Mage_Bundle_Block_Catalog_Product_View_Type_Bundle_Option_Select
+			* Rewrite bundle options price templates
 	* onCoreLayoutBlockCreateAfter
 		* If we have a Mage_Catalog_Block_Layer_View then remove the price attribute
 * app\code\community\Sitewards\B2BProfessional\Model\System\Config\Source\Category.php
 	* Populate an options array with the current system categories
 * app\code\community\Sitewards\B2BProfessional\Model\System\Config\Source\Page.php
 	* Populate an options array with the current system cms pages and the customer login page
+* app\design\frontend\base\default\template\sitewards\b2bprofessional\catalog\product\view\type\bundle\option\check.phtml
+	* Validate the product is active then display the selection name
+* app\design\frontend\base\default\template\sitewards\b2bprofessional\catalog\product\view\type\bundle\option\multi.phtml
+	* Validate the product is active then display the selection name
+* app\design\frontend\base\default\template\sitewards\b2bprofessional\catalog\product\view\type\bundle\option\radio.phtml
+	* Validate the product is active then display the selection name
+* app\design\frontend\base\default\template\sitewards\b2bprofessional\catalog\product\view\type\bundle\option\select.phtml
+	* Validate the product is active then display the selection name

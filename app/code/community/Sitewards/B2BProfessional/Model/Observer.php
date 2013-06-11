@@ -226,20 +226,31 @@ class Sitewards_B2BProfessional_Model_Observer {
 
 	/**
 	 * On the event core_block_abstract_to_html_before
+	 * 	 - Check extension is active
 	 * 	 - Check for the block type Mage_Catalog_Block_Product_List_Toolbar
-	 * 	 - Remove the price order when required
+	 * 	 - Remove the price order
+	 * 	 - Check for the block type Mage_Bundle_Block_Catalog_Product_View_Type_Bundle_Option_Checkbox
+	 * 	 - Check for the block type Mage_Bundle_Block_Catalog_Product_View_Type_Bundle_Option_Multi
+	 * 	 - Check for the block type Mage_Bundle_Block_Catalog_Product_View_Type_Bundle_Option_Radio
+	 * 	 - Check for the block type Mage_Bundle_Block_Catalog_Product_View_Type_Bundle_Option_Select
+	 * 	 - Rewrite bundle options price templates
 	 *
 	 * @param Varien_Event_Observer $oObserver
 	 */
 	public function onCoreBlockAbstractToHtmlBefore(Varien_Event_Observer $oObserver) {
 		$oBlock = $oObserver->getData('block');
 
-		if($oBlock instanceof Mage_Catalog_Block_Product_List_Toolbar) {
-			/* @var $oB2BHelper Sitewards_B2BProfessional_Helper_Data */
-			$oB2BHelper = Mage::helper('b2bprofessional');
-
-			if($oB2BHelper->isActive()) {
+		if (Mage::helper('b2bprofessional')->isActive()) {
+			if($oBlock instanceof Mage_Catalog_Block_Product_List_Toolbar) {
 				$oBlock->removeOrderFromAvailableOrders('price');
+			} elseif ($oBlock instanceof Mage_Bundle_Block_Catalog_Product_View_Type_Bundle_Option_Checkbox) {
+				$oBlock->setTemplate('sitewards/b2bprofessional/catalog/product/view/type/bundle/option/checkbox.phtml');
+			} else if ($oBlock instanceof Mage_Bundle_Block_Catalog_Product_View_Type_Bundle_Option_Multi) {
+				$oBlock->setTemplate('sitewards/b2bprofessional/catalog/product/view/type/bundle/option/multi.phtml');
+			} else if ($oBlock instanceof Mage_Bundle_Block_Catalog_Product_View_Type_Bundle_Option_Radio) {
+				$oBlock->setTemplate('sitewards/b2bprofessional/catalog/product/view/type/bundle/option/radio.phtml');
+			} else if ($oBlock instanceof Mage_Bundle_Block_Catalog_Product_View_Type_Bundle_Option_Select) {
+				$oBlock->setTemplate('sitewards/b2bprofessional/catalog/product/view/type/bundle/option/select.phtml');
 			}
 		}
 	}
