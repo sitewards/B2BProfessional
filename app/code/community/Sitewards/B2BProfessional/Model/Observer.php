@@ -251,7 +251,7 @@ class Sitewards_B2BProfessional_Model_Observer {
 		 */
 		if (Mage::helper('b2bprofessional')->isExtensionActive()) {
 			if ($oBlock instanceof Mage_Bundle_Block_Catalog_Product_View_Type_Bundle_Option_Checkbox) {
-				$oBlock->setTemplate(' ');
+				$oBlock->setTemplate('sitewards/b2bprofessional/catalog/product/view/type/bundle/option/checkbox.phtml');
 			} else if ($oBlock instanceof Mage_Bundle_Block_Catalog_Product_View_Type_Bundle_Option_Multi) {
 				$oBlock->setTemplate('sitewards/b2bprofessional/catalog/product/view/type/bundle/option/multi.phtml');
 			} else if ($oBlock instanceof Mage_Bundle_Block_Catalog_Product_View_Type_Bundle_Option_Radio) {
