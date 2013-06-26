@@ -1,5 +1,7 @@
 Sitewards B2B Professional
-===============
+==========================
+
+[![Build Status](https://travis-ci.org/sitewards/B2BProfessional.png?branch=master)](https://travis-ci.org/sitewards/B2BProfessional)
 
 The Sitewards B2B Extension extends your webshop with some essential functions to realize a business-to-business store. Product prices and add-to-cart functions are only available for registered customer accounts that were approved by the site administrator. All other product details remain visible for non-registered users.
 
