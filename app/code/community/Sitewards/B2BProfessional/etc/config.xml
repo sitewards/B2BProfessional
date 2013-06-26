@@ -142,6 +142,13 @@
 			</modules>
 		</translate>
 	</adminhtml>
+	<phpunit>
+		<suite>
+			<modules>
+				<Sitewards_B2BProfessional/>
+			</modules>
+		</suite>
+	</phpunit>
 	<default>
 		<b2bprofessional>
 			<generalsettings>

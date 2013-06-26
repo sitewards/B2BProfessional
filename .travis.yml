@@ -1,0 +1,16 @@
+language: php
+php:
+  - 5.3
+before_install:
+  - mkdir magento/
+  - git clone git://github.com/EcomDev/MageCI.git ./mageci/
+  - git clone git://github.com/IvanChepurnyi/EcomDev_PHPUnit.git -b dev ./phpunit/
+before_script:
+  - CURR_DIR=$(pwd)
+  - cd ..
+  - ./mageci/bin/mage-ci install magento 1.7.0.2 magento_test -c -t -r http://mage-ci.ecomdev.org
+  - ./mageci/bin/mage-ci install-module magento $CURR_DIR
+  - ./mageci/bin/mage-ci install-module magento phpunit
+  - cd $CURR_DIR
+script:
+  - phpunit --group Sitewards_B2BProfessional
