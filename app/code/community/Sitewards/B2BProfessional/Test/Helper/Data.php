@@ -16,6 +16,7 @@ class Sitewards_B2BProfessional_Test_Helper_Data extends EcomDev_PHPUnit_Test_Ca
 	 */
 	public function testIsExtensionActive()
 	{
-		$this->assertTrue(Mage::helper('b2bprofessional')->isExtensionActive());
+		$this->assertTrue(
+			Mage::helper('b2bprofessional')->isExtensionActive(), "Extension is not active please check config");
 	}
 }
