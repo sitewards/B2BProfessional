@@ -123,6 +123,7 @@
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
 							<comment><![CDATA[Text to be displayed instead of the prices.<br />Only visible when language override is active.<br />Otherwise text in language file ist used.<br />May contain HTML]]></comment>
+							<depends><languageoverride>1</languageoverride></depends>
 						</logintext>
 						<errortext translate="label comment">
 							<label>Custom text for checkout-error</label>
@@ -132,6 +133,7 @@
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
 							<comment><![CDATA[Text to be displayed when customer is not allowed to checkout product.<br />Only visible when language override is active.<br />Otherwise text in language file is used.<br />May contain HTML]]></comment>
+							<depends><languageoverride>1</languageoverride></depends>
 						</errortext>
 						<requireloginmessage translate="label comment">
 							<label>Require User Login - Message</label>
@@ -141,6 +143,7 @@
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
 							<comment><![CDATA[Text to be displayed when the store requires a user to login to view pages<br />Only visible when language override is active.<br />Otherwise text in language file is used.<br />May contain HTML]]></comment>
+							<depends><languageoverride>1</languageoverride></depends>
 						</requireloginmessage>
 					</fields>
 				</languagesettings>
@@ -171,6 +174,7 @@
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
 							<comment><![CDATA[Select categories for which the extension should be active.<br />Hold down Ctrl-key for multiple selection.<br />Be aware, that a product with multiple categories can not be checked out if one of its categories is selected here.]]></comment>
+							<depends><activebycategory>1</activebycategory></depends>
 						</activecategories>
 					</fields>
 				</activatebycategorysettings>
@@ -202,6 +206,7 @@
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
 							<comment><![CDATA[Select customer groups for which the extension should be active.<br />Hold down Ctrl-key for multiple selection.]]></comment>
+							<depends><activebycustomer>1</activebycustomer></depends>
 						</activecustomers>
 					</fields>
 				</activatebycustomersettings>

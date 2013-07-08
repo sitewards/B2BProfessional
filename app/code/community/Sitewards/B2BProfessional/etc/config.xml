@@ -18,7 +18,7 @@
 <config>
 	<modules>
 		<Sitewards_B2BProfessional>
-			<version>2.2.3</version>
+			<version>2.2.4</version>
 		</Sitewards_B2BProfessional>
 	</modules>
 	<global>
@@ -47,6 +47,47 @@
 				</rewrite>
 			</reports>
 		</blocks>
+		<helpers>
+			<b2bprofessional>
+				<class>Sitewards_B2BProfessional_Helper</class>
+			</b2bprofessional>
+			<catalog>
+				<rewrite>
+					<product_compare>Sitewards_B2BProfessional_Helper_Catalog_Product_Compare</product_compare>
+				</rewrite>
+			</catalog>
+		</helpers>
+		<models>
+			<b2bprofessional>
+				<class>Sitewards_B2BProfessional_Model</class>
+			</b2bprofessional>
+		</models>
+		<rewrite>
+			<sitewards_B2BProfessional_cart>
+				<from><![CDATA[#^/checkout/cart/#]]></from>
+				<to>B2BProfessional/cart/</to>
+			</sitewards_B2BProfessional_cart>
+		</rewrite>
+	</global>
+	<frontend>
+		<routers>
+			<Sitewards_B2BProfessional>
+				<use>standard</use>
+				<args>
+					<module>Sitewards_B2BProfessional</module>
+					<frontName>B2BProfessional</frontName>
+				</args>
+			</Sitewards_B2BProfessional>
+		</routers>
+		<translate>
+			<modules>
+				<Sitewards_B2BProfessional>
+					<files>
+						<default>Sitewards_B2BProfessional.csv</default>
+					</files>
+				</Sitewards_B2BProfessional>
+			</modules>
+		</translate>
 		<events>
 			<controller_action_predispatch>
 				<observers>
@@ -89,47 +130,6 @@
 				</observers>
 			</core_layout_block_create_after>
 		</events>
-		<helpers>
-			<b2bprofessional>
-				<class>Sitewards_B2BProfessional_Helper</class>
-			</b2bprofessional>
-			<catalog>
-				<rewrite>
-					<product_compare>Sitewards_B2BProfessional_Helper_Catalog_Product_Compare</product_compare>
-				</rewrite>
-			</catalog>
-		</helpers>
-		<models>
-			<b2bprofessional>
-				<class>Sitewards_B2BProfessional_Model</class>
-			</b2bprofessional>
-		</models>
-		<rewrite>
-			<sitewards_B2BProfessional_cart>
-				<from><![CDATA[#^/checkout/cart/#]]></from>
-				<to>B2BProfessional/cart/</to>
-			</sitewards_B2BProfessional_cart>
-		</rewrite>
-	</global>
-	<frontend>
-		<routers>
-			<Sitewards_B2BProfessional>
-				<use>standard</use>
-				<args>
-					<module>Sitewards_B2BProfessional</module>
-					<frontName>B2BProfessional</frontName>
-				</args>
-			</Sitewards_B2BProfessional>
-		</routers>
-		<translate>
-			<modules>
-				<Sitewards_B2BProfessional>
-					<files>
-						<default>Sitewards_B2BProfessional.csv</default>
-					</files>
-				</Sitewards_B2BProfessional>
-			</modules>
-		</translate>
 	</frontend>
 	<adminhtml>
 		<translate>
