@@ -12,7 +12,7 @@ env:
 before_install:
   - mkdir magento/
   - git clone git://github.com/EcomDev/MageCI.git ./mageci/
-  - git clone git://github.com/IvanChepurnyi/EcomDev_PHPUnit.git -b dev ./phpunit/
+  - git clone git://github.com/EcomDev/EcomDev_PHPUnit.git -b dev ./phpunit/
   - git clone git://github.com/Vinai/customer-activation.git ./customer-activation/
 before_script:
   - CURR_DIR=$(pwd)
