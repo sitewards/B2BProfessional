@@ -304,6 +304,10 @@ class Sitewards_B2BProfessional_Model_Observer {
 				$iCategoryId = $oCategory->getValue();
 				$aCategoryOptions[] = $iCategoryId;
 			}
+
+			if (Mage::registry('b2bprof_category_filters') !== null){
+				Mage::unregister('b2bprof_category_filters');
+			}
 			Mage::register('b2bprof_category_filters', $aCategoryOptions);
 
 			if($oB2BHelper->isActive()) {
