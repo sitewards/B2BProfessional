@@ -44,6 +44,7 @@ class Sitewards_B2BProfessional_Model_Observer {
 				 * 	1) Cms related for cms pages,
 				 * 	2) A front action to allow for admin pages,
 				 * 	3) Customer account to allow for login
+				 * 	4) Magento API to allow api requests
 				 */
 				if(
 					!$oControllerAction instanceof Mage_Cms_IndexController
@@ -53,6 +54,8 @@ class Sitewards_B2BProfessional_Model_Observer {
 					$oControllerAction instanceof Mage_Core_Controller_Front_Action
 						&&
 					!$oControllerAction instanceof Mage_Customer_AccountController
+					&&
+					!$oControllerAction instanceof Mage_Api_Controller_Action
 				){
 					// Redirect to the homepage
 					/* @var $oResponse Mage_Core_Controller_Response_Http */
