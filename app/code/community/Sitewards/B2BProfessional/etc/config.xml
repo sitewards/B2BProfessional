@@ -18,7 +18,7 @@
 <config>
 	<modules>
 		<Sitewards_B2BProfessional>
-			<version>2.2.5</version>
+			<version>2.3.0</version>
 		</Sitewards_B2BProfessional>
 	</modules>
 	<global>
@@ -75,7 +75,7 @@
 				<use>standard</use>
 				<args>
 					<module>Sitewards_B2BProfessional</module>
-					<frontName>B2BProfessional</frontName>
+					<frontName>b2bprofessional</frontName>
 				</args>
 			</Sitewards_B2BProfessional>
 		</routers>
@@ -88,6 +88,13 @@
 				</Sitewards_B2BProfessional>
 			</modules>
 		</translate>
+		<layout>
+			<updates>
+				<b2bprofessional>
+					<file>Sitewards/B2BProfessional.xml</file>
+				</b2bprofessional>
+			</updates>
+		</layout>
 		<events>
 			<controller_action_predispatch>
 				<observers>
