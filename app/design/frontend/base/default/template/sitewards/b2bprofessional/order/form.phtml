@@ -1,11 +1,21 @@
-<form method="POST" id="order_form" action="">
-	<div>
-		<div class="product">
-			<input type="text" name="sku[]" class="sku" />
-			<div class="name"></div>
-			<input type="text" name="qty[]"  class="qty" disabled="disabled" />
-			<div class="price"></div>
-		</div>
-	</div>
+<form method="POST" id="order_form" action="<?php echo $this->getUrl('checkout/cart/addmultiple'); ?>">
+	<table>
+		<thead>
+			<tr>
+				<th><?php echo $this->__('SKU'); ?></th>
+				<th><?php echo $this->__('Name'); ?></th>
+				<th><?php echo $this->__('Price'); ?></th>
+				<th><?php echo $this->__('Quantity'); ?></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr class="product">
+				<td><input type="text" name="sku[]" class="sku" /></td>
+				<td class="name"></td>
+				<td class="price"></td>
+				<td><input type="text" name="qty[]"  class="qty" disabled="disabled" /></td>
+			</tr>
+		</tbody>
+	</table>
 	<input type="submit" />
 </form>

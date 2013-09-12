@@ -136,6 +136,14 @@
 					</b2bprofessional>
 				</observers>
 			</core_layout_block_create_after>
+			<checkout_cart_product_add_after>
+				<observers>
+					<b2bprofessional>
+						<class>b2bprofessional/observer</class>
+						<method>onCheckoutCartProductAddAfter</method>
+					</b2bprofessional>
+				</observers>
+			</checkout_cart_product_add_after>
 		</events>
 	</frontend>
 	<adminhtml>
