@@ -10,6 +10,10 @@
 				foreach ($aData as $sKey => $sValue) {
 					?>
 					<b><?php echo $this->__($sKey); ?></b> : <?php echo $sValue; ?> <br/>
+				<?php }
+				if ($this->canCancel()) {
+					?>
+					<div><a href="<?php echo $this->getCancelUrl(); ?>"><?php echo $this->__('Cancel order'); ?></a></div>
 				<?php } ?>
 			</div>
 		</div>
