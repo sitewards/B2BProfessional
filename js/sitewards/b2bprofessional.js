@@ -4,7 +4,7 @@ document.observe(
 	 * initializes first product
 	 */
 	function() {
-		var oProduct = new OrderProduct($$('form#order_form div.product')[0]);
+		var oProduct = new OrderProduct($$('form#order_form .product')[0]);
 	}
 );
 
@@ -37,7 +37,6 @@ var OrderProduct = Class.create(
 		 * @private
 		 */
 		_onChangeSku: function () {
-			this._reset();
 			new Ajax.Request('/b2bprofessional/product/info', {
 				method: 'get',
 				parameters: {
@@ -45,9 +44,7 @@ var OrderProduct = Class.create(
 				},
 				requestHeaders: {Accept: 'application/json'},
 				onSuccess: this._onSuccess.bind(this),
-				onFailure: function() {
-					alert(Translator.translate('SKU not found!'));
-				}
+				onFailure: this._onFailure.bind(this)
 			});
 		},
 
@@ -82,13 +79,11 @@ var OrderProduct = Class.create(
 		_onSuccess: function(transport) {
 			var oResponse = transport.responseText.evalJSON(true);
 			var oQty = this.getElement('input.qty');
-			console.log(oQty);
-			console.log(oResponse);
 
 			oQty.value = Math.max(1, oResponse.qty);
 			oQty.disabled = false;
-			this.getElement('div.name').update(oResponse.name);
-			this.getElement('div.price').update(oResponse.price);
+			this.getElement('.name').update(oResponse.name);
+			this.getElement('.price').update(oResponse.price);
 			this._duplicateLine();
 		},
 
@@ -100,8 +95,31 @@ var OrderProduct = Class.create(
 		_reset: function () {
 			this.getElement('input.qty').update('');
 			this.getElement('input.qty').disabled = 'disabled';
-			this.getElement('div.name').update('');
-			this.getElement('div.price').update('');
+			this.getElement('.name').update('');
+			this.getElement('.price').update('');
+		},
+
+		/**
+		 * remove last empty row after a failed ajax request, except current row is last row
+		 *
+		 * @private
+		 */
+		_removeEmptyRows: function () {
+			var oLastLine = this._oLine.up().childElements().last();
+			if (oLastLine != this._oLine) {
+				oLastLine.remove();
+			}
+		},
+
+		/**
+		 * called on ajax request failure
+		 *
+		 * @private
+		 */
+		_onFailure: function () {
+			this._reset();
+			this._removeEmptyRows();
+			alert(Translator.translate('The product does not exist.'));
 		}
 	}
 );

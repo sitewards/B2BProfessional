@@ -45,4 +45,25 @@ class Sitewards_B2BProfessional_CartController extends Mage_Checkout_CartControl
 			Mage::app()->getResponse()->setRedirect(Sitewards_B2BProfessional_Helper_Redirects::getRedirect(Sitewards_B2BProfessional_Helper_Redirects::REDIRECT_TYPE_ADD_TO_CART))->sendHeaders();
 		}
 	}
+
+	/**
+	 * adds multiple products to cart
+	 */
+	public function addmultipleAction() {
+		$oRequest = $this->getRequest();
+		$aSkus = $oRequest->getParam('sku');
+		$aQtys = $oRequest->getParam('qty');
+
+		$oQuote = $this->_getQuote();
+		foreach ($aSkus as $iKey => $sSku) {
+			$oProduct = Mage::getModel('catalog/product');
+			$oProduct->load($oProduct->getIdBySku($sSku));
+			if ($oProduct->getId()) {
+				$oRequest->setParam('product', $oProduct->getId());
+				$oRequest->setParam('qty', $aQtys[$iKey]);
+				$this->addAction();
+			}
+		}
+		$oQuote->save();
+	}
 }

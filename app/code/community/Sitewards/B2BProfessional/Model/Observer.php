@@ -322,4 +322,19 @@ class Sitewards_B2BProfessional_Model_Observer {
 			}
 		}
 	}
+
+	/**
+	 * caused by some magento magic we have to save each quote item individually if we're adding multiple of them in the same request
+	 *
+	 * @param Varien_Event_Observer $oObserver
+	 */
+	public function onCheckoutCartProductAddAfter(Varien_Event_Observer $oObserver) {
+		if (
+			Mage::app()->getRequest()->getModuleName() == 'b2bprofessional'
+			AND Mage::app()->getRequest()->getControllerName() == 'cart'
+			AND Mage::app()->getRequest()->getActionName() == 'addmultiple'
+		) {
+			$oObserver->getQuoteItem()->save();
+		}
+	}
 }
