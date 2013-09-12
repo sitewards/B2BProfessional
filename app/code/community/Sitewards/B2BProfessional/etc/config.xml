@@ -65,7 +65,7 @@
 		<rewrite>
 			<sitewards_B2BProfessional_cart>
 				<from><![CDATA[#^/checkout/cart/#]]></from>
-				<to>B2BProfessional/cart/</to>
+				<to>b2bprofessional/cart/</to>
 			</sitewards_B2BProfessional_cart>
 		</rewrite>
 	</global>
