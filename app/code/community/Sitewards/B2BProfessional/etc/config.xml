@@ -60,14 +60,36 @@
 		<models>
 			<b2bprofessional>
 				<class>Sitewards_B2BProfessional_Model</class>
+				<resourceModel>b2bprofessional_resource</resourceModel>
 			</b2bprofessional>
+			<b2bprofessional_resource>
+				<class>Sitewards_B2BProfessional_Model_Resource</class>
+				<entities>
+					<quote>
+						<table>sales_quote_b2bprofessional</table>
+					</quote>
+					<order>
+						<table>sales_order_b2bprofessional</table>
+					</order>
+				</entities>
+			</b2bprofessional_resource>
 		</models>
 		<rewrite>
-			<sitewards_B2BProfessional_cart>
+			<sitewards_b2bprofessional_cart>
 				<from><![CDATA[#^/checkout/cart/#]]></from>
 				<to>b2bprofessional/cart/</to>
-			</sitewards_B2BProfessional_cart>
+			</sitewards_b2bprofessional_cart>
 		</rewrite>
+		<resources>
+			<sitewards_b2bprofessional>
+				<setup>
+					<module>Sitewards_B2BProfessional</module>
+				</setup>
+				<connection>
+					<use>core_setup</use>
+				</connection>
+			</sitewards_b2bprofessional>
+		</resources>
 	</global>
 	<frontend>
 		<routers>
@@ -144,6 +166,61 @@
 					</b2bprofessional>
 				</observers>
 			</checkout_cart_product_add_after>
+			<sales_quote_save_before> <!-- Event Called Before Quote Object is saved -->
+				<observers>
+					<save_before>
+						<type>singleton</type>
+						<class>Sitewards_B2BProfessional_Model_Observer</class>
+						<!-- Over Model Class -->
+						<method>saveQuoteBefore</method>
+						<!-- name of function -->
+					</save_before>
+				</observers>
+			</sales_quote_save_before>
+			<sales_quote_save_after> <!-- Event called After Quote Object is saved -->
+				<observers>
+					<save_after>
+						<type>singleton</type>
+						<class>Sitewards_B2BProfessional_Model_Observer</class>
+						<!-- Over Model Class -->
+						<method>saveQuoteAfter</method>
+						<!-- name of function -->
+					</save_after>
+				</observers>
+			</sales_quote_save_after>
+			<sales_quote_load_after> <!-- Event called when Quote Object is loaded -->
+				<observers>
+					<load_after>
+						<type>singleton</type>
+						<class>Sitewards_B2BProfessional_Model_Observer</class>
+						<!-- Over Model Class -->
+						<method>loadQuoteAfter</method>
+						<!-- name of function -->
+					</load_after>
+				</observers>
+			</sales_quote_load_after>
+			<sales_model_service_quote_submit_after> <!-- Event called after order placed -->
+				<observers>
+					<sales_model_service_quote_submit_after>
+						<type>singleton</type>
+						<class>Sitewards_B2BProfessional_Model_Observer</class>
+						<!-- Over Model Class -->
+						<method>saveOrderAfter</method>
+						<!-- name of function -->
+					</sales_model_service_quote_submit_after>
+				</observers>
+			</sales_model_service_quote_submit_after>
+			<sales_order_load_after> <!-- Event called after Order Object is loaded -->
+				<observers>
+					<sales_order_load_after>
+						<type>singleton</type>
+						<class>Sitewards_B2BProfessional_Model_Observer</class>
+						<!-- Over Model Class -->
+						<method>loadOrderAfter</method>
+						<!-- name of function -->
+					</sales_order_load_after>
+				</observers>
+			</sales_order_load_after>
 		</events>
 	</frontend>
 	<adminhtml>
@@ -156,6 +233,13 @@
 				</Sitewards_B2BProfessional>
 			</modules>
 		</translate>
+		<layout>
+			<updates>
+				<b2bprofessional>
+					<file>Sitewards/B2BProfessional.xml</file>
+				</b2bprofessional>
+			</updates>
+		</layout>
 	</adminhtml>
 	<phpunit>
 		<suite>
