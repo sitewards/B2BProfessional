@@ -18,6 +18,19 @@ class Sitewards_B2BProfessional_CartController extends Mage_Checkout_CartControl
 	public function preDispatch() {
 		parent::preDispatch ();
 
+		/**
+		 * Check customer authentication
+		 */
+
+		$sLoginUrl = Mage::helper('customer')
+			->getLoginUrl();
+
+		if (!Mage::getSingleton('customer/session')
+			->authenticate($this, $sLoginUrl)
+		) {
+			$this->setFlag('', self::FLAG_NO_DISPATCH, true);
+		}
+
 		$oRequest = $this->getRequest();
 		$iProductId = $oRequest->get('product');
 		/* @var $oB2BHelper Sitewards_B2BProfessional_Helper_Data */
