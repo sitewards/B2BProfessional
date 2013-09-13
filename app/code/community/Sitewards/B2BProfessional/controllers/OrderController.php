@@ -8,6 +8,22 @@
  * @copyright   Copyright (c) 2013 Sitewards GmbH (http://www.sitewards.com/)
  */
 class Sitewards_B2BProfessional_OrderController extends Mage_Core_Controller_Front_Action {
+
+	/**
+	 * Check customer authentication
+	 */
+	public function preDispatch () {
+		parent::preDispatch();
+		$sLoginUrl = Mage::helper('customer')
+			->getLoginUrl();
+
+		if (!Mage::getSingleton('customer/session')
+			->authenticate($this, $sLoginUrl)
+		) {
+			$this->setFlag('', self::FLAG_NO_DISPATCH, true);
+		}
+	}
+
 	public function formAction() {
 		$this->loadLayout();
 		$this->renderLayout();

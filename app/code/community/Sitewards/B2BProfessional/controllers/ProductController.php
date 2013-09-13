@@ -8,6 +8,22 @@
  * @copyright   Copyright (c) 2013 Sitewards GmbH (http://www.sitewards.com/)
  */
 class Sitewards_B2BProfessional_ProductController extends Mage_Core_Controller_Front_Action {
+
+	/**
+	 * Check customer authentication
+	 */
+	public function preDispatch () {
+		parent::preDispatch();
+		$sLoginUrl = Mage::helper('customer')
+			->getLoginUrl();
+
+		if (!Mage::getSingleton('customer/session')
+			->authenticate($this, $sLoginUrl)
+		) {
+			$this->setFlag('', self::FLAG_NO_DISPATCH, true);
+		}
+	}
+
 	/**
 	 * gets a sku as input parameter
 	 * sets JSON response with product data if it is allowed to be viewed
