@@ -1,7 +1,7 @@
 <?php
 /**
  * Sitewards_B2BProfessional_OrderController
- * implements formAction to show New Order Form
+ * implements actions for new order form and cancel an order
  *
  * @category    Sitewards
  * @package     Sitewards_B2BProfessional
@@ -13,11 +13,13 @@ class Sitewards_B2BProfessional_OrderController extends Mage_Core_Controller_Fro
 		$this->renderLayout();
 	}
 
+	/**
+	 * cancels an order
+	 */
 	public function cancelAction() {
 		$iOrderId = $this->getRequest()->getParam('id');
 		$oB2BModel = Mage::getModel('b2bprofessional/order');
 		$oMageModel = Mage::getModel('sales/order')->load($iOrderId);
-		$oSession = Mage::getSingleton('checkout/session');;
 		if ($oB2BModel->canCancel($iOrderId)) {
 			$oMageModel->setState(Mage_Sales_Model_Order::STATE_CANCELED, true)->save();
 		}
