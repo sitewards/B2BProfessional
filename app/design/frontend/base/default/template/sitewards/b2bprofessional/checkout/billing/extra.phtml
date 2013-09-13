@@ -2,12 +2,13 @@
 /**
  * @var $this Mage_Checkout_Block_Onepage_Billing
  */
-$sDeliveryDate = '<input
+$sDeliveryDate = '<label for="delivery_date">' . $this->__('Order Date:') . '</label><input
 	type="text"
+	id="delivery_date"
 	name="b2bprofessional[delivery_date]"
 	value="' . $this->escapeHtml($this->getQuote()->getDeliveryDate()) . '"
-	title="' . $this->__('Delivery Date') . '"
-	class="input-text"
+	title="' . $this->__('Order Date') . '"
+	class="input-text validate-date"
 	id="b2bprofessional:delivery_date" />';
 
 $this->setTemplate('persistent/checkout/onepage/billing.phtml');
