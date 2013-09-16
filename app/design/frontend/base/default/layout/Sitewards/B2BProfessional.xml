@@ -36,7 +36,33 @@
 	</sitewards_b2bprofessional_order_form>
 	<checkout_onepage_index>
 		<reference name="checkout.onepage.billing">
-			<action method="setTemplate"><value>sitewards/b2bprofessional/checkout/billing/extra.phtml</value></action>
+			<action method="setTemplate">
+				<value>sitewards/b2bprofessional/checkout/billing/extra.phtml</value>
+			</action>
+		</reference>
+		<reference name="head">
+			<reference name="head">
+				<action method="addItem">
+					<type>js_css</type>
+					<name>calendar/calendar-system.css</name>
+					<!--<params/><if/><condition>can_load_calendar_js</condition>-->
+				</action>
+				<action method="addItem">
+					<type>js</type>
+					<name>calendar/calendar.js</name>
+					<!--<params/><if/><condition>can_load_calendar_js</condition>-->
+				</action>
+				<action method="addItem">
+					<type>js</type>
+					<name>calendar/calendar-setup.js</name>
+					<!--<params/><if/><condition>can_load_calendar_js</condition>-->
+				</action>
+				<action method="addItem">
+					<type>js</type>
+					<name>sitewards/b2bprofessional.js</name>
+					<!--<params/><if/><condition>can_load_calendar_js</condition>-->
+				</action>
+			</reference>
 		</reference>
 	</checkout_onepage_index>
 	<sales_order_view>
