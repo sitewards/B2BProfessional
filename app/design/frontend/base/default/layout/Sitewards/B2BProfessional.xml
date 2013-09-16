@@ -32,6 +32,9 @@
 			<action method="addJs">
 				<script>sitewards/b2bprofessional.js</script>
 			</action>
+			<action method="addCss">
+				<name>sitewards/b2bprofessional.css</name>
+			</action>
 		</reference>
 	</sitewards_b2bprofessional_order_form>
 </layout>
