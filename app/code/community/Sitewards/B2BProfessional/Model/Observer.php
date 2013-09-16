@@ -297,7 +297,7 @@ class Sitewards_B2BProfessional_Model_Observer {
 			 */
 			/* @var $oCategoryFilter Mage_Catalog_Block_Layer_Filter_Category */
 			$oCategoryFilter = $oBlock->getChild('category_filter');
-			if(isset($oCategoryFilter) && $oCategoryFilter instanceof Mage_Catalog_Block_Layer_Filter_Category) {
+			if($oCategoryFilter instanceof Mage_Catalog_Block_Layer_Filter_Category) {
 				$oCategories = $oCategoryFilter->getItems();
 				$aCategoryOptions = array();
 				foreach($oCategories as $oCategory) {
