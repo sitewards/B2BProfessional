@@ -13,8 +13,7 @@ class Sitewards_B2BProfessional_Block_Adminhtml_Order extends Mage_Adminhtml_Blo
 	public function getB2BProfessionalVars () {
 		$oModel = Mage::getModel('b2bprofessional/order');
 		return $oModel->getByOrder(
-			$this
-				->getOrder()
+			$this->getOrder()
 				->getId());
 	}
 }
