@@ -170,4 +170,11 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
 		}
 		return $bValidCart;
 	}
+
+	/**
+	 * @return string
+	 */
+	public function getOrderHistoryUrl() {
+		return $this->_getUrl('sales/order/history');
+	}
 }
