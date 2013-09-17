@@ -113,7 +113,7 @@
 		<layout>
 			<updates>
 				<b2bprofessional>
-					<file>Sitewards/B2BProfessional.xml</file>
+					<file>sitewards/b2bprofessional.xml</file>
 				</b2bprofessional>
 			</updates>
 		</layout>
@@ -236,7 +236,7 @@
 		<layout>
 			<updates>
 				<b2bprofessional>
-					<file>Sitewards/B2BProfessional.xml</file>
+					<file>sitewards/b2bprofessional.xml</file>
 				</b2bprofessional>
 			</updates>
 		</layout>
