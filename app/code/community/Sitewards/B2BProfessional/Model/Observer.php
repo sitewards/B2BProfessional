@@ -297,18 +297,20 @@ class Sitewards_B2BProfessional_Model_Observer {
 			 */
 			/* @var $oCategoryFilter Mage_Catalog_Block_Layer_Filter_Category */
 			$oCategoryFilter = $oBlock->getChild('category_filter');
-			$oCategories = $oCategoryFilter->getItems();
-			$aCategoryOptions = array();
-			foreach($oCategories as $oCategory) {
-				/* @var $oCategory Mage_Catalog_Model_Layer_Filter_Item */
-				$iCategoryId = $oCategory->getValue();
-				$aCategoryOptions[] = $iCategoryId;
-			}
+			if($oCategoryFilter instanceof Mage_Catalog_Block_Layer_Filter_Category) {
+				$oCategories = $oCategoryFilter->getItems();
+				$aCategoryOptions = array();
+				foreach($oCategories as $oCategory) {
+					/* @var $oCategory Mage_Catalog_Model_Layer_Filter_Item */
+					$iCategoryId = $oCategory->getValue();
+					$aCategoryOptions[] = $iCategoryId;
+				}
 
-			if (Mage::registry('b2bprof_category_filters') !== null){
-				Mage::unregister('b2bprof_category_filters');
+				if (Mage::registry('b2bprof_category_filters') !== null){
+					Mage::unregister('b2bprof_category_filters');
+				}
+				Mage::register('b2bprof_category_filters', $aCategoryOptions);
 			}
-			Mage::register('b2bprof_category_filters', $aCategoryOptions);
 
 			if($oB2BHelper->isActive()) {
 				$aFilterableAttributes = $oBlock->getData('_filterable_attributes');
