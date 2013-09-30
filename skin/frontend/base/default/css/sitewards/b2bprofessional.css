@@ -16,3 +16,7 @@
 .sitewards-b2bprofessional-order-form .invisible {
 	display: none;
 }
+
+.sitewards-b2bprofessional-order-form A {
+	cursor: pointer;
+}

@@ -36,6 +36,16 @@ var OrderProduct = Class.create(
 			);
 			this.getElement('.qty').style.display = 'none';
 			this._sLoadingImage = $$('.sitewards-b2bprofessional-order-form .loading').first().src;
+
+			var that = this;
+			this.getElement('.remove')
+				.observe('click', function (oEvent) {
+					that._onRemove();
+					oEvent.preventDefault();
+					return false;
+				})
+				.hide()
+			;
 		},
 
 		/**
@@ -99,6 +109,10 @@ var OrderProduct = Class.create(
 			this.getElement('.qty').style.display = 'block';
 			oQty.focus();
 			oQty.select();
+
+			if (this.getElement('input.sku').value.length > 0) {
+				this.getElement('.remove').show();
+			}
 		},
 
 		/**
@@ -139,6 +153,20 @@ var OrderProduct = Class.create(
 			var oLastLine = this._oLine.up().childElements().last();
 			if (oLastLine != this._oLine) {
 				oLastLine.remove();
+			}
+		},
+
+		/**
+		 * removes the line from the form
+		 *
+		  * @private
+		 */
+		_onRemove: function () {
+			var oLinesContainer = this._oLine.up();
+			this._oLine.remove();
+			// hide "remove line" if only one line is left
+			if (oLinesContainer.childElements().length <= 1) {
+				oLinesContainer.down('.remove').hide();
 			}
 		},
 

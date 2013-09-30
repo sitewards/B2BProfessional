@@ -7,6 +7,7 @@
 					<th><?php echo $this->__('Name'); ?></th>
 					<th><?php echo $this->__('Price'); ?></th>
 					<th><?php echo $this->__('Quantity'); ?></th>
+					<th><?php echo $this->__('Action'); ?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -15,6 +16,7 @@
 					<td class="name"></td>
 					<td class="price"></td>
 					<td><input type="text" name="qty[]"  class="qty input-text" disabled="disabled" /></td>
+					<td><a class="remove"><?php echo $this->__('remove this entry'); ?></a></td>
 				</tr>
 			</tbody>
 		</table>
