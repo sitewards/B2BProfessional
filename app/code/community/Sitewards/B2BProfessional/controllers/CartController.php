@@ -73,7 +73,8 @@ class Sitewards_B2BProfessional_CartController extends Mage_Checkout_CartControl
 			$oProduct->load($oProduct->getIdBySku($sSku));
 			if ($oProduct->getId()) {
 				$oRequest->setParam('product', $oProduct->getId());
-				$oRequest->setParam('qty', $aQtys[$iKey]);
+				$iQty = isset($aQtys[$iKey]) ? $aQtys[$iKey] : 1;
+				$oRequest->setParam('qty', $iQty);
 				$this->addAction();
 			}
 		}
