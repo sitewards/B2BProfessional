@@ -82,8 +82,9 @@ class Sitewards_B2BProfessional_CartController extends Mage_Checkout_CartControl
 		if ($bSuccess) {
 			$oQuote->save();
 		} else {
-			$message = $this->__('Please enter valid product sku.');
-			Mage::getSingleton('customer/session')->addError($message);
+			Mage::getSingleton('customer/session')->addError(
+				$this->__('Please enter valid product sku.')
+			);
 			$this->_redirect('b2bprofessional/order/form');
 		}
 	}
