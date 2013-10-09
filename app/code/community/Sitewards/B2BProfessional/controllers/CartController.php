@@ -66,6 +66,7 @@ class Sitewards_B2BProfessional_CartController extends Mage_Checkout_CartControl
 		$oRequest = $this->getRequest();
 		$aSkus = $oRequest->getParam('sku');
 		$aQtys = $oRequest->getParam('qty');
+		$bSuccess = false;
 
 		$oQuote = $this->_getQuote();
 		foreach ($aSkus as $iKey => $sSku) {
@@ -75,8 +76,15 @@ class Sitewards_B2BProfessional_CartController extends Mage_Checkout_CartControl
 				$oRequest->setParam('product', $oProduct->getId());
 				$oRequest->setParam('qty', $aQtys[$iKey]);
 				$this->addAction();
+				$bSuccess = true;
 			}
 		}
-		$oQuote->save();
+		if ($bSuccess) {
+			$oQuote->save();
+		} else {
+			$message = $this->__('Please enter valid product sku.');
+			Mage::getSingleton('customer/session')->addError($message);
+			$this->_redirect('b2bprofessional/order/form');
+		}
 	}
 }
