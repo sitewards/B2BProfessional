@@ -26,6 +26,7 @@ class Sitewards_B2BProfessional_OrderController extends Mage_Core_Controller_Fro
 
 	public function formAction() {
 		$this->loadLayout();
+		$this->_initLayoutMessages('customer/session');
 		$this->renderLayout();
 	}
 
