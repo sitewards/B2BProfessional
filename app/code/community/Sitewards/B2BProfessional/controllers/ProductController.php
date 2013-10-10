@@ -39,7 +39,7 @@ class Sitewards_B2BProfessional_ProductController extends Mage_Core_Controller_F
 					array(
 						'sku'   => $oProduct->getSku(),
 						'name'  => $oProduct->getName(),
-						'price' => $oProduct->getPrice(),
+						'price' => Mage::helper('core')->currency($oProduct->getPrice()),
 						'qty'   => $oProduct->getStockItem()->getMinSaleQty(),
 					)
 				)
