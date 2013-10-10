@@ -1,4 +1,6 @@
 /app/code/community/Sitewards/B2BProfessional /app/code/community/Sitewards/B2BProfessional
+/app/design/adminhtml/default/default/layout/Sitewards/B2BProfessional.xml /app/design/adminhtml/default/default/layout/Sitewards/B2BProfessional.xml
+/app/design/adminhtml/default/default/template/sitewards/b2bprofessional /app/design/adminhtml/default/default/template/sitewards/b2bprofessional
 /app/design/frontend/base/default/layout/Sitewards/B2BProfessional.xml /app/design/frontend/base/default/layout/Sitewards/B2BProfessional.xml
 /app/design/frontend/base/default/template/sitewards/b2bprofessional /app/design/frontend/base/default/template/sitewards/b2bprofessional
 /app/etc/modules/Sitewards_B2BProfessional.xml /app/etc/modules/Sitewards_B2BProfessional.xml
@@ -7,17 +9,3 @@
 /js/sitewards/b2bprofessional.js /js/sitewards/b2bprofessional.js
 /skin/frontend/base/default/css/sitewards/b2bprofessional.css /skin/frontend/base/default/css/sitewards/b2bprofessional.css
 /skin/frontend/base/default/images/sitewards/loading.gif /skin/frontend/base/default/images/sitewards/loading.gif
-/packages/Sitewards_B2BProfessional-2.0.0.tgz /packages/Sitewards_B2BProfessional-2.0.0.tgz
-/packages/Sitewards_B2BProfessional-2.0.1.tgz /packages/Sitewards_B2BProfessional-2.0.1.tgz
-/packages/Sitewards_B2BProfessional-2.0.2.tgz /packages/Sitewards_B2BProfessional-2.0.2.tgz
-/packages/Sitewards_B2BProfessional-2.0.3.tgz /packages/Sitewards_B2BProfessional-2.0.3.tgz
-/packages/Sitewards_B2BProfessional-2.1.0.tgz /packages/Sitewards_B2BProfessional-2.1.0.tgz
-/packages/Sitewards_B2BProfessional-2.1.1.tgz /packages/Sitewards_B2BProfessional-2.1.1.tgz
-/packages/Sitewards_B2BProfessional-2.1.2.tgz /packages/Sitewards_B2BProfessional-2.1.2.tgz
-/packages/Sitewards_B2BProfessional-2.1.3.tgz /packages/Sitewards_B2BProfessional-2.1.3.tgz
-/packages/Sitewards_B2BProfessional-2.1.4.tgz /packages/Sitewards_B2BProfessional-2.1.4.tgz
-/packages/Sitewards_B2BProfessional-2.2.0.tgz /packages/Sitewards_B2BProfessional-2.2.0.tgz
-/packages/Sitewards_B2BProfessional-2.2.2.tgz /packages/Sitewards_B2BProfessional-2.2.2.tgz
-/packages/Sitewards_B2BProfessional-2.2.3.tgz /packages/Sitewards_B2BProfessional-2.2.3.tgz
-/packages/Sitewards_B2BProfessional-2.2.4.tgz /packages/Sitewards_B2BProfessional-2.2.4.tgz
-/packages/Sitewards_B2BProfessional-2.2.5.tgz /packages/Sitewards_B2BProfessional-2.2.5.tgz

@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+	<adminhtml_sales_order_view>
+		<reference name="order_info">
+			<action method='setTemplate'>
+				<template>sitewards/b2bprofessional/sales/order/info.phtml</template>
+			</action>
+			<block type="adminhtml/sales_order_view_info" name="order_info2"
+			       template="sales/order/view/info.phtml"></block>
+			<block type="b2bprofessional/adminhtml_order" name="b2bprofessional.order" template='sitewards/b2bprofessional/order.phtml'/>
+		</reference>
+	</adminhtml_sales_order_view>
+</layout>

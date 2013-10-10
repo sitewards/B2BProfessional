@@ -1,0 +1,31 @@
+<?php
+/**
+ * @var $this Mage_Checkout_Block_Onepage_Billing
+ */
+$sDeliveryDate =
+	'<span class="form-list">' .
+	'<label for="delivery_date">' . $this->__('Order Date:') .
+	'</label> </span>&nbsp;<input
+	type="text"
+	id="delivery_date"
+	name="b2bprofessional[delivery_date]"
+	value="' . $this->escapeHtml($this->getQuote()->getDeliveryDate()) . '"
+	title="' . $this->__('Order Date') . '"
+	class="input-text validate-date"
+	id="b2bprofessional:delivery_date" />'.
+	'<script type="text/javascript">'.
+	'	document.observe("dom:loaded", (function () {'.
+	'		var oOrderDatePicker = new OrderDatePicker();'.
+	'		oOrderDatePicker.initialize();'.
+	'	}));'.
+	'</script>'
+;
+
+$this->setTemplate('persistent/checkout/onepage/billing.phtml');
+$sHtml = $this->toHtml();
+// replace field in the billing.phtml, so we don't have to rewrite full billing.phtml and this is a bit more upgrade safe
+$iPosition = strpos($sHtml, '<div class="buttons-set" id="billing-buttons-container">');
+echo substr($sHtml, 0, $iPosition) .
+	$sDeliveryDate .
+	substr($sHtml, $iPosition);
+
