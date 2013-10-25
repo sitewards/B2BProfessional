@@ -99,6 +99,7 @@ var OrderProduct = Class.create(
          * @private
          */
         _onSuccess: function(transport) {
+            this._clearMessages();
             var oResponse = transport.responseText.evalJSON(true);
             if (oResponse.result == 0) {
                 var oQty = this.getElement('input.qty');
@@ -120,9 +121,30 @@ var OrderProduct = Class.create(
             } else {
                 this._reset();
                 this.getElement('input.sku').value = '';
-                alert(oResponse.error);
+                this._showMessage(oResponse.error, 'error');
                 this.getElement('input.sku').focus();
             }
+        },
+
+        /**
+         * Show standard magento message
+         *
+         * @param sText
+         * @param sType
+         * @private
+         */
+        _showMessage : function (sText, sType) {
+            var html = '<li class="'+sType+'-msg"><ul><li>' + sText + '</li></ul></li>';
+            $$('.messages')[0].update(html);
+        },
+
+        /**
+         * Remove all messages
+         *
+         * @private
+         */
+        _clearMessages : function () {
+            $$('.messages')[0].update('');
         },
 
         /**
@@ -188,7 +210,7 @@ var OrderProduct = Class.create(
         _onFailure: function () {
             this._reset();
             this._removeEmptyRows();
-            alert(Translator.translate('The product does not exist.'));
+            this._showMessage(Translator.translate('The product does not exist.'), 'error');
             this.getElement('.name').focus();
         }
     }
