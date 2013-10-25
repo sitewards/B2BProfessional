@@ -121,7 +121,7 @@ var OrderProduct = Class.create(
             } else {
                 this._reset();
                 this.getElement('input.sku').value = '';
-                this._showMessage(oResponse.error, 'error');
+                this._showMessage(oResponse.error);
                 this.getElement('input.sku').focus();
             }
         },
@@ -211,7 +211,7 @@ var OrderProduct = Class.create(
         _onFailure: function () {
             this._reset();
             this._removeEmptyRows();
-            this._showMessage(Translator.translate('The product does not exist.'), 'error');
+            this._showMessage(Translator.translate('The product does not exist.'));
             this.getElement('.name').focus();
         }
     }
