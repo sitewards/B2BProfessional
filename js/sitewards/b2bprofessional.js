@@ -133,9 +133,9 @@ var OrderProduct = Class.create(
          * @param sType
          * @private
          */
-        _showMessage : function (sText, sType) {
-            var html = '<li class="'+sType+'-msg"><ul><li>' + sText + '</li></ul></li>';
-            $$('.messages')[0].update(html);
+        _showMessage : function (sText) {
+            $$('.messages')[0].style.display = 'block';
+            $$('.messages li ul li')[0].update(sText);
         },
 
         /**
@@ -144,7 +144,8 @@ var OrderProduct = Class.create(
          * @private
          */
         _clearMessages : function () {
-            $$('.messages')[0].update('');
+            $$('.messages li ul li')[0].update('');
+            $$('.messages')[0].style.display = 'none';
         },
 
         /**

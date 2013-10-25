@@ -1,7 +1,7 @@
 <?php echo $this
     ->getMessagesBlock()
     ->getGroupedHtml() ?>
-<ul class="messages"></ul>
+<ul class="messages" style="display: none;"><li class="error-msg"><ul><li></li></ul></li></ul>
 <div class="fieldset">
     <form method="POST" id="order_form" action="<?php echo $this->getUrl('checkout/cart/addmultiple'); ?>">
         <input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')
