@@ -119,8 +119,9 @@ var OrderProduct = Class.create(
                 }
             } else {
                 this._reset();
+                this.getElement('input.sku').value = '';
                 alert(oResponse.error);
-                this.getElement('.name').focus();
+                this.getElement('input.sku').focus();
             }
         },
 
