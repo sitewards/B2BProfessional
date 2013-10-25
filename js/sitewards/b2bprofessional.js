@@ -135,7 +135,7 @@ var OrderProduct = Class.create(
          */
         _showMessage : function (sText) {
             $$('.messages')[0].style.display = 'block';
-            $$('.messages li ul li')[0].update(sText);
+            $$('.messages>li>ul>li')[0].update(sText);
         },
 
         /**
@@ -144,7 +144,7 @@ var OrderProduct = Class.create(
          * @private
          */
         _clearMessages : function () {
-            $$('.messages li ul li')[0].update('');
+            $$('.messages>li>ul>li')[0].update('');
             $$('.messages')[0].style.display = 'none';
         },
 
