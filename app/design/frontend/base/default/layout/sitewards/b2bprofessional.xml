@@ -14,14 +14,14 @@
 <layout version="0.1.0">
     <customer_account>
         <reference name="customer_account_navigation">
-            <action method="addLink" ifconfig="b2bprofessional/generalsettings/active" translate="label">
+            <action method="addLink" ifconfig="b2bprofessional/generalsettings/active" translate="label" module="b2bprofessional">
                 <name>order_form</name>
                 <path>b2bprofessional/order/form</path>
                 <label>New Order Form</label>
             </action>
         </reference>
     </customer_account>
-    <sitewards_b2bprofessional_order_form translate="label">
+    <sitewards_b2bprofessional_order_form translate="label" module="b2bprofessional">
         <label>New Order Form</label>
         <update handle="customer_account"/>
         <reference name="my.account.wrapper">
