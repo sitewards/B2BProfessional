@@ -154,4 +154,22 @@ class Sitewards_B2BProfessional_Helper_Customer extends Mage_Core_Helper_Abstrac
 
 		return $aActivatedCustomerGroupIds;
 	}
+
+	/**
+	 * checks if user is allowed to view products
+	 *
+	 * @return bool
+	 */
+	public function isUserAllowed()
+	{
+		/* @var $oHelper Sitewards_B2BProfessional_Helper_Data */
+		$oHelper = Mage::helper('b2bprofessional');
+		return (
+			$oHelper->isExtensionActive() == true
+			&& (
+				$this->isLoginRequired() == false
+				|| Mage::getSingleton('customer/session')->isLoggedIn()
+			)
+		);
+	}
 }

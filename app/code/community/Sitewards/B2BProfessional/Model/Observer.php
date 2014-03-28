@@ -16,6 +16,16 @@ class Sitewards_B2BProfessional_Model_Observer {
 	protected static $_iLastProductId = 0;
 
 	/**
+	 * blocks which display prices
+	 *
+	 * @var array
+	 */
+	protected $aPriceBlockClassNames = array(
+		'Mage_Catalog_Block_Product_Price'        => 1,
+		'Mage_Bundle_Block_Catalog_Product_Price' => 1,
+	);
+
+	/**
 	 * Check if the site requires login to work
 	 * 	- Add notice,
 	 * 	- Redirect to the home page,
@@ -104,6 +114,17 @@ class Sitewards_B2BProfessional_Model_Observer {
 	}
 
 	/**
+	 * checks if the block represents a price block
+	 *
+	 * @param Mage_Core_Block_Abstract $oBlock
+	 * @return bool
+	 */
+	protected function isExactlyPriceBlock($oBlock)
+	{
+		return ($oBlock && isset($this->aPriceBlockClassNames[get_class($oBlock)]));
+	}
+
+	/**
 	 * Check for block Mage_Catalog_Block_Product_Price
 	 * 	- Check the product is active via the Sitewards_B2BProfessional_Helper_Data
 	 * 	- Replace the text with that on the b2bprofessional
@@ -125,7 +146,7 @@ class Sitewards_B2BProfessional_Model_Observer {
 		/*
 		 * Check to see if we should remove the product price
 		 */
-		if($oBlock instanceof Mage_Catalog_Block_Product_Price) {
+		if($this->isExactlyPriceBlock($oBlock)) {
 			$oProduct = $oBlock->getProduct();
 			$iCurrentProductId = $oProduct->getId();
 
@@ -138,8 +159,13 @@ class Sitewards_B2BProfessional_Model_Observer {
 				} else {
 					$oTransport->setHtml('');
 				}
-				// Set can show price to false to stop tax being displayed via Symmetrics_TweaksGerman_Block_Tax
-				$oProduct->setCanShowPrice(false);
+				// Set type id to combined to stop tax being displayed via Symmetrics_TweaksGerman_Block_Tax
+				if (
+					Mage::helper('core')->isModuleEnabled('Symmetrics_TweaksGerman')
+					&& $oProduct->getTypeId() == 'bundle'
+				){
+					$oProduct->setTypeId('combined');
+				}
 			}
 		/*
 		 * Check to see if we should remove the add to cart button on the product page
@@ -253,14 +279,27 @@ class Sitewards_B2BProfessional_Model_Observer {
 		 * for bundle product which is not under active category
 		 */
 		if (Mage::helper('b2bprofessional')->isExtensionActive()) {
-			if ($oBlock instanceof Mage_Bundle_Block_Catalog_Product_View_Type_Bundle_Option_Checkbox) {
-				$oBlock->setTemplate('sitewards/b2bprofessional/catalog/product/view/type/bundle/option/checkbox.phtml');
-			} else if ($oBlock instanceof Mage_Bundle_Block_Catalog_Product_View_Type_Bundle_Option_Multi) {
-				$oBlock->setTemplate('sitewards/b2bprofessional/catalog/product/view/type/bundle/option/multi.phtml');
-			} else if ($oBlock instanceof Mage_Bundle_Block_Catalog_Product_View_Type_Bundle_Option_Radio) {
-				$oBlock->setTemplate('sitewards/b2bprofessional/catalog/product/view/type/bundle/option/radio.phtml');
-			} else if ($oBlock instanceof Mage_Bundle_Block_Catalog_Product_View_Type_Bundle_Option_Select) {
-				$oBlock->setTemplate('sitewards/b2bprofessional/catalog/product/view/type/bundle/option/select.phtml');
+
+			if (version_compare(Mage::getVersion(), '1.8.0.0') >= 0){
+				if ($oBlock instanceof Mage_Bundle_Block_Catalog_Product_View_Type_Bundle_Option_Checkbox) {
+					$oBlock->setTemplate('sitewards/b2bprofessional/catalog/product/view/type/bundle/option-post-180/checkbox.phtml');
+				} else if ($oBlock instanceof Mage_Bundle_Block_Catalog_Product_View_Type_Bundle_Option_Multi) {
+					$oBlock->setTemplate('sitewards/b2bprofessional/catalog/product/view/type/bundle/option-post-180/multi.phtml');
+				} else if ($oBlock instanceof Mage_Bundle_Block_Catalog_Product_View_Type_Bundle_Option_Radio) {
+					$oBlock->setTemplate('sitewards/b2bprofessional/catalog/product/view/type/bundle/option-post-180/radio.phtml');
+				} else if ($oBlock instanceof Mage_Bundle_Block_Catalog_Product_View_Type_Bundle_Option_Select) {
+					$oBlock->setTemplate('sitewards/b2bprofessional/catalog/product/view/type/bundle/option-post-180/select.phtml');
+				}
+			} else {
+				if ($oBlock instanceof Mage_Bundle_Block_Catalog_Product_View_Type_Bundle_Option_Checkbox) {
+					$oBlock->setTemplate('sitewards/b2bprofessional/catalog/product/view/type/bundle/option-pre-180/checkbox.phtml');
+				} else if ($oBlock instanceof Mage_Bundle_Block_Catalog_Product_View_Type_Bundle_Option_Multi) {
+					$oBlock->setTemplate('sitewards/b2bprofessional/catalog/product/view/type/bundle/option-pre-180/multi.phtml');
+				} else if ($oBlock instanceof Mage_Bundle_Block_Catalog_Product_View_Type_Bundle_Option_Radio) {
+					$oBlock->setTemplate('sitewards/b2bprofessional/catalog/product/view/type/bundle/option-pre-180/radio.phtml');
+				} else if ($oBlock instanceof Mage_Bundle_Block_Catalog_Product_View_Type_Bundle_Option_Select) {
+					$oBlock->setTemplate('sitewards/b2bprofessional/catalog/product/view/type/bundle/option-pre-180/select.phtml');
+				}
 			}
 		}
 	}
