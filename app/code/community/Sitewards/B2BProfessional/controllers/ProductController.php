@@ -34,7 +34,7 @@ class Sitewards_B2BProfessional_ProductController extends Mage_Core_Controller_F
         $sSku = $this->getRequest()->getParam('sku');
         /* @var Mage_Catalog_Model_Product $oProduct */
         $oProduct = Mage::getModel('catalog/product')->loadByAttribute('sku', $sSku);
-        if ($this->isUserAllowed() and $oProduct) {
+        if (Mage::helper('b2bprofessional/customer')->isUserAllowed() and $oProduct) {
             if (Mage::helper('b2bprofessional')->isProductActive($oProduct->getId())) {
                 $sMessage = Mage::helper('b2bprofessional')->__('Your account is not allowed to access this product.');
                 $sResponse = json_encode(
@@ -61,22 +61,4 @@ class Sitewards_B2BProfessional_ProductController extends Mage_Core_Controller_F
         }
     }
 
-    /**
-     * checks if user is allowed to view products
-     *
-     * @return bool
-     */
-    private function isUserAllowed()
-    {
-        /* @var $oHelper Sitewards_B2BProfessional_Helper_Data */
-        $oHelper = Mage::helper('b2bprofessional');
-        $oB2BCustomerHelper = Mage::helper('b2bprofessional/customer');
-        return (
-            $oHelper->isExtensionActive() == true
-            && (
-                $oB2BCustomerHelper->isLoginRequired() == false
-                || Mage::getSingleton('customer/session')->isLoggedIn()
-            )
-        );
-    }
 }
