@@ -1,11 +1,4 @@
 /app/code/community/Sitewards/B2BProfessional /app/code/community/Sitewards/B2BProfessional
-/app/design/adminhtml/default/default/layout/sitewards/b2bprofessional.xml /app/design/adminhtml/default/default/layout/sitewards/b2bprofessional.xml
-/app/design/adminhtml/default/default/template/sitewards/b2bprofessional /app/design/adminhtml/default/default/template/sitewards/b2bprofessional
-/app/design/frontend/base/default/layout/sitewards/b2bprofessional.xml /app/design/frontend/base/default/layout/sitewards/b2bprofessional.xml
-/app/design/frontend/base/default/template/sitewards/b2bprofessional /app/design/frontend/base/default/template/sitewards/b2bprofessional
 /app/etc/modules/Sitewards_B2BProfessional.xml /app/etc/modules/Sitewards_B2BProfessional.xml
 /app/locale/de_DE/Sitewards_B2BProfessional.csv /app/locale/de_DE/Sitewards_B2BProfessional.csv
 /app/locale/en_US/Sitewards_B2BProfessional.csv /app/locale/en_US/Sitewards_B2BProfessional.csv
-/js/sitewards/b2bprofessional.js /js/sitewards/b2bprofessional.js
-/skin/frontend/base/default/css/sitewards/b2bprofessional.css /skin/frontend/base/default/css/sitewards/b2bprofessional.css
-/skin/frontend/base/default/images/sitewards/loading.gif /skin/frontend/base/default/images/sitewards/loading.gif

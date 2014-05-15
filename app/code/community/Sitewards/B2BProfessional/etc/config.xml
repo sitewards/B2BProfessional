@@ -1,309 +1,40 @@
 <?xml version="1.0"?>
-<!--
-/**
- * config.xml
- *	- rewrite blocks,
- *	- set-up helper,
- *	- set-up url rewrite,
- *	- define router,
- *	- set-up layout.xml,
- *	- set-up translation file,
- *	- define default values
- *
- * @category    Sitewards
- * @package     Sitewards_B2BProfessional
- * @copyright   Copyright (c) 2013 Sitewards GmbH (http://www.sitewards.com/)
- */
--->
 <config>
-	<modules>
-		<Sitewards_B2BProfessional>
-			<version>2.5.2</version>
-		</Sitewards_B2BProfessional>
-	</modules>
-	<global>
-		<blocks>
-			<b2bprofessional>
-				<class>Sitewards_B2BProfessional_Block</class>
-			</b2bprofessional>
-			<catalog>
-				<rewrite>
-					<product_list>Sitewards_B2BProfessional_Block_Catalog_Product_List</product_list>
-					<product_new>Sitewards_B2BProfessional_Block_Catalog_Product_New</product_new>
-					<product_widget_new>Sitewards_B2BProfessional_Block_Catalog_Product_Widget_New</product_widget_new>
-				</rewrite>
-			</catalog>
-			<checkout>
-				<rewrite>
-					<links>Sitewards_B2BProfessional_Block_Checkout_Links</links>
-				</rewrite>
-			</checkout>
-			<reports>
-				<rewrite>
-					<product_compared>Sitewards_B2BProfessional_Block_Reports_Product_Compared</product_compared>
-					<product_viewed>Sitewards_B2BProfessional_Block_Reports_Product_Viewed</product_viewed>
-					<product_widget_compared>Sitewards_B2BProfessional_Block_Reports_Product_Widget_Compared</product_widget_compared>
-					<product_widget_viewed>Sitewards_B2BProfessional_Block_Reports_Product_Widget_Viewed</product_widget_viewed>
-				</rewrite>
-			</reports>
-		</blocks>
-		<helpers>
-			<b2bprofessional>
-				<class>Sitewards_B2BProfessional_Helper</class>
-			</b2bprofessional>
-			<catalog>
-				<rewrite>
-					<product_compare>Sitewards_B2BProfessional_Helper_Catalog_Product_Compare</product_compare>
-				</rewrite>
-			</catalog>
-		</helpers>
-		<models>
-			<b2bprofessional>
-				<class>Sitewards_B2BProfessional_Model</class>
-				<resourceModel>b2bprofessional_resource</resourceModel>
-			</b2bprofessional>
-			<b2bprofessional_resource>
-				<class>Sitewards_B2BProfessional_Model_Resource</class>
-				<entities>
-					<quote>
-						<table>sales_quote_b2bprofessional</table>
-					</quote>
-					<order>
-						<table>sales_order_b2bprofessional</table>
-					</order>
-				</entities>
-			</b2bprofessional_resource>
-		</models>
-		<rewrite>
-			<sitewards_b2bprofessional_cart>
-				<from><![CDATA[#^/checkout/cart/#]]></from>
-				<to>b2bprofessional/cart/</to>
-			</sitewards_b2bprofessional_cart>
-		</rewrite>
-		<resources>
-			<sitewards_b2bprofessional>
-				<setup>
-					<module>Sitewards_B2BProfessional</module>
-				</setup>
-				<connection>
-					<use>core_setup</use>
-				</connection>
-			</sitewards_b2bprofessional>
-		</resources>
-	</global>
-	<frontend>
-		<routers>
-			<Sitewards_B2BProfessional>
-				<use>standard</use>
-				<args>
-					<module>Sitewards_B2BProfessional</module>
-					<frontName>b2bprofessional</frontName>
-				</args>
-			</Sitewards_B2BProfessional>
-		</routers>
-		<translate>
-			<modules>
-				<Sitewards_B2BProfessional>
-					<files>
-						<default>Sitewards_B2BProfessional.csv</default>
-					</files>
-				</Sitewards_B2BProfessional>
-			</modules>
-		</translate>
-		<layout>
-			<updates>
-				<b2bprofessional>
-					<file>sitewards/b2bprofessional.xml</file>
-				</b2bprofessional>
-			</updates>
-		</layout>
-		<events>
-			<controller_action_predispatch>
-				<observers>
-					<b2bprofessional>
-						<class>b2bprofessional/observer</class>
-						<method>onControllerActionPreDispatch</method>
-					</b2bprofessional>
-				</observers>
-			</controller_action_predispatch>
-			<core_block_abstract_to_html_before>
-				<observers>
-					<b2bprofessional>
-						<class>b2bprofessional/observer</class>
-						<method>onCoreBlockAbstractToHtmlBefore</method>
-					</b2bprofessional>
-				</observers>
-			</core_block_abstract_to_html_before>
-			<core_block_abstract_to_html_after>
-				<observers>
-					<b2bprofessional>
-						<class>b2bprofessional/observer</class>
-						<method>onCoreBlockAbstractToHtmlAfter</method>
-					</b2bprofessional>
-				</observers>
-			</core_block_abstract_to_html_after>
-			<catalog_product_type_configurable_price>
-				<observers>
-					<b2bprofessional>
-						<class>b2bprofessional/observer</class>
-						<method>onCatalogProductTypeConfigurablePrice</method>
-					</b2bprofessional>
-				</observers>
-			</catalog_product_type_configurable_price>
-			<core_layout_block_create_after>
-				<observers>
-					<b2bprofessional>
-						<class>b2bprofessional/observer</class>
-						<method>onCoreLayoutBlockCreateAfter</method>
-					</b2bprofessional>
-				</observers>
-			</core_layout_block_create_after>
-			<checkout_cart_product_add_after>
-				<observers>
-					<b2bprofessional>
-						<class>b2bprofessional/observer</class>
-						<method>onCheckoutCartProductAddAfter</method>
-					</b2bprofessional>
-				</observers>
-			</checkout_cart_product_add_after>
-			<sales_quote_save_before> <!-- Event Called Before Quote Object is saved -->
-				<observers>
-					<save_before>
-						<type>singleton</type>
-						<class>Sitewards_B2BProfessional_Model_Observer</class>
-						<!-- Over Model Class -->
-						<method>saveQuoteBefore</method>
-						<!-- name of function -->
-					</save_before>
-				</observers>
-			</sales_quote_save_before>
-			<sales_quote_save_after> <!-- Event called After Quote Object is saved -->
-				<observers>
-					<save_after>
-						<type>singleton</type>
-						<class>Sitewards_B2BProfessional_Model_Observer</class>
-						<!-- Over Model Class -->
-						<method>saveQuoteAfter</method>
-						<!-- name of function -->
-					</save_after>
-				</observers>
-			</sales_quote_save_after>
-			<sales_quote_load_after> <!-- Event called when Quote Object is loaded -->
-				<observers>
-					<load_after>
-						<type>singleton</type>
-						<class>Sitewards_B2BProfessional_Model_Observer</class>
-						<!-- Over Model Class -->
-						<method>loadQuoteAfter</method>
-						<!-- name of function -->
-					</load_after>
-				</observers>
-			</sales_quote_load_after>
-			<sales_model_service_quote_submit_after> <!-- Event called after order placed -->
-				<observers>
-					<sales_model_service_quote_submit_after>
-						<type>singleton</type>
-						<class>Sitewards_B2BProfessional_Model_Observer</class>
-						<!-- Over Model Class -->
-						<method>saveOrderAfter</method>
-						<!-- name of function -->
-					</sales_model_service_quote_submit_after>
-				</observers>
-			</sales_model_service_quote_submit_after>
-			<sales_order_load_after> <!-- Event called after Order Object is loaded -->
-				<observers>
-					<sales_order_load_after>
-						<type>singleton</type>
-						<class>Sitewards_B2BProfessional_Model_Observer</class>
-						<!-- Over Model Class -->
-						<method>loadOrderAfter</method>
-						<!-- name of function -->
-					</sales_order_load_after>
-				</observers>
-			</sales_order_load_after>
-		</events>
-	</frontend>
-	<adminhtml>
-		<translate>
-			<modules>
-				<Sitewards_B2BProfessional>
-					<files>
-						<default>Sitewards_B2BProfessional.csv</default>
-					</files>
-				</Sitewards_B2BProfessional>
-			</modules>
-		</translate>
-		<layout>
-			<updates>
-				<b2bprofessional>
-					<file>sitewards/b2bprofessional.xml</file>
-				</b2bprofessional>
-			</updates>
-		</layout>
-	</adminhtml>
-	<phpunit>
-		<suite>
-			<modules>
-				<Sitewards_B2BProfessional/>
-			</modules>
-		</suite>
-	</phpunit>
-	<default>
-		<b2bprofessional>
-			<generalsettings>
-				<addtocartredirect>customer/account/login</addtocartredirect>
-			</generalsettings>
-			<languagesettings>
-				<logintext>Please login</logintext>
-				<errortext>Your account is not allowed to access this store.</errortext>
-				<requireloginmessage>You do not have access to view this store.</requireloginmessage>
-			</languagesettings>
-			<requirelogin>
-				<requirelogin>0</requirelogin>
-				<requireloginredirect>customer/account/login</requireloginredirect>
-			</requirelogin>
-			<!--
-				Each of the following sections is to do with replacing html when customer has limited access,
-				They should contain:
-					replace: flag for if the section will be replaced
-					tag: which html tag to look for <p> == p
-					id: the type of identifier for this tag (id, class, href)
-					value: what to look for in the identifier
-					remove: if the section is removed or replaced by text
-					check_cart: flag to check for invalid cart
-			-->
-			<cart_sidebar_totals>
-				<replace>1</replace>
-				<tag>p</tag>
-				<id>class</id>
-				<value>subtotal</value>
-				<remove />
-				<check_cart>1</check_cart>
-			</cart_sidebar_totals>
-			<cart_sidebar_actions>
-				<replace>1</replace>
-				<tag>div</tag>
-				<id>class</id>
-				<value>actions</value>
-				<remove>1</remove>
-				<check_cart>1</check_cart>
-			</cart_sidebar_actions>
-			<cart_item_price>
-				<replace>1</replace>
-				<tag>span</tag>
-				<id>class</id>
-				<value>price</value>
-				<remove />
-				<check_cart>1</check_cart>
-			</cart_item_price>
-			<add_to_cart>
-				<replace>1</replace>
-				<tag>button</tag>
-				<id>onclick</id>
-				<value>remove-add-to-cart</value>
-				<remove>1</remove>
-				<check_cart />
-			</add_to_cart>
-		</b2bprofessional>
-	</default>
+    <modules>
+        <Sitewards_B2BProfessional>
+            <version>3.0.0</version>
+        </Sitewards_B2BProfessional>
+    </modules>
+    <global>
+        <models>
+            <sitewards_b2bprofessional>
+                <class>Sitewards_B2BProfessional_Model</class>
+            </sitewards_b2bprofessional>
+        </models>
+        <helpers>
+            <sitewards_b2bprofessional>
+                <class>Sitewards_B2BProfessional_Helper</class>
+            </sitewards_b2bprofessional>
+        </helpers>
+    </global>
+    <frontend>
+        <events>
+            <catalog_product_is_salable_after>
+                <observers>
+                    <sitewards_b2bprofessional>
+                        <type>singleton</type>
+                        <class>sitewards_b2bprofessional/observer</class>
+                        <method>catalogProductIsSalableAfter</method>
+                    </sitewards_b2bprofessional>
+                </observers>
+            </catalog_product_is_salable_after>
+        </events>
+    </frontend>
+    <default>
+        <b2bprofessional>
+            <generalsettings>
+                <active>0</active>
+            </generalsettings>
+        </b2bprofessional>
+    </default>
 </config>

@@ -2,8 +2,8 @@
 <!--
 /**
  * sytem.xml
- *	- create admin config tab,
- *	- assign admin config fields to sections
+ *  - create admin config tab,
+ *  - assign admin config fields to sections
  *
  * @category    Sitewards
  * @package     Sitewards_B2BProfessional
@@ -11,422 +11,43 @@
  */
 -->
 <config>
-	<tabs>
-		<b2bprofessional translate="label" module="b2bprofessional">
-			<label>B2B Professional</label>
-			<sort_order>301</sort_order>
-		</b2bprofessional>
-	</tabs>
-	<sections>
-		<b2bprofessional translate="label" module="b2bprofessional">
-			<label>B2B Professional</label>
-			<tab>general</tab>
-			<frontend_type>text</frontend_type>
-			<sort_order>990</sort_order>
-			<show_in_default>1</show_in_default>
-			<show_in_website>1</show_in_website>
-			<show_in_store>1</show_in_store>
-			<groups>
-				<generalsettings translate="label">
-					<label>General settings</label>
-					<frontend_type>text</frontend_type>
-					<sort_order>1</sort_order>
-					<show_in_default>1</show_in_default>
-					<show_in_website>1</show_in_website>
-					<show_in_store>1</show_in_store>
-					<fields>
-						<active translate="label,comment">
-							<label>Enable B2B extension</label>
-							<frontend_type>select</frontend_type>
-							<source_model>adminhtml/system_config_source_yesno</source_model>
-							<sort_order>1</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-							<comment><![CDATA[Enable or disable extension. Customer activation behaviour can be configured under <br />"Customer Configuration > Customer activation"]]></comment>
-						</active>
-						<activecustomers translate="label comment">
-							<label>Global customer activation</label>
-							<frontend_type>select</frontend_type>
-							<source_model>adminhtml/system_config_source_yesno</source_model>
-							<sort_order>2</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-							<comment><![CDATA[Activate customers for all stores. Otherwise they will only see the prices in the store, they have registered for.]]></comment>
-						</activecustomers>
-						<addtocartredirect translate="label comment">
-							<label>On 'Add To Cart' Redirect User To Page</label>
-							<frontend_type>select</frontend_type>
-							<source_model>b2bprofessional/system_config_source_page</source_model>
-							<sort_order>3</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-							<comment><![CDATA[Select which page to redirect a user to when they try to add an invalid product to their cart.]]></comment>
-						</addtocartredirect>
-					</fields>
-				</generalsettings>
-				<requirelogin>
-					<label>Require User Login</label>
-					<frontend_type>text</frontend_type>
-					<sort_order>2</sort_order>
-					<show_in_default>1</show_in_default>
-					<show_in_website>1</show_in_website>
-					<show_in_store>1</show_in_store>
-					<fields>
-						<requirelogin translate="label comment">
-							<label>Require User Login</label>
-							<frontend_type>select</frontend_type>
-							<source_model>adminhtml/system_config_source_yesno</source_model>
-							<sort_order>3</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-							<comment><![CDATA[The user is required to login before they can view pages in this shop. <br /> Note: CMS pages are always allowed.]]></comment>
-						</requirelogin>
-						<requireloginredirect translate="label comment">
-							<label>Redirect User To Page</label>
-							<frontend_type>select</frontend_type>
-							<source_model>b2bprofessional/system_config_source_page</source_model>
-							<sort_order>6</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-							<comment><![CDATA[Select which page to redirect a user to.]]></comment>
-						</requireloginredirect>
-					</fields>
-				</requirelogin>
-				<languagesettings translate="label comment">
-					<label>Language settings</label>
-					<frontend_type>text</frontend_type>
-					<sort_order>3</sort_order>
-					<show_in_default>1</show_in_default>
-					<show_in_website>1</show_in_website>
-					<show_in_store>1</show_in_store>
-					<fields>
-						<languageoverride translate="label comment">
-							<label>Override language file</label>
-							<frontend_type>select</frontend_type>
-							<source_model>adminhtml/system_config_source_yesno</source_model>
-							<sort_order>3</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-							<comment><![CDATA[Override language file text with text specified below]]></comment>
-						</languageoverride>
-						<logintext translate="label comment">
-							<label>Custom text for price</label>
-							<frontend_type>textarea</frontend_type>
-							<sort_order>4</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-							<comment><![CDATA[Text to be displayed instead of the prices.<br />Only visible when language override is active.<br />Otherwise text in language file ist used.<br />May contain HTML]]></comment>
-							<depends><languageoverride>1</languageoverride></depends>
-						</logintext>
-						<errortext translate="label comment">
-							<label>Custom text for checkout-error</label>
-							<frontend_type>textarea</frontend_type>
-							<sort_order>5</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-							<comment><![CDATA[Text to be displayed when customer is not allowed to checkout product.<br />Only visible when language override is active.<br />Otherwise text in language file is used.<br />May contain HTML]]></comment>
-							<depends><languageoverride>1</languageoverride></depends>
-						</errortext>
-						<requireloginmessage translate="label comment">
-							<label>Require User Login - Message</label>
-							<frontend_type>textarea</frontend_type>
-							<sort_order>6</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-							<comment><![CDATA[Text to be displayed when the store requires a user to login to view pages<br />Only visible when language override is active.<br />Otherwise text in language file is used.<br />May contain HTML]]></comment>
-							<depends><languageoverride>1</languageoverride></depends>
-						</requireloginmessage>
-					</fields>
-				</languagesettings>
-				<activatebycategorysettings translate="label comment">
-					<label>Activate by category</label>
-					<frontend_type>text</frontend_type>
-					<sort_order>4</sort_order>
-					<show_in_default>1</show_in_default>
-					<show_in_website>1</show_in_website>
-					<show_in_store>1</show_in_store>
-					<fields>
-						<activebycategory translate="label comment">
-							<label>Activate by category</label>
-							<frontend_type>select</frontend_type>
-							<source_model>adminhtml/system_config_source_yesno</source_model>
-							<sort_order>5</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-							<comment><![CDATA[Activate extension only for categories selected below]]></comment>
-						</activebycategory>
-						<activecategories translate="label comment">
-							<label>Active categories</label>
-							<frontend_type>multiselect</frontend_type>
-							<source_model>b2bprofessional/system_config_source_category</source_model>
-							<sort_order>6</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-							<comment><![CDATA[Select categories for which the extension should be active.<br />Hold down Ctrl-key for multiple selection.<br />Be aware, that a product with multiple categories can not be checked out if one of its categories is selected here.]]></comment>
-							<depends><activebycategory>1</activebycategory></depends>
-						</activecategories>
-					</fields>
-				</activatebycategorysettings>
-				<activatebycustomersettings translate="label comment">
-					<label>Activate by customer group</label>
-					<frontend_type>text</frontend_type>
-					<sort_order>5</sort_order>
-					<show_in_default>1</show_in_default>
-					<show_in_website>1</show_in_website>
-					<show_in_store>1</show_in_store>
-					<comment><![CDATA[When activating this extension by customer group the guest user is also included.]]></comment>
-					<fields>
-						<activebycustomer translate="label comment">
-							<label>Activate by customer group</label>
-							<frontend_type>select</frontend_type>
-							<source_model>adminhtml/system_config_source_yesno</source_model>
-							<sort_order>5</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-							<comment><![CDATA[Activate extension only for customer groups selected below]]></comment>
-						</activebycustomer>
-						<activecustomers translate="label comment">
-							<label>Active customer groups</label>
-							<frontend_type>multiselect</frontend_type>
-							<source_model>adminhtml/system_config_source_customer_group</source_model>
-							<sort_order>6</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-							<comment><![CDATA[Select customer groups for which the extension should be active.<br />Hold down Ctrl-key for multiple selection.]]></comment>
-							<depends><activebycustomer>1</activebycustomer></depends>
-						</activecustomers>
-					</fields>
-				</activatebycustomersettings>
-				<cart_sidebar_totals translate="label">
-					<label>Cart Sidebar Totals</label>
-					<frontend_type>text</frontend_type>
-					<sort_order>6</sort_order>
-					<show_in_default>1</show_in_default>
-					<show_in_website>1</show_in_website>
-					<show_in_store>1</show_in_store>
-					<fields>
-						<replace translate="label,comment">
-							<label>Replace the sidebar totals</label>
-							<frontend_type>select</frontend_type>
-							<source_model>adminhtml/system_config_source_yesno</source_model>
-							<sort_order>1</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-						</replace>
-						<tag translate="label comment">
-							<label>What tag wraps the sidebar totals?</label>
-							<frontend_type>select</frontend_type>
-							<source_model>b2bprofessional/system_config_source_tags</source_model>
-							<sort_order>2</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-						</tag>
-						<id translate="label comment">
-							<label>What identifier does this tag have?</label>
-							<frontend_type>select</frontend_type>
-							<source_model>b2bprofessional/system_config_source_identifiers</source_model>
-							<sort_order>3</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-						</id>
-						<value translate="label comment">
-							<label>What value does this identifier have?</label>
-							<frontend_type>text</frontend_type>
-							<sort_order>4</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-						</value>
-						<remove translate="label,comment">
-							<label>Do you want to remove this section completely?</label>
-							<frontend_type>select</frontend_type>
-							<source_model>adminhtml/system_config_source_yesno</source_model>
-							<sort_order>5</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-						</remove>
-					</fields>
-				</cart_sidebar_totals>
-				<cart_sidebar_actions translate="label">
-					<label>Cart Sidebar Actions</label>
-					<frontend_type>text</frontend_type>
-					<sort_order>7</sort_order>
-					<show_in_default>1</show_in_default>
-					<show_in_website>1</show_in_website>
-					<show_in_store>1</show_in_store>
-					<fields>
-						<replace translate="label,comment">
-							<label>Replace the sidebar actions section</label>
-							<frontend_type>select</frontend_type>
-							<source_model>adminhtml/system_config_source_yesno</source_model>
-							<sort_order>1</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-						</replace>
-						<tag translate="label comment">
-							<label>What tag wraps the sidebar actions?</label>
-							<frontend_type>select</frontend_type>
-							<source_model>b2bprofessional/system_config_source_tags</source_model>
-							<sort_order>2</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-						</tag>
-						<id translate="label comment">
-							<label>What identifier does this tag have?</label>
-							<frontend_type>select</frontend_type>
-							<source_model>b2bprofessional/system_config_source_identifiers</source_model>
-							<sort_order>3</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-						</id>
-						<value translate="label comment">
-							<label>What value does this identifier have?</label>
-							<frontend_type>text</frontend_type>
-							<sort_order>4</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-						</value>
-						<remove translate="label,comment">
-							<label>Do you want to remove this section completely?</label>
-							<frontend_type>select</frontend_type>
-							<source_model>adminhtml/system_config_source_yesno</source_model>
-							<sort_order>5</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-						</remove>
-					</fields>
-				</cart_sidebar_actions>
-				<cart_item_price translate="label">
-					<label>Cart Items Price</label>
-					<frontend_type>text</frontend_type>
-					<sort_order>8</sort_order>
-					<show_in_default>1</show_in_default>
-					<show_in_website>1</show_in_website>
-					<show_in_store>1</show_in_store>
-					<fields>
-						<replace translate="label,comment">
-							<label>Replace the cart item prices</label>
-							<frontend_type>select</frontend_type>
-							<source_model>adminhtml/system_config_source_yesno</source_model>
-							<sort_order>1</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-						</replace>
-						<tag translate="label comment">
-							<label>What tag wraps the cart item prices?</label>
-							<frontend_type>select</frontend_type>
-							<source_model>b2bprofessional/system_config_source_tags</source_model>
-							<sort_order>2</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-						</tag>
-						<id translate="label comment">
-							<label>What identifier does this tag have?</label>
-							<frontend_type>select</frontend_type>
-							<source_model>b2bprofessional/system_config_source_identifiers</source_model>
-							<sort_order>3</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-						</id>
-						<value translate="label comment">
-							<label>What value does this identifier have?</label>
-							<frontend_type>text</frontend_type>
-							<sort_order>4</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-						</value>
-						<remove translate="label,comment">
-							<label>Do you want to remove this section completely?</label>
-							<frontend_type>select</frontend_type>
-							<source_model>adminhtml/system_config_source_yesno</source_model>
-							<sort_order>5</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-						</remove>
-					</fields>
-				</cart_item_price>
-				<add_to_cart translate="label">
-					<label>Add to cart button</label>
-					<frontend_type>text</frontend_type>
-					<sort_order>8</sort_order>
-					<show_in_default>1</show_in_default>
-					<show_in_website>1</show_in_website>
-					<show_in_store>1</show_in_store>
-					<fields>
-						<replace translate="label,comment">
-							<label>Replace the add to cart button</label>
-							<frontend_type>select</frontend_type>
-							<source_model>adminhtml/system_config_source_yesno</source_model>
-							<sort_order>1</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-						</replace>
-						<tag translate="label comment">
-							<label>What tag wraps the add to cart button?</label>
-							<frontend_type>select</frontend_type>
-							<source_model>b2bprofessional/system_config_source_tags</source_model>
-							<sort_order>2</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-						</tag>
-						<id translate="label comment">
-							<label>What identifier does this tag have?</label>
-							<frontend_type>select</frontend_type>
-							<source_model>b2bprofessional/system_config_source_identifiers</source_model>
-							<sort_order>3</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-						</id>
-						<value translate="label comment">
-							<label>What value does this identifier have?</label>
-							<frontend_type>text</frontend_type>
-							<sort_order>4</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-						</value>
-						<remove translate="label,comment">
-							<label>Do you want to remove this section completely?</label>
-							<frontend_type>select</frontend_type>
-							<source_model>adminhtml/system_config_source_yesno</source_model>
-							<sort_order>5</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-						</remove>
-					</fields>
-				</add_to_cart>
-			</groups>
-		</b2bprofessional>
-	</sections>
+    <tabs>
+        <b2bprofessional translate="label" module="sitewards_b2bprofessional">
+            <label>B2B Professional</label>
+            <sort_order>301</sort_order>
+        </b2bprofessional>
+    </tabs>
+    <sections>
+        <b2bprofessional translate="label" module="sitewards_b2bprofessional">
+            <label>B2B Professional</label>
+            <tab>general</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>990</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <generalsettings translate="label">
+                    <label>General settings</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <active translate="label,comment">
+                            <label>Enable B2B extension</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Enable or disable extension. Customer activation behaviour can be configured under <br />"Customer Configuration > Customer activation"]]></comment>
+                        </active>
+                    </fields>
+                </generalsettings>
+            </groups>
+        </b2bprofessional>
+    </sections>
 </config>

@@ -2,9 +2,9 @@
 <!--
 /**
  * Sitewards_B2BProfessional.xml
- *	- Activate module,
- *	- Specify code pool,
- *	- Set-up dependencies
+ *  - Activate module,
+ *  - Specify code pool,
+ *  - Set-up dependencies
  *
  * @category    Sitewards
  * @package     Sitewards_B2BProfessional
@@ -12,18 +12,13 @@
  */
 -->
 <config>
-	<modules>
-		<Sitewards_B2BProfessional>
-			<active>true</active>
-			<codePool>community</codePool>
-			<depends>
-				<Mage_Adminhtml />
-				<Mage_Bundle />
-				<Mage_Catalog />
-				<Mage_Checkout />
-				<Mage_Customer />
-				<Netzarbeiter_CustomerActivation />
-			</depends>
-		</Sitewards_B2BProfessional>
-	</modules>
+    <modules>
+        <Sitewards_B2BProfessional>
+            <active>true</active>
+            <codePool>community</codePool>
+            <depends>
+                <Netzarbeiter_CustomerActivation/>
+            </depends>
+        </Sitewards_B2BProfessional>
+    </modules>
 </config>
