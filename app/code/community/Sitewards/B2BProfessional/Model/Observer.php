@@ -18,4 +18,23 @@ class Sitewards_B2BProfessional_Model_Observer
             $oSalable->setIsSalable($oB2BHelper->isProductActive($oProduct));
         }
     }
+
+    /**
+     * Check to see if the product being added to the cart can be bought
+     *
+     * @param Varien_Event_Observer $oObserver
+     * @throws Mage_Catalog_Exception
+     */
+    public function catalogProductTypePrepareFullOptions(Varien_Event_Observer $oObserver)
+    {
+        /** @var Sitewards_B2BProfessional_Helper_Data $oB2BHelper */
+        $oB2BHelper = Mage::helper('sitewards_b2bprofessional');
+        if ($oB2BHelper->isExtensionActive() === true) {
+            $oProduct = $oObserver->getEvent()->getProduct();
+
+            if ($oB2BHelper->isProductActive($oProduct) === false) {
+                throw new Mage_Catalog_Exception('Please log in to buy items');
+            }
+        }
+    }
 }

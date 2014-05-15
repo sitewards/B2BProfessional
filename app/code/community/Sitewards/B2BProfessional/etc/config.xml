@@ -28,6 +28,15 @@
                     </sitewards_b2bprofessional>
                 </observers>
             </catalog_product_is_salable_after>
+            <catalog_product_type_prepare_full_options>
+                <observers>
+                    <sitewards_b2bprofessional>
+                        <type>singleton</type>
+                        <class>sitewards_b2bprofessional/observer</class>
+                        <method>catalogProductTypePrepareFullOptions</method>
+                    </sitewards_b2bprofessional>
+                </observers>
+            </catalog_product_type_prepare_full_options>
         </events>
     </frontend>
     <default>
