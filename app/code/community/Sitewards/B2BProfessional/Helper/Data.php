@@ -1,5 +1,16 @@
 <?php
 
+/**
+ * Sitewards_B2BProfessional_Helper_Data
+ *  - Helper containing the checks for
+ *      - extension is active,
+ *      - product is active,
+ *      - customer is active.
+ *
+ * @category    Sitewards
+ * @package     Sitewards_B2BProfessional
+ * @copyright   Copyright (c) 2014 Sitewards GmbH (http://www.sitewards.com/)
+ */
 class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract
 {
     /**
@@ -19,7 +30,8 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract
      *
      * @return bool
      */
-    public function isExtensionActive() {
+    public function isExtensionActive()
+    {
         if (empty($this->_isExtensionActive)) {
             $this->_isExtensionActive = Mage::getStoreConfigFlag(self::CONFIG_EXTENSION_ACTIVE);
         }

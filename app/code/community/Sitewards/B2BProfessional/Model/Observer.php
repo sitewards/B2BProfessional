@@ -1,5 +1,16 @@
 <?php
 
+/**
+ * Sitewards_B2BProfessional_Model_Observer
+ *  - Observer containing the following event methods
+ *      - catalog_product_is_salable_after - remove add to cart buttons,
+ *      - catalog_product_type_prepare_full_options - stop product being added to cart via url
+ *      - core_block_abstract_to_html_after - remove price from product pages
+ *
+ * @category    Sitewards
+ * @package     Sitewards_B2BProfessional
+ * @copyright   Copyright (c) 2014 Sitewards GmbH (http://www.sitewards.com/)
+ */
 class Sitewards_B2BProfessional_Model_Observer
 {
     /**
@@ -50,7 +61,7 @@ class Sitewards_B2BProfessional_Model_Observer
             $oProduct = $oObserver->getEvent()->getProduct();
 
             if ($oB2BHelper->isProductActive($oProduct) === false) {
-                throw new Mage_Catalog_Exception('Please log in to buy items');
+                throw new Mage_Catalog_Exception($oB2BHelper->__('Please login'));
             }
         }
     }
@@ -75,7 +86,7 @@ class Sitewards_B2BProfessional_Model_Observer
                     if ($iCurrentProductId !== self::$_iLastProductId) {
                         self::$_iLastProductId = $iCurrentProductId;
 
-                        $oTransport->setHtml('Please login to see price');
+                        $oTransport->setHtml($oB2BHelper->__('Please login'));
                     } else {
                         $oTransport->setHtml('');
                     }
