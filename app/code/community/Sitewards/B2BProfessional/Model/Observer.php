@@ -150,6 +150,79 @@ class Sitewards_B2BProfessional_Model_Observer
     }
 
     /**
+     * Remove the price option from the order by options
+     *  - TODO: we should try to check if it is possible to only remove this if not needed
+     * 
+     * @param Varien_Event_Observer $oObserver
+     */
+    public function coreBlockAbstractToHtmlBefore(Varien_Event_Observer $oObserver)
+    {
+        /** @var Sitewards_B2BProfessional_Helper_Data $oB2BHelper */
+        $oB2BHelper = Mage::helper('sitewards_b2bprofessional');
+        if ($oB2BHelper->isExtensionActive() === true) {
+            $oBlock = $oObserver->getData('block');
+
+            // TODO: we should check if we should remove the price not just remove it always
+            if ($oBlock instanceof Mage_Catalog_Block_Product_List_Toolbar) {
+                $oBlock->removeOrderFromAvailableOrders('price');
+            }
+        }
+    }
+
+    /**
+     * If we have a Mage_Catalog_Block_Layer_View
+     *     - remove the price attribute
+     *
+     * @param Varien_Event_Observer $oObserver
+     */
+    public function coreLayoutBlockCreateAfter(Varien_Event_Observer $oObserver)
+    {
+        /* @var Sitewards_B2BProfessional_Helper_Data $oB2BHelper */
+        $oB2BHelper = Mage::helper('sitewards_b2bprofessional');
+        if ($oB2BHelper->isExtensionActive()) {
+            $oBlock = $oObserver->getData('block');
+            if ($oBlock instanceof Mage_Catalog_Block_Layer_View) {
+                /* @var $oCategoryFilter Mage_Catalog_Block_Layer_Filter_Category */
+                $oCategoryFilter = $oBlock->getChild('category_filter');
+                $aCategoryOptions = array();
+                if ($oCategoryFilter instanceof Mage_Catalog_Block_Layer_Filter_Category) {
+                    $oCategories = $oCategoryFilter->getItems();
+                    foreach ($oCategories as $oCategory) {
+                        /* @var $oCategory Mage_Catalog_Model_Layer_Filter_Item */
+                        $iCategoryId = $oCategory->getValue();
+                        $aCategoryOptions[] = $iCategoryId;
+                    }
+
+                    if (empty($aCategoryOptions)) {
+                        /* @var $oCategory Mage_Catalog_Model_Category */
+                        $oCategory = Mage::registry('current_category_filter');
+                        if (is_null($oCategory)) {
+                            $oCategory = Mage::registry('current_category');
+                            if (is_null($oCategory)) {
+                                $oCategory = Mage::getModel('catalog/category')->load(
+                                    Mage::app()->getStore()->getRootCategoryId()
+                                );
+                            }
+                        }
+                        $aCategoryOptions[] = $oCategory->getId();
+                    }
+                }
+
+                if ($oB2BHelper->hasActiveCategories($aCategoryOptions)) {
+                    $aFilterableAttributes = $oBlock->getData('_filterable_attributes');
+                    $aNewFilterableAttributes = array();
+                    foreach ($aFilterableAttributes as $oFilterableAttribute) {
+                        if ($oFilterableAttribute->getAttributeCode() != 'price') {
+                            $aNewFilterableAttributes[] = $oFilterableAttribute;
+                        }
+                    }
+                    $oBlock->setData('_filterable_attributes', $aNewFilterableAttributes);
+                }
+            }
+        }
+    }
+
+    /**
      * checks if the block represents a price block
      *
      * @param Mage_Core_Block_Abstract $oBlock

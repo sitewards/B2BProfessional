@@ -37,6 +37,15 @@
                     </sitewards_b2bprofessional>
                 </observers>
             </catalog_product_type_prepare_full_options>
+            <core_block_abstract_to_html_before>
+                <observers>
+                    <sitewards_b2bprofessional>
+                        <type>singleton</type>
+                        <class>sitewards_b2bprofessional/observer</class>
+                        <method>coreBlockAbstractToHtmlBefore</method>
+                    </sitewards_b2bprofessional>
+                </observers>
+            </core_block_abstract_to_html_before>
             <core_block_abstract_to_html_after>
                 <observers>
                     <sitewards_b2bprofessional>
@@ -46,6 +55,15 @@
                     </sitewards_b2bprofessional>
                 </observers>
             </core_block_abstract_to_html_after>
+            <core_layout_block_create_after>
+                <observers>
+                    <sitewards_b2bprofessional>
+                        <type>singleton</type>
+                        <class>sitewards_b2bprofessional/observer</class>
+                        <method>coreLayoutBlockCreateAfter</method>
+                    </sitewards_b2bprofessional>
+                </observers>
+            </core_layout_block_create_after>
             <controller_action_predispatch>
                 <observers>
                     <sitewards_b2bprofessional>

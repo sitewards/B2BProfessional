@@ -54,7 +54,7 @@ class Sitewards_B2BProfessional_Helper_Category extends Mage_Core_Helper_Abstrac
                 $aCurrentCategories
             );
         }
-        return $this->_hasActiveCategory($aCurrentCategories);
+        return $this->hasActiveCategory($aCurrentCategories);
     }
 
     /**
@@ -63,7 +63,7 @@ class Sitewards_B2BProfessional_Helper_Category extends Mage_Core_Helper_Abstrac
      * @param array $aCategoryIds
      * @return bool
      */
-    protected function _hasActiveCategory($aCategoryIds)
+    public function hasActiveCategory($aCategoryIds)
     {
         $aActiveCategoryIds = $this->getActiveCategories();
         foreach ($aCategoryIds as $iCategoryId) {

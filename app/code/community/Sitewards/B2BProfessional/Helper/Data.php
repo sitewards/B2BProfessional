@@ -59,4 +59,24 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract
 
         return $bIsProductActive;
     }
+
+    /**
+     * From an array of category ids check to see if any are disabled via the extension
+     *
+     * @param array $aCategoryIds
+     * @return bool
+     */
+    public function hasActiveCategories($aCategoryIds) {
+        $bHasCategories = false;
+        if ($this->isExtensionActive() === true) {
+            $bHasCategories = !Mage::helper('sitewards_b2bprofessional/customer')->isCustomerActive();
+            /** @var Sitewards_B2BProfessional_Helper_Category $oCategoryHelper */
+            $oCategoryHelper = Mage::helper('sitewards_b2bprofessional/category');
+            $bCheckCategory = $oCategoryHelper->isExtensionActivatedByCategory();
+            if ($bCheckCategory === true) {
+                $bHasCategories = $oCategoryHelper->hasActiveCategory($aCategoryIds);
+            }
+        }
+        return $bHasCategories;
+    }
 }
