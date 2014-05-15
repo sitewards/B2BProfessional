@@ -5,7 +5,6 @@
  *  - Helper containing the checks for
  *      - extension is active,
  *      - product is active,
- *      - customer is active.
  *
  * @category    Sitewards
  * @package     Sitewards_B2BProfessional
@@ -49,25 +48,9 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract
     {
         $bIsProductActive = true;
         if ($this->isExtensionActive() === true) {
-            $bIsProductActive = $this->isCustomerActive();
+            $bIsProductActive = Mage::helper('sitewards_b2bprofessional/customer')->isCustomerActive();
         }
 
         return $bIsProductActive;
-    }
-
-    /**
-     * Check to see if the customer is active
-     *  - If customer is not logged in than they are not active
-     *
-     * @return bool
-     */
-    public function isCustomerActive()
-    {
-        $bIsCustomerActive = true;
-        if (Mage::helper('customer')->isLoggedIn() === false) {
-            $bIsCustomerActive = false;
-        }
-
-        return $bIsCustomerActive;
     }
 }

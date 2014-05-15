@@ -46,6 +46,15 @@
                     </sitewards_b2bprofessional>
                 </observers>
             </core_block_abstract_to_html_after>
+            <controller_action_predispatch>
+                <observers>
+                    <sitewards_b2bprofessional>
+                        <type>singleton</type>
+                        <class>sitewards_b2bprofessional/observer</class>
+                        <method>controllerActionPredispatch</method>
+                    </sitewards_b2bprofessional>
+                </observers>
+            </controller_action_predispatch>
         </events>
     </frontend>
     <default>
@@ -53,6 +62,10 @@
             <generalsettings>
                 <active>0</active>
             </generalsettings>
+            <requirelogin>
+                <requirelogin>0</requirelogin>
+                <requireloginredirect>customer/account/login</requireloginredirect>
+            </requirelogin>
         </b2bprofessional>
     </default>
 </config>

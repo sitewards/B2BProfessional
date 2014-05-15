@@ -68,12 +68,12 @@ class Sitewards_B2BProfessional_Model_Observer
 
     public function coreBlockAbstractToHtmlAfter(Varien_Event_Observer $oObserver)
     {
-        $oBlock = $oObserver->getData('block');
-        $oTransport = $oObserver->getData('transport');
-
         /** @var Sitewards_B2BProfessional_Helper_Data $oB2BHelper */
         $oB2BHelper = Mage::helper('sitewards_b2bprofessional');
         if ($oB2BHelper->isExtensionActive() === true) {
+            $oBlock = $oObserver->getData('block');
+            $oTransport = $oObserver->getData('transport');
+
             /*
              * Check to see if we should remove the product price
              */
@@ -98,6 +98,52 @@ class Sitewards_B2BProfessional_Model_Observer
                     ) {
                         $oProduct->setTypeId('combined');
                     }
+                }
+            }
+        }
+    }
+
+    /**
+     * Check to see if the user will need to be redirected to the login page or another saved via the admin
+     *
+     * @param Varien_Event_Observer $oObserver
+     */
+    public function controllerActionPredispatch(Varien_Event_Observer $oObserver)
+    {
+        /** @var Sitewards_B2BProfessional_Helper_Data $oB2BHelper */
+        $oB2BHelper = Mage::helper('sitewards_b2bprofessional');
+        if ($oB2BHelper->isExtensionActive() === true) {
+            /* @var $oControllerAction Mage_Core_Controller_Front_Action */
+            $oControllerAction = $oObserver->getData('controller_action');
+
+            /* @var $oB2BCustomerHelper Sitewards_B2BProfessional_Helper_Customer */
+            $oB2BCustomerHelper = Mage::helper('sitewards_b2bprofessional/customer');
+
+            /*
+             * Check to see if the system requires a login
+             * And there is no logged in user
+             */
+            if ($oB2BCustomerHelper->isLoginRequired() == true && !$oB2BCustomerHelper->isCustomerActive()) {
+                $oB2BRedirectsHelper = Mage::helper('sitewards_b2bprofessional/redirects');
+
+                if ($oB2BRedirectsHelper->isRedirectRequired($oControllerAction)) {
+                    /* @var $oResponse Mage_Core_Controller_Response_Http */
+                    $oResponse = $oControllerAction->getResponse();
+                    $oResponse->setRedirect(
+                        $oB2BRedirectsHelper->getRedirect(
+                            $oB2BRedirectsHelper::REDIRECT_TYPE_LOGIN
+                        )
+                    );
+
+                    /*
+                     * Add message to the session
+                     *  - Note:
+                     *      We need session_write_close otherwise the messages get lots in redirect
+                     */
+                    /* @var $oSession Mage_Core_Model_Session */
+                    $oSession = Mage::getSingleton('core/session');
+                    $oSession->addNotice($oB2BHelper->__('Please login'));
+                    session_write_close();
                 }
             }
         }
