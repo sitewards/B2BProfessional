@@ -66,6 +66,11 @@ class Sitewards_B2BProfessional_Model_Observer
         }
     }
 
+    /**
+     * Replace the price information with the desired message
+     * 
+     * @param Varien_Event_Observer $oObserver
+     */
     public function coreBlockAbstractToHtmlAfter(Varien_Event_Observer $oObserver)
     {
         /** @var Sitewards_B2BProfessional_Helper_Data $oB2BHelper */
@@ -152,7 +157,7 @@ class Sitewards_B2BProfessional_Model_Observer
     /**
      * Remove the price option from the order by options
      *  - TODO: we should try to check if it is possible to only remove this if not needed
-     * 
+     *
      * @param Varien_Event_Observer $oObserver
      */
     public function coreBlockAbstractToHtmlBefore(Varien_Event_Observer $oObserver)
