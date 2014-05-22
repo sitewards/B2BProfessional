@@ -1,11 +1,17 @@
 {
     "name": "sitewards/b2b_professional",
-	"license": "OSL-3.0",
+    "license": "OSL-3.0",
     "type": "magento-module",
     "description": "The Sitewards B2B Extension extends your webshop with some essential functions to realize a B2B Store",
     "homepage": "http://www.sitewards.com",
     "require": {
         "magento-hackathon/magento-composer-installer": "*",
-		"netzarbeiter/customer-activation": "*"
-    }
+        "netzarbeiter/customer-activation": "*"
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "http://packages.firegento.com"
+        }
+    ]
 }
