@@ -44,7 +44,7 @@ class Sitewards_B2BProfessional_Model_Observer
             $oProduct = $oObserver->getEvent()->getProduct();
             $oSalable = $oObserver->getEvent()->getSalable();
 
-            if ($oSalable->setIsSalable() == true) {
+            if ($oSalable->getIsSalable() == true) {
                 $oSalable->setIsSalable($oB2BHelper->isProductActive($oProduct));
             }
         }

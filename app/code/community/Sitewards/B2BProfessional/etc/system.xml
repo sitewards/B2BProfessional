@@ -110,6 +110,40 @@
                         </activecategories>
                     </fields>
                 </activatebycategorysettings>
+                <activatebycustomersettings translate="label comment">
+                    <label>Activate by customer group</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>5</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <comment><![CDATA[When activating this extension by customer group users in the selected group will not be able to see prices, plus the guest user is also included.]]></comment>
+                    <fields>
+                        <activebycustomer translate="label comment">
+                            <label>Activate by customer group</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Activate extension only for customer groups selected below]]></comment>
+                        </activebycustomer>
+                        <activecustomers translate="label comment">
+                            <label>Active customer groups</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>adminhtml/system_config_source_customer_group</source_model>
+                            <sort_order>6</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Select customer groups for which the extension should be active.<br />Hold down Ctrl-key for multiple selection.]]></comment>
+                            <depends>
+                                <activebycustomer>1</activebycustomer>
+                            </depends>
+                        </activecustomers>
+                    </fields>
+                </activatebycustomersettings>
             </groups>
         </b2bprofessional>
     </sections>

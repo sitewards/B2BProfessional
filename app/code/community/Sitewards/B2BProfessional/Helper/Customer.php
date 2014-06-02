@@ -13,6 +13,28 @@
 class Sitewards_B2BProfessional_Helper_Customer extends Mage_Core_Helper_Abstract
 {
     /**
+     * Path for the config for extension requires login
+     */
+    const CONFIG_EXTENSION_REQUIRES_LOGIN = 'b2bprofessional/requirelogin/requirelogin';
+
+    /**
+     * Path for the config for extension is active by customer group
+     */
+    const CONFIG_EXTENSION_ACTIVE_BY_CUSTOMER_GROUP = 'b2bprofessional/activatebycustomersettings/activebycustomer';
+
+    /**
+     * Path for the config for customer groups that are activated
+     */
+    const CONFIG_EXTENSION_ACTIVE_CUSTOMER_GROUPS = 'b2bprofessional/activatebycustomersettings/activecustomers';
+
+    /**
+     * Array of activated customer group ids
+     *
+     * @var array [customer_group_id, customer_group_id]
+     */
+    protected $_aActivatedCustomerGroupIds;
+
+    /**
      * Check to see if the customer is active
      *  - If customer is not logged in than they are not active
      *
@@ -29,12 +51,63 @@ class Sitewards_B2BProfessional_Helper_Customer extends Mage_Core_Helper_Abstrac
     }
 
     /**
+     * Check to see if the customer's group is active
+     *
+     * @return bool
+     */
+    public function isCustomerGroupActive()
+    {
+        /* @var $oCustomerSession Mage_Customer_Model_Session */
+        $oCustomerSession = Mage::getModel('customer/session');
+        $iCurrentCustomerGroupId = $oCustomerSession->getCustomerGroupId();
+        $aActiveCustomerGroupIds = $this->getActivatedCustomerGroupIds();
+
+        if (in_array($iCurrentCustomerGroupId, $aActiveCustomerGroupIds)) {
+            return true;
+        }
+    }
+
+    /**
      * Check to see if the website is set-up to require a user login to view pages
      *
      * @return boolean
      */
     public function isLoginRequired()
     {
-        return Mage::getStoreConfigFlag('b2bprofessional/requirelogin/requirelogin');
+        return Mage::getStoreConfigFlag(self::CONFIG_EXTENSION_REQUIRES_LOGIN);
+    }
+
+    /**
+     * Check to see if the extension is activated by customer group
+     *
+     * @return bool
+     */
+    public function isExtensionActivatedByCustomerGroup()
+    {
+        return Mage::getStoreConfigFlag(self::CONFIG_EXTENSION_ACTIVE_BY_CUSTOMER_GROUP);
+    }
+
+    /**
+     * Get an array of all the activated customer group ids
+     *  - always include the 'NOT LOGGED IN' group
+     *
+     * @return array
+     */
+    private function getActivatedCustomerGroupIds()
+    {
+        if (empty($this->_aActivatedCustomerGroupIds)) {
+            /*
+             * Customer group ids are saved in the config in format
+             *  - "group1,group2"
+             */
+            $sActivatedCustomerGroups = Mage::getStoreConfig(self::CONFIG_EXTENSION_ACTIVE_CUSTOMER_GROUPS);
+            $this->_aActivatedCustomerGroupIds = explode(',', $sActivatedCustomerGroups);
+
+            /*
+             * Always add the guest user group id when activated by customer group
+             */
+            $this->_aActivatedCustomerGroupIds[] = Mage_Customer_Model_Group::NOT_LOGGED_IN_ID;
+        }
+        return $this->_aActivatedCustomerGroupIds;
     }
 }

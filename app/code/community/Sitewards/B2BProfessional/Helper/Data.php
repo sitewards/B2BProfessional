@@ -33,6 +33,13 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract
     protected $_isExtensionActiveByCategory;
 
     /**
+     * Variable for if the extension is active by customer group
+     *
+     * @var bool
+     */
+    protected $_isExtensionActiveByCustomerGroup;
+
+    /**
      * Check to see if the extension is active
      *
      * @return bool
@@ -61,6 +68,21 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * Check to see if the extension is active by user group
+     *
+     * @return bool
+     */
+    public function isExtensionActivatedByCustomerGroup()
+    {
+        if (empty($this->_isExtensionActiveByCustomerGroup)) {
+            $this->_isExtensionActiveByCustomerGroup = Mage::helper(
+                'sitewards_b2bprofessional/customer'
+            )->isExtensionActivatedByCustomerGroup();
+        }
+        return $this->_isExtensionActiveByCustomerGroup;
+    }
+
+    /**
      * Check to see if the given product is active
      *  - In this case active means product behaves as normal in a magento shop
      *
@@ -74,13 +96,29 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract
             $bIsCustomerActive = $this->isCustomerActive();
 
             $bCheckCategory = $this->isExtensionActiveByCategory();
+            $bCheckUser = $this->isExtensionActivatedByCustomerGroup();
             if (
+                $bCheckCategory === true
+                && $bCheckUser === true
+            ) {
+                $bIsCategoryActive = Mage::helper('sitewards_b2bprofessional/category')->isCategoryActiveByProduct(
+                    $oProduct
+                );
+                $bIsUserGroupActive = Mage::helper('sitewards_b2bprofessional/customer')->isCustomerGroupActive();
+                $bIsProductActive = !($bIsCategoryActive && $bIsUserGroupActive);
+            } else if (
+                $bCheckUser === true
+            ) {
+                $bIsProductActive = !Mage::helper('sitewards_b2bprofessional/customer')->isCustomerGroupActive();
+            } else if (
                 $bCheckCategory === true
                 && $bIsCustomerActive === false
             ) {
                 $bIsProductActive = !Mage::helper('sitewards_b2bprofessional/category')->isCategoryActiveByProduct(
                     $oProduct
                 );
+            } else {
+                $bIsProductActive = $bIsCustomerActive;
             }
         }
 
@@ -100,11 +138,26 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract
             $bIsCustomerActive = $this->isCustomerActive();
 
             $bCheckCategory = $this->isExtensionActiveByCategory();
+            $bCheckUser = $this->isExtensionActivatedByCustomerGroup();
             if (
+                $bCheckCategory === true
+                && $bCheckUser === true
+            ) {
+                $bHasActiveCategories = Mage::helper('sitewards_b2bprofessional/category')->hasActiveCategory($aCategoryIds);
+                $bIsUserGroupActive = Mage::helper('sitewards_b2bprofessional/customer')->isCustomerGroupActive();
+
+                $bHasCategories = $bHasActiveCategories && $bIsUserGroupActive;
+            } else if (
+                $bCheckUser === true
+            ) {
+                $bHasCategories = Mage::helper('sitewards_b2bprofessional/customer')->isCustomerGroupActive();
+            } else if (
                 $bCheckCategory === true
                 && $bIsCustomerActive === false
             ) {
                 $bHasCategories = Mage::helper('sitewards_b2bprofessional/category')->hasActiveCategory($aCategoryIds);
+            } else {
+                $bHasCategories = !$bIsCustomerActive;
             }
         }
         return $bHasCategories;
