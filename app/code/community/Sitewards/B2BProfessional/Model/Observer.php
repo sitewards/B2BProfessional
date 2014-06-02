@@ -32,6 +32,7 @@ class Sitewards_B2BProfessional_Model_Observer
 
     /**
      * Check to see if a product can be sold to the current logged in user
+     *  - if the flag of salable is already false then we should do nothing
      *
      * @param Varien_Event_Observer $oObserver
      */
@@ -43,7 +44,7 @@ class Sitewards_B2BProfessional_Model_Observer
             $oProduct = $oObserver->getEvent()->getProduct();
             $oSalable = $oObserver->getEvent()->getSalable();
 
-            if ($oSalable->setIsSalable() === true) {
+            if ($oSalable->setIsSalable() == true) {
                 $oSalable->setIsSalable($oB2BHelper->isProductActive($oProduct));
             }
         }
