@@ -32,7 +32,7 @@ class Sitewards_B2BProfessional_Helper_Customer extends Mage_Core_Helper_Abstrac
      *
      * @var array [customer_group_id, customer_group_id]
      */
-    protected $_aActivatedCustomerGroupIds;
+    protected $_aActivatedCustomerGroupIds = array();
 
     /**
      * Check to see if the customer is active

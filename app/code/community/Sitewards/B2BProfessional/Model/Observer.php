@@ -64,14 +64,16 @@ class Sitewards_B2BProfessional_Model_Observer
             $oProduct = $oObserver->getEvent()->getProduct();
 
             if ($oB2BHelper->isProductActive($oProduct) === false) {
-                throw new Mage_Catalog_Exception($oB2BHelper->__('Please login'));
+                /** @var Sitewards_B2BProfessional_Helper_Messages $oMessageHelper */
+                $oMessageHelper = Mage::helper('sitewards_b2bprofessional/messages');
+                throw new Mage_Catalog_Exception($oMessageHelper->getMessage($oMessageHelper::MESSAGE_TYPE_CHECKOUT));
             }
         }
     }
 
     /**
      * Replace the price information with the desired message
-     * 
+     *
      * @param Varien_Event_Observer $oObserver
      */
     public function coreBlockAbstractToHtmlAfter(Varien_Event_Observer $oObserver)
@@ -94,7 +96,9 @@ class Sitewards_B2BProfessional_Model_Observer
                     if ($iCurrentProductId !== self::$_iLastProductId) {
                         self::$_iLastProductId = $iCurrentProductId;
 
-                        $oTransport->setHtml($oB2BHelper->__('Please login'));
+                        /** @var Sitewards_B2BProfessional_Helper_Messages $oMessageHelper */
+                        $oMessageHelper = Mage::helper('sitewards_b2bprofessional/messages');
+                        $oTransport->setHtml($oMessageHelper->getMessage($oMessageHelper::MESSAGE_TYPE_PRICE));
                     } else {
                         $oTransport->setHtml('');
                     }
@@ -150,7 +154,9 @@ class Sitewards_B2BProfessional_Model_Observer
                      */
                     /* @var $oSession Mage_Core_Model_Session */
                     $oSession = Mage::getSingleton('core/session');
-                    $oSession->addNotice($oB2BHelper->__('Please login'));
+                    /** @var Sitewards_B2BProfessional_Helper_Messages $oMessageHelper */
+                    $oMessageHelper = Mage::helper('sitewards_b2bprofessional/messages');
+                    $oSession->addNotice($oMessageHelper->getMessage($oMessageHelper::MESSAGE_TYPE_LOGIN));
                     session_write_close();
                 }
             }

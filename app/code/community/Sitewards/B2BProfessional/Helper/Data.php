@@ -46,7 +46,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function isExtensionActive()
     {
-        if (empty($this->_isExtensionActive)) {
+        if (is_null($this->_isExtensionActive)) {
             $this->_isExtensionActive = Mage::getStoreConfigFlag(self::CONFIG_EXTENSION_ACTIVE);
         }
         return $this->_isExtensionActive;
@@ -59,7 +59,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function isExtensionActiveByCategory()
     {
-        if (empty($this->_isExtensionActiveByCategory)) {
+        if (is_null($this->_isExtensionActiveByCategory)) {
             $this->_isExtensionActiveByCategory = Mage::helper(
                 'sitewards_b2bprofessional/category'
             )->isExtensionActivatedByCategory();
@@ -74,7 +74,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function isExtensionActivatedByCustomerGroup()
     {
-        if (empty($this->_isExtensionActiveByCustomerGroup)) {
+        if (is_null($this->_isExtensionActiveByCustomerGroup)) {
             $this->_isExtensionActiveByCustomerGroup = Mage::helper(
                 'sitewards_b2bprofessional/customer'
             )->isExtensionActivatedByCustomerGroup();
