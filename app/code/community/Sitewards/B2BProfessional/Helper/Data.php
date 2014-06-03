@@ -97,24 +97,27 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract
 
             $bCheckCategory = $this->isExtensionActiveByCategory();
             $bCheckUser = $this->isExtensionActivatedByCustomerGroup();
+
+            /** @var Sitewards_B2BProfessional_Helper_Category $oCategoryHelper */
+            $oCategoryHelper = Mage::helper('sitewards_b2bprofessional/category');
+            /** @var Sitewards_B2BProfessional_Helper_Customer $oCustomerHelper */
+            $oCustomerHelper = Mage::helper('sitewards_b2bprofessional/customer');
             if (
                 $bCheckCategory === true
                 && $bCheckUser === true
             ) {
-                $bIsCategoryActive = Mage::helper('sitewards_b2bprofessional/category')->isCategoryActiveByProduct(
-                    $oProduct
-                );
-                $bIsUserGroupActive = Mage::helper('sitewards_b2bprofessional/customer')->isCustomerGroupActive();
+                $bIsCategoryActive = $oCategoryHelper->isCategoryActiveByProduct($oProduct);
+                $bIsUserGroupActive = $oCustomerHelper->isCustomerGroupActive();
                 $bIsProductActive = !($bIsCategoryActive && $bIsUserGroupActive);
             } else if (
                 $bCheckUser === true
             ) {
-                $bIsProductActive = !Mage::helper('sitewards_b2bprofessional/customer')->isCustomerGroupActive();
+                $bIsProductActive = !$oCustomerHelper->isCustomerGroupActive();
             } else if (
                 $bCheckCategory === true
                 && $bIsCustomerActive === false
             ) {
-                $bIsProductActive = !Mage::helper('sitewards_b2bprofessional/category')->isCategoryActiveByProduct(
+                $bIsProductActive = !$oCategoryHelper->isCategoryActiveByProduct(
                     $oProduct
                 );
             } else {
@@ -128,7 +131,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * From an array of category ids check to see if any are disabled via the extension
      *
-     * @param array $aCategoryIds
+     * @param array<int> $aCategoryIds
      * @return bool
      */
     public function hasActiveCategories($aCategoryIds)
@@ -139,23 +142,28 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract
 
             $bCheckCategory = $this->isExtensionActiveByCategory();
             $bCheckUser = $this->isExtensionActivatedByCustomerGroup();
+
+            /** @var Sitewards_B2BProfessional_Helper_Category $oCategoryHelper */
+            $oCategoryHelper = Mage::helper('sitewards_b2bprofessional/category');
+            /** @var Sitewards_B2BProfessional_Helper_Customer $oCustomerHelper */
+            $oCustomerHelper = Mage::helper('sitewards_b2bprofessional/customer');
             if (
                 $bCheckCategory === true
                 && $bCheckUser === true
             ) {
-                $bHasActiveCategories = Mage::helper('sitewards_b2bprofessional/category')->hasActiveCategory($aCategoryIds);
-                $bIsUserGroupActive = Mage::helper('sitewards_b2bprofessional/customer')->isCustomerGroupActive();
+                $bHasActiveCategories = $oCategoryHelper->hasActiveCategory($aCategoryIds);
+                $bIsUserGroupActive = $oCustomerHelper->isCustomerGroupActive();
 
                 $bHasCategories = $bHasActiveCategories && $bIsUserGroupActive;
             } else if (
                 $bCheckUser === true
             ) {
-                $bHasCategories = Mage::helper('sitewards_b2bprofessional/customer')->isCustomerGroupActive();
+                $bHasCategories = $oCustomerHelper->isCustomerGroupActive();
             } else if (
                 $bCheckCategory === true
                 && $bIsCustomerActive === false
             ) {
-                $bHasCategories = Mage::helper('sitewards_b2bprofessional/category')->hasActiveCategory($aCategoryIds);
+                $bHasCategories = $oCategoryHelper->hasActiveCategory($aCategoryIds);
             } else {
                 $bHasCategories = !$bIsCustomerActive;
             }

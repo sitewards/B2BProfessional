@@ -30,7 +30,7 @@ class Sitewards_B2BProfessional_Helper_Customer extends Mage_Core_Helper_Abstrac
     /**
      * Array of activated customer group ids
      *
-     * @var array [customer_group_id, customer_group_id]
+     * @var array<int>
      */
     protected $_aActivatedCustomerGroupIds = array();
 
@@ -62,15 +62,13 @@ class Sitewards_B2BProfessional_Helper_Customer extends Mage_Core_Helper_Abstrac
         $iCurrentCustomerGroupId = $oCustomerSession->getCustomerGroupId();
         $aActiveCustomerGroupIds = $this->getActivatedCustomerGroupIds();
 
-        if (in_array($iCurrentCustomerGroupId, $aActiveCustomerGroupIds)) {
-            return true;
-        }
+        return in_array($iCurrentCustomerGroupId, $aActiveCustomerGroupIds);
     }
 
     /**
      * Check to see if the website is set-up to require a user login to view pages
      *
-     * @return boolean
+     * @return bool
      */
     public function isLoginRequired()
     {
@@ -91,7 +89,7 @@ class Sitewards_B2BProfessional_Helper_Customer extends Mage_Core_Helper_Abstrac
      * Get an array of all the activated customer group ids
      *  - always include the 'NOT LOGGED IN' group
      *
-     * @return array
+     * @return array<int>
      */
     private function getActivatedCustomerGroupIds()
     {

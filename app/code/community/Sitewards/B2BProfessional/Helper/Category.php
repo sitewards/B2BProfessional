@@ -32,7 +32,7 @@ class Sitewards_B2BProfessional_Helper_Category extends Mage_Core_Helper_Abstrac
     /**
      * Check to see if the website is set-up to require a user login to view pages
      *
-     * @return boolean
+     * @return bool
      */
     public function isExtensionActivatedByCategory()
     {
@@ -46,7 +46,7 @@ class Sitewards_B2BProfessional_Helper_Category extends Mage_Core_Helper_Abstrac
      * Validate that the category of a give product is activated in the module
      *
      * @param Mage_Catalog_Model_Product $oProduct
-     * @return boolean
+     * @return bool
      */
     public function isCategoryActiveByProduct(Mage_Catalog_Model_Product $oProduct)
     {
@@ -79,7 +79,7 @@ class Sitewards_B2BProfessional_Helper_Category extends Mage_Core_Helper_Abstrac
     /**
      * Check that at least one of the given category ids is active
      *
-     * @param array $aCategoryIds
+     * @param array<int> $aCategoryIds
      * @return bool
      */
     public function hasActiveCategory($aCategoryIds)
@@ -97,11 +97,7 @@ class Sitewards_B2BProfessional_Helper_Category extends Mage_Core_Helper_Abstrac
      * Get all category ids activated via the system config
      *  - Include the children category ids
      *
-     * @return array
-     * array(
-     *  cat_id_1,
-     *  cat_id_2
-     * )
+     * @return array<int>
      */
     protected function getActiveCategories()
     {
@@ -120,7 +116,7 @@ class Sitewards_B2BProfessional_Helper_Category extends Mage_Core_Helper_Abstrac
     /**
      * Get an array of category ids activated via the admin config section
      *
-     * @return array
+     * @return array<int>
      */
     protected function _getActivatedCategoryIds()
     {
@@ -136,16 +132,8 @@ class Sitewards_B2BProfessional_Helper_Category extends Mage_Core_Helper_Abstrac
      * From given category id load all child ids into an array
      *
      * @param int $iCategoryId
-     * @param array $aCurrentCategories
-     *    array(
-     *        cat_id_1,
-     *        cat_id_2
-     *    )
-     * @return array
-     *    array(
-     *        cat_id_1,
-     *        cat_id_2
-     *    )
+     * @param array<int> $aCurrentCategories
+     * @return array<int>
      */
     protected function _addCategoryChildren($iCategoryId, $aCurrentCategories = array())
     {
