@@ -92,4 +92,11 @@
             </languagesettings>
         </b2bprofessional>
     </default>
+    <phpunit>
+        <suite>
+            <modules>
+                <Sitewards_B2BProfessional/>
+            </modules>
+        </suite>
+    </phpunit>
 </config>
