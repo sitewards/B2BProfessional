@@ -8,7 +8,7 @@
  *
  * @category    Sitewards
  * @package     Sitewards_B2BProfessional
- * @copyright   Copyright (c) 2012 Sitewards GmbH (http://www.sitewards.com/)
+ * @copyright   Copyright (c) 2014 Sitewards GmbH (http://www.sitewards.com/)
  */
 -->
 <config>
@@ -17,6 +17,8 @@
             <active>true</active>
             <codePool>community</codePool>
             <depends>
+                <Mage_Catalog />
+                <Mage_Customer />
                 <Netzarbeiter_CustomerActivation/>
             </depends>
         </Sitewards_B2BProfessional>
