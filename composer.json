@@ -13,8 +13,8 @@
 	},
     "repositories": [
         {
-            "type": "composer",
-            "url": "http://packages.firegento.com"
+            "type": "git",
+            "url": "https://github.com/Vinai/customer-activation.git"
         }
     ],
 	"extra": {
