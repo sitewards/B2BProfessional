@@ -18,6 +18,7 @@ env:
 before_install:
   - mkdir -p magento/
   - composer install --dev
+  - composer self-update
 before_script:
   - CURR_DIR=$(pwd)
   - git clone git://github.com/EcomDev/MageCI.git ./mageci/
