@@ -93,7 +93,7 @@ class Sitewards_B2BProfessional_Model_Observer
                     // To stop duplicate information being displayed validate that we only do this once per product
                     if ($iCurrentProductId !== self::$_iLastProductId) {
                         self::$_iLastProductId = $iCurrentProductId;
-                        $oTransport->setHtml($oB2BHelper->__('Your account is not allowed to access this store.'));
+                        $oTransport->setHtml($oB2BHelper->__('Please login'));
                     } else {
                         $oTransport->setHtml('');
                     }
