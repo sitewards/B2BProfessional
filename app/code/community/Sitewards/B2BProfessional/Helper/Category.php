@@ -43,6 +43,23 @@ class Sitewards_B2BProfessional_Helper_Category extends Mage_Core_Helper_Abstrac
     }
 
     /**
+     * For a product get all the parent and children product ids when they are set
+     *
+     * @param Mage_Catalog_Model_Product $oProduct
+     * @return array <int>
+     */
+    protected function getChildrenAndParentIds(Mage_Catalog_Model_Product $oProduct)
+    {
+        $oProductType = $oProduct->getTypeInstance();
+        $aLinkedProductIds = $oProductType->getParentIdsByChild($oProduct->getId());
+        $aChildProductIdsByGroups = $oProductType->getChildrenIds($oProduct->getId());
+        foreach ($aChildProductIdsByGroups as $aChildProductIds) {
+            $aLinkedProductIds = array_unique(array_merge($aLinkedProductIds, $aChildProductIds));
+        }
+        return $aLinkedProductIds;
+    }
+
+    /**
      * Validate that the category of a give product is activated in the module
      *
      * @param Mage_Catalog_Model_Product $oProduct
@@ -52,21 +69,14 @@ class Sitewards_B2BProfessional_Helper_Category extends Mage_Core_Helper_Abstrac
     {
         $aCurrentCategories = $oProduct->getCategoryIds();
 
-        $aParentProductIds = array();
+        $aLinkedProductIds = array();
         if ($oProduct->isSuper()) {
-            $oProductType = $oProduct->getTypeInstance();
-            $aParentProductIds = $oProductType->getParentIdsByChild($oProduct->getId());
+            $aLinkedProductIds = $this->getChildrenAndParentIds($oProduct);
         }
 
-        if (!empty($aParentProductIds)) {
-            foreach ($aParentProductIds as $iParentProductId) {
-                /* @var $oParentProduct Mage_Catalog_Model_Product */
-                $oParentProduct = Mage::getModel('catalog/product')->load($iParentProductId);
-                $aParentProductCategories = $oParentProduct->getCategoryIds();
-                $aCurrentCategories = array_merge($aCurrentCategories, $aParentProductCategories);
-            }
+        if (!empty($aLinkedProductIds)) {
+            $aCurrentCategories = $this->getAllCategoryIds($aLinkedProductIds, $aCurrentCategories);
         }
-        $aCurrentCategories = array_unique($aCurrentCategories);
 
         if (!is_array($aCurrentCategories)) {
             $aCurrentCategories = array(
@@ -142,5 +152,23 @@ class Sitewards_B2BProfessional_Helper_Category extends Mage_Core_Helper_Abstrac
         $oCurrentCategory = $oCurrentCategory->load($iCategoryId);
 
         return array_merge($aCurrentCategories, $oCurrentCategory->getAllChildren(true));
+    }
+
+    /**
+     * From an array of all product ids get all unique entries in the product category table
+     *
+     * @param array <int> $aParentProductIds
+     * @param array <int> $aCurrentCategories
+     * @return array <int>
+     */
+    protected function getAllCategoryIds($aProductIds, $aCurrentCategories)
+    {
+        $adapter = Mage::getResourceModel('catalog/product')->getReadConnection();
+
+        $select = $adapter->select()
+            ->from(Mage::getResourceModel('catalog/product')->getTable('catalog/category_product'), 'category_id')
+            ->where('product_id IN (?)', $aProductIds);
+
+        return array_unique(array_merge($aCurrentCategories, $adapter->fetchCol($select)));
     }
 }
