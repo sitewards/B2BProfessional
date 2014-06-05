@@ -8,13 +8,20 @@ env:
   - MAGENTO_VERSION="1.6.0.0"
   - MAGENTO_VERSION="1.6.1.0"
   - MAGENTO_VERSION="1.6.2.0"
+  - MAGENTO_VERSION="1.7.0.0"
+  - MAGENTO_VERSION="1.7.0.1"
   - MAGENTO_VERSION="1.7.0.2"
+  - MAGENTO_VERSION="1.8.0.0"
+  - MAGENTO_VERSION="1.8.1.0"
+  - MAGENTO_VERSION="1.9.0.0"
+  - MAGENTO_VERSION="1.9.0.1"
 before_install:
   - mkdir magento/
   - git clone git://github.com/EcomDev/MageCI.git ./mageci/
   - git clone git://github.com/EcomDev/EcomDev_PHPUnit.git -b dev ./phpunit/
   - git clone git://github.com/Vinai/customer-activation.git ./customer-activation/
 before_script:
+  - composer selfupdate
   - CURR_DIR=$(pwd)
   - ./mageci/bin/mage-ci install magento $MAGENTO_VERSION magento_test -c -t -r http://mage-ci.ecomdev.org
   - ./mageci/bin/mage-ci install-module magento $CURR_DIR/phpunit
