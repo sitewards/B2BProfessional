@@ -13,5 +13,8 @@
             "type": "composer",
             "url": "http://packages.firegento.com"
         }
-    ]
+    ],
+	"extra": {
+		"magento-root-dir": "magento/"
+	}
 }
