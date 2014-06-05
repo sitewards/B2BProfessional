@@ -15,10 +15,10 @@ env:
   - MAGENTO_VERSION="1.8.1.0"
   - MAGENTO_VERSION="1.9.0.0"
   - MAGENTO_VERSION="1.9.0.1"
-before_script:
+before_install:
   - mkdir -p magento/
-  - cp -f .travis/composer.json composer.json
-  - composer update --dev
+  - composer install --dev
+before_script:
   - CURR_DIR=$(pwd)
   - git clone git://github.com/EcomDev/MageCI.git ./mageci/
   - git clone git://github.com/EcomDev/EcomDev_PHPUnit.git -b dev ./phpunit/
