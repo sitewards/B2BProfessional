@@ -84,12 +84,6 @@
                 <requirelogin>0</requirelogin>
                 <requireloginredirect>customer/account/login</requireloginredirect>
             </requirelogin>
-            <languagesettings>
-                <languageoverride>0</languageoverride>
-                <logintext>Please login</logintext>
-                <errortext>Your account is not allowed to access this store.</errortext>
-                <requireloginmessage>You do not have access to view this store.</requireloginmessage>
-            </languagesettings>
         </b2bprofessional>
     </default>
     <phpunit>

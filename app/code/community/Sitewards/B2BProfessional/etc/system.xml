@@ -144,62 +144,6 @@
                         </activecustomers>
                     </fields>
                 </activatebycustomersettings>
-                <languagesettings translate="label comment">
-                    <label>Language settings</label>
-                    <frontend_type>text</frontend_type>
-                    <sort_order>3</sort_order>
-                    <show_in_default>1</show_in_default>
-                    <show_in_website>1</show_in_website>
-                    <show_in_store>1</show_in_store>
-                    <fields>
-                        <languageoverride translate="label comment">
-                            <label>Override language file</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>3</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <comment><![CDATA[Override language file text with text specified below]]></comment>
-                        </languageoverride>
-                        <logintext translate="label comment">
-                            <label>Custom text for price</label>
-                            <frontend_type>textarea</frontend_type>
-                            <sort_order>4</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <comment><![CDATA[Text to be displayed instead of the prices.<br />Only visible when language override is active.<br />Otherwise text in language file ist used.<br />May contain HTML]]></comment>
-                            <depends>
-                                <languageoverride>1</languageoverride>
-                            </depends>
-                        </logintext>
-                        <errortext translate="label comment">
-                            <label>Custom text for checkout-error</label>
-                            <frontend_type>textarea</frontend_type>
-                            <sort_order>5</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <comment><![CDATA[Text to be displayed when customer is not allowed to checkout product.<br />Only visible when language override is active.<br />Otherwise text in language file is used.<br />May contain HTML]]></comment>
-                            <depends>
-                                <languageoverride>1</languageoverride>
-                            </depends>
-                        </errortext>
-                        <requireloginmessage translate="label comment">
-                            <label>Require User Login - Message</label>
-                            <frontend_type>textarea</frontend_type>
-                            <sort_order>6</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <comment><![CDATA[Text to be displayed when the store requires a user to login to view pages<br />Only visible when language override is active.<br />Otherwise text in language file is used.<br />May contain HTML]]></comment>
-                            <depends>
-                                <languageoverride>1</languageoverride>
-                            </depends>
-                        </requireloginmessage>
-                    </fields>
-                </languagesettings>
             </groups>
         </b2bprofessional>
     </sections>
