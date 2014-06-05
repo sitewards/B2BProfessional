@@ -116,11 +116,8 @@ class Sitewards_B2BProfessional_Helper_Category extends Mage_Core_Helper_Abstrac
         /**
          * Loop through each activated category ids and add children category ids
          */
-        $aSubActiveCategories = array();
-        foreach ($aCurrentActiveCategories as $iCategoryId) {
-            $aSubActiveCategories = $this->_addCategoryChildren($iCategoryId, $aSubActiveCategories);
-        }
-        return array_unique($aSubActiveCategories);
+        $aSubActiveCategories = $this->_addCategoryChildren($aCurrentActiveCategories);
+        return array_unique(array_merge($aCurrentActiveCategories, $aSubActiveCategories));
     }
 
     /**
@@ -141,17 +138,20 @@ class Sitewards_B2BProfessional_Helper_Category extends Mage_Core_Helper_Abstrac
     /**
      * From given category id load all child ids into an array
      *
-     * @param int $iCategoryId
-     * @param array <int> $aCurrentCategories
-     * @return array<int>
+     * @param array <int> $aCategoryIds
+     * @return array <int>
      */
-    protected function _addCategoryChildren($iCategoryId, $aCurrentCategories = array())
+    protected function _addCategoryChildren($aCategoryIds)
     {
-        /* @var $oCurrentCategory Mage_Catalog_Model_Category */
-        $oCurrentCategory = Mage::getModel('catalog/category');
-        $oCurrentCategory = $oCurrentCategory->load($iCategoryId);
+        $oCategoryResource = Mage::getResourceModel('catalog/category');
+        $oAdapter = $oCategoryResource->getReadConnection();
+        $oSelect = $oAdapter->select()
+            ->from(array('m' => $oCategoryResource->getEntityTable()), 'entity_id');
 
-        return array_merge($aCurrentCategories, $oCurrentCategory->getAllChildren(true));
+        foreach ($aCategoryIds as $iCategoryId) {
+            $oSelect->orWhere($oAdapter->quoteIdentifier('path') . ' LIKE ?', '%/' . $iCategoryId . '/%');
+        }
+        return $oAdapter->fetchCol($oSelect);
     }
 
     /**
@@ -163,12 +163,13 @@ class Sitewards_B2BProfessional_Helper_Category extends Mage_Core_Helper_Abstrac
      */
     protected function getAllCategoryIds($aProductIds, $aCurrentCategories)
     {
-        $adapter = Mage::getResourceModel('catalog/product')->getReadConnection();
+        $oProductResource = Mage::getResourceModel('catalog/product');
+        $oAdapter = $oProductResource->getReadConnection();
 
-        $select = $adapter->select()
-            ->from(Mage::getResourceModel('catalog/product')->getTable('catalog/category_product'), 'category_id')
+        $oSelect = $oAdapter->select()
+            ->from($oProductResource->getTable('catalog/category_product'), 'category_id')
             ->where('product_id IN (?)', $aProductIds);
 
-        return array_unique(array_merge($aCurrentCategories, $adapter->fetchCol($select)));
+        return array_unique(array_merge($aCurrentCategories, $oAdapter->fetchCol($oSelect)));
     }
 }
