@@ -17,11 +17,11 @@ env:
   - MAGENTO_VERSION="1.9.0.1"
 before_install:
   - mkdir -p magento/
+  - git clone git://github.com/EcomDev/MageCI.git ./mageci/
   - ./mageci/bin/mage-ci install magento $MAGENTO_VERSION magento_test -c -t -r http://mage-ci.ecomdev.org
 before_script:
   - composer self-update
   - CURR_DIR=$(pwd)
-  - git clone git://github.com/EcomDev/MageCI.git ./mageci/
   - git clone git://github.com/EcomDev/EcomDev_PHPUnit.git -b dev ./phpunit/
   - ./mageci/bin/mage-ci install-module magento $CURR_DIR/phpunit
   - ./mageci/bin/mage-ci install-module magento $CURR_DIR
