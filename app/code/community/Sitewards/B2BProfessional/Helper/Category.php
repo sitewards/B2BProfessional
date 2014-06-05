@@ -79,7 +79,7 @@ class Sitewards_B2BProfessional_Helper_Category extends Mage_Core_Helper_Abstrac
     /**
      * Check that at least one of the given category ids is active
      *
-     * @param array<int> $aCategoryIds
+     * @param array <int> $aCategoryIds
      * @return bool
      */
     public function hasActiveCategory($aCategoryIds)
@@ -132,7 +132,7 @@ class Sitewards_B2BProfessional_Helper_Category extends Mage_Core_Helper_Abstrac
      * From given category id load all child ids into an array
      *
      * @param int $iCategoryId
-     * @param array<int> $aCurrentCategories
+     * @param array <int> $aCurrentCategories
      * @return array<int>
      */
     protected function _addCategoryChildren($iCategoryId, $aCurrentCategories = array())

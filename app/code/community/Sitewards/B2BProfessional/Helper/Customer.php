@@ -35,28 +35,26 @@ class Sitewards_B2BProfessional_Helper_Customer extends Mage_Core_Helper_Abstrac
     protected $_aActivatedCustomerGroupIds = array();
 
     /**
-     * Check to see if the customer is active
-     *  - If customer is not logged in than they are not active
+     * Check to see if the customer is logged in
      *
      * @return bool
      */
-    public function isCustomerActive()
+    public function isCustomerLoggedIn()
     {
-        $bIsCustomerActive = true;
-        if (Mage::helper('customer')->isLoggedIn() === false) {
-            $bIsCustomerActive = false;
-        }
-
-        return $bIsCustomerActive;
+        return Mage::helper('customer')->isLoggedIn();
     }
 
     /**
      * Check to see if the customer's group is active
+     *  - If they are not logged in then we do not need to check any further
      *
      * @return bool
      */
     public function isCustomerGroupActive()
     {
+        if (!$this->isCustomerLoggedIn()) {
+            return false;
+        }
         /* @var $oCustomerSession Mage_Customer_Model_Session */
         $oCustomerSession = Mage::getModel('customer/session');
         $iCurrentCustomerGroupId = $oCustomerSession->getCustomerGroupId();

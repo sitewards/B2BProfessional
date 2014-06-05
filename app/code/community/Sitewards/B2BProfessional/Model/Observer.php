@@ -135,7 +135,7 @@ class Sitewards_B2BProfessional_Model_Observer
              * Check to see if the system requires a login
              * And there is no logged in user
              */
-            if ($oB2BCustomerHelper->isLoginRequired() == true && !$oB2BCustomerHelper->isCustomerActive()) {
+            if ($oB2BCustomerHelper->isLoginRequired() == true && !$oB2BCustomerHelper->isCustomerLoggedIn()) {
                 $oB2BRedirectsHelper = Mage::helper('sitewards_b2bprofessional/redirects');
 
                 if ($oB2BRedirectsHelper->isRedirectRequired($oControllerAction)) {
@@ -222,7 +222,7 @@ class Sitewards_B2BProfessional_Model_Observer
                     }
                 }
 
-                if ($oB2BHelper->hasActiveCategories($aCategoryOptions)) {
+                if ($oB2BHelper->hasEnabledCategories($aCategoryOptions)) {
                     $aFilterableAttributes = $oBlock->getData('_filterable_attributes');
                     $aNewFilterableAttributes = array();
                     foreach ($aFilterableAttributes as $oFilterableAttribute) {

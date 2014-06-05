@@ -57,7 +57,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract
      *
      * @return bool
      */
-    public function isExtensionActiveByCategory()
+    protected function isExtensionActiveByCategory()
     {
         if (is_null($this->_isExtensionActiveByCategory)) {
             $this->_isExtensionActiveByCategory = Mage::helper(
@@ -72,7 +72,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract
      *
      * @return bool
      */
-    public function isExtensionActivatedByCustomerGroup()
+    protected function isExtensionActivatedByCustomerGroup()
     {
         if (is_null($this->_isExtensionActiveByCustomerGroup)) {
             $this->_isExtensionActiveByCustomerGroup = Mage::helper(
@@ -93,8 +93,6 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract
     {
         $bIsProductActive = true;
         if ($this->isExtensionActive() === true) {
-            $bIsCustomerActive = $this->isCustomerActive();
-
             $bCheckCategory = $this->isExtensionActiveByCategory();
             $bCheckUser = $this->isExtensionActivatedByCustomerGroup();
 
@@ -102,26 +100,18 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract
             $oCategoryHelper = Mage::helper('sitewards_b2bprofessional/category');
             /** @var Sitewards_B2BProfessional_Helper_Customer $oCustomerHelper */
             $oCustomerHelper = Mage::helper('sitewards_b2bprofessional/customer');
-            if (
-                $bCheckCategory === true
-                && $bCheckUser === true
-            ) {
-                $bIsCategoryActive = $oCategoryHelper->isCategoryActiveByProduct($oProduct);
-                $bIsUserGroupActive = $oCustomerHelper->isCustomerGroupActive();
-                $bIsProductActive = !($bIsCategoryActive && $bIsUserGroupActive);
-            } else if (
-                $bCheckUser === true
-            ) {
-                $bIsProductActive = !$oCustomerHelper->isCustomerGroupActive();
-            } else if (
-                $bCheckCategory === true
-                && $bIsCustomerActive === false
-            ) {
-                $bIsProductActive = !$oCategoryHelper->isCategoryActiveByProduct(
-                    $oProduct
-                );
+
+            $bIsCategoryEnabled = $oCategoryHelper->isCategoryActiveByProduct($oProduct);
+            $bIsCustomerGroupEnabled = $oCustomerHelper->isCustomerGroupActive();
+
+            if ($bCheckCategory && $bCheckUser) {
+                $bIsProductActive = !($bIsCategoryEnabled && $bIsCustomerGroupEnabled);
+            } else if ($bCheckUser) {
+                $bIsProductActive = !$bIsCustomerGroupEnabled;
+            } else if ($bCheckCategory) {
+                $bIsProductActive = !$bIsCategoryEnabled;
             } else {
-                $bIsProductActive = $bIsCustomerActive;
+                $bIsProductActive = $this->isCustomerLoggedIn();
             }
         }
 
@@ -129,17 +119,15 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * From an array of category ids check to see if any are disabled via the extension
+     * From an array of category ids check to see if any are enabled via the extension to hide prices
      *
      * @param array<int> $aCategoryIds
      * @return bool
      */
-    public function hasActiveCategories($aCategoryIds)
+    public function hasEnabledCategories($aCategoryIds)
     {
         $bHasCategories = false;
         if ($this->isExtensionActive() === true) {
-            $bIsCustomerActive = $this->isCustomerActive();
-
             $bCheckCategory = $this->isExtensionActiveByCategory();
             $bCheckUser = $this->isExtensionActivatedByCustomerGroup();
 
@@ -147,37 +135,30 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract
             $oCategoryHelper = Mage::helper('sitewards_b2bprofessional/category');
             /** @var Sitewards_B2BProfessional_Helper_Customer $oCustomerHelper */
             $oCustomerHelper = Mage::helper('sitewards_b2bprofessional/customer');
-            if (
-                $bCheckCategory === true
-                && $bCheckUser === true
-            ) {
-                $bHasActiveCategories = $oCategoryHelper->hasActiveCategory($aCategoryIds);
-                $bIsUserGroupActive = $oCustomerHelper->isCustomerGroupActive();
 
+            $bHasActiveCategories = $oCategoryHelper->hasActiveCategory($aCategoryIds);
+            $bIsUserGroupActive = $oCustomerHelper->isCustomerGroupActive();
+
+            if ($bCheckCategory && $bCheckUser) {
                 $bHasCategories = $bHasActiveCategories && $bIsUserGroupActive;
-            } else if (
-                $bCheckUser === true
-            ) {
-                $bHasCategories = $oCustomerHelper->isCustomerGroupActive();
-            } else if (
-                $bCheckCategory === true
-                && $bIsCustomerActive === false
-            ) {
-                $bHasCategories = $oCategoryHelper->hasActiveCategory($aCategoryIds);
+            } else if ($bCheckUser) {
+                $bHasCategories = $bIsUserGroupActive;
+            } else if ($bCheckCategory) {
+                $bHasCategories = $bHasActiveCategories;
             } else {
-                $bHasCategories = !$bIsCustomerActive;
+                $bHasCategories = !$this->isCustomerLoggedIn();
             }
         }
         return $bHasCategories;
     }
 
     /**
-     * Check if the customer is active
+     * Check if the customer is logged in
      *
      * @return bool
      */
-    public function isCustomerActive()
+    protected function isCustomerLoggedIn()
     {
-        return Mage::helper('sitewards_b2bprofessional/customer')->isCustomerActive();
+        return Mage::helper('sitewards_b2bprofessional/customer')->isCustomerLoggedIn();
     }
 }
