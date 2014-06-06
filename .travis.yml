@@ -10,13 +10,11 @@ before_script:
   - git clone git://github.com/EcomDev/MageCI.git ./mageci/
   - ./mageci/bin/mage-ci install magento $MAGENTO_VERSION magento_test -c -t -r http://mage-ci.ecomdev.org
   - composer update
-  - git clone git://github.com/EcomDev/EcomDev_PHPUnit.git -b dev ./phpunit/
   - CURR_DIR=$(pwd)
   - wget https://raw.githubusercontent.com/colinmollenhour/modman/master/modman -O ./mageci/bin/modman
   - chmod +x ./mageci/bin/modman
-  - ./mageci/bin/mage-ci install-module magento $CURR_DIR/phpunit
   - ./mageci/bin/mage-ci install-module magento $CURR_DIR
-  - composer install
+  - composer install --dev
   - cd magento
 script:
   - ../vendor/bin/phpunit --group Sitewards_B2BProfessional

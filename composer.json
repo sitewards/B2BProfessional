@@ -6,9 +6,11 @@
     "homepage": "http://www.sitewards.com",
     "require": {
         "magento-hackathon/magento-composer-installer": "*",
-        "netzarbeiter/customer-activation": "*",
-        "phpunit/phpunit": "3.7.*"
+        "netzarbeiter/customer-activation": "*"
     },
+	"require-dev": {
+        "phpunit/phpunit": "3.7.*"
+	},
     "repositories": [
         {
             "type": "composer",
