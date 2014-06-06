@@ -7,13 +7,14 @@ env:
   - MAGENTO_VERSION="1.8.0.0"
 before_script:
   - composer self-update
-  - mkdir -p magento/
+  - mkdir magento/
   - git clone git://github.com/EcomDev/MageCI.git ./mageci/
   - ./mageci/bin/mage-ci install magento $MAGENTO_VERSION magento_test -c -t -r http://mage-ci.ecomdev.org
   - composer update
   - git clone git://github.com/EcomDev/EcomDev_PHPUnit.git -b dev ./phpunit/
   - CURR_DIR=$(pwd)
-  - chmod -R 777 ./mageci/bin
+  - wget https://raw.githubusercontent.com/colinmollenhour/modman/master/modman -O ./mageci/bin/modman
+  - chmod +x ./mageci/bin/modman
   - ./mageci/bin/mage-ci install-module magento $CURR_DIR/phpunit
   - ./mageci/bin/mage-ci install-module magento $CURR_DIR
   - cd magento
