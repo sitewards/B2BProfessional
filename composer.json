@@ -15,6 +15,6 @@
         }
     ],
 	"extra": {
-		"magento-root-dir": "magento/"
+		"magento-root-dir": "../magento/"
 	}
 }
