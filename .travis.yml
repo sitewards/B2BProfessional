@@ -4,25 +4,14 @@ php:
   - 5.4
   - 5.5
 env:
-  - MAGENTO_VERSION="1.5.0.1"
-  - MAGENTO_VERSION="1.6.0.0"
-  - MAGENTO_VERSION="1.6.1.0"
-  - MAGENTO_VERSION="1.6.2.0"
-  - MAGENTO_VERSION="1.7.0.0"
-  - MAGENTO_VERSION="1.7.0.1"
-  - MAGENTO_VERSION="1.7.0.2"
   - MAGENTO_VERSION="1.8.0.0"
-  - MAGENTO_VERSION="1.8.1.0"
-  - MAGENTO_VERSION="1.9.0.0"
-  - MAGENTO_VERSION="1.9.0.1"
-before_install:
+before_script:
   - mkdir -p magento/
   - git clone git://github.com/EcomDev/MageCI.git ./mageci/
   - ./mageci/bin/mage-ci install magento $MAGENTO_VERSION magento_test -c -t -r http://mage-ci.ecomdev.org
-before_script:
+  - git clone git://github.com/EcomDev/EcomDev_PHPUnit.git -b dev ./phpunit/
   - composer self-update
   - CURR_DIR=$(pwd)
-  - git clone git://github.com/EcomDev/EcomDev_PHPUnit.git -b dev ./phpunit/
   - ./mageci/bin/mage-ci install-module magento $CURR_DIR/phpunit
   - ./mageci/bin/mage-ci install-module magento $CURR_DIR
   - cd magento
