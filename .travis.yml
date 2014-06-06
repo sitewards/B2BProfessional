@@ -6,7 +6,6 @@ php:
 env:
   - MAGENTO_VERSION="1.8.0.0"
 before_script:
-  - composer self-update
   - mkdir magento/
   - git clone git://github.com/EcomDev/MageCI.git ./mageci/
   - ./mageci/bin/mage-ci install magento $MAGENTO_VERSION magento_test -c -t -r http://mage-ci.ecomdev.org
@@ -17,6 +16,7 @@ before_script:
   - chmod +x ./mageci/bin/modman
   - ./mageci/bin/mage-ci install-module magento $CURR_DIR/phpunit
   - ./mageci/bin/mage-ci install-module magento $CURR_DIR
+  - composer install
   - cd magento
 script:
-  - phpunit --group Sitewards_B2BProfessional
+  - ../vendor/bin/phpunit --group Sitewards_B2BProfessional
