@@ -56,7 +56,7 @@ class Sitewards_B2BProfessional_Helper_Customer extends Mage_Core_Helper_Abstrac
             return false;
         }
         /* @var $oCustomerSession Mage_Customer_Model_Session */
-        $oCustomerSession = Mage::getModel('customer/session');
+        $oCustomerSession        = Mage::getModel('customer/session');
         $iCurrentCustomerGroupId = $oCustomerSession->getCustomerGroupId();
         $aActiveCustomerGroupIds = $this->getActivatedCustomerGroupIds();
 

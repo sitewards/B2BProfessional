@@ -13,7 +13,7 @@ class Sitewards_B2BProfessional_Model_System_Config_Source_Page extends Mage_Adm
     /**
      * Populate an options array with the current system cms pages and the customer login page
      *
-     * @return array
+     * @return array<string, int>
      */
     public function toOptionArray()
     {
@@ -23,6 +23,7 @@ class Sitewards_B2BProfessional_Model_System_Config_Source_Page extends Mage_Adm
                 'value' => '',
                 'label' => Mage::helper('sitewards_b2bprofessional')->__('-- Please Select --')
             );
+
             $aCustomerLogin = array(
                 'value' => 'customer/account/login',
                 'label' => Mage::helper('sitewards_b2bprofessional')->__('Customer Login')

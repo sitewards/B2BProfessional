@@ -18,7 +18,7 @@ class Sitewards_B2BProfessional_Model_Observer
      *
      * @var int
      */
-    protected static $_iLastProductId = 0;
+    protected static $iLastProductId = 0;
 
     /**
      * blocks which display prices
@@ -91,8 +91,8 @@ class Sitewards_B2BProfessional_Model_Observer
 
                 if ($oB2BHelper->isProductActive($oProduct) === false) {
                     // To stop duplicate information being displayed validate that we only do this once per product
-                    if ($iCurrentProductId !== self::$_iLastProductId) {
-                        self::$_iLastProductId = $iCurrentProductId;
+                    if ($iCurrentProductId !== self::$iLastProductId) {
+                        self::$iLastProductId = $iCurrentProductId;
                         $oTransport->setHtml($oB2BHelper->__('Please login'));
                     } else {
                         $oTransport->setHtml('');
@@ -203,9 +203,9 @@ class Sitewards_B2BProfessional_Model_Observer
                     if (empty($aCategoryOptions)) {
                         /* @var $oCategory Mage_Catalog_Model_Category */
                         $oCategory = Mage::registry('current_category_filter');
-                        if ($oCategory === NULL) {
+                        if ($oCategory === null) {
                             $oCategory = Mage::registry('current_category');
-                            if ($oCategory === NULL) {
+                            if ($oCategory === null) {
                                 $oCategory = Mage::getModel('catalog/category')->load(
                                     Mage::app()->getStore()->getRootCategoryId()
                                 );

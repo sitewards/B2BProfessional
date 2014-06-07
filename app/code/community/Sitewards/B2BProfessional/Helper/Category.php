@@ -36,7 +36,7 @@ class Sitewards_B2BProfessional_Helper_Category extends Mage_Core_Helper_Abstrac
      */
     public function isExtensionActivatedByCategory()
     {
-        if (is_null($this->isExtensionActiveByCategory)) {
+        if ($this->isExtensionActiveByCategory === null) {
             $this->isExtensionActiveByCategory = Mage::getStoreConfigFlag(self::CONFIG_EXTENSION_ACTIVE_BY_CATEGORY);
         }
         return $this->isExtensionActiveByCategory;

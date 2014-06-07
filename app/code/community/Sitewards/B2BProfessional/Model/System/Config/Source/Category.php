@@ -14,7 +14,7 @@ class Sitewards_B2BProfessional_Model_System_Config_Source_Category extends Mage
      * Populate an options array with the current system categories
      *
      * @param boolean $bAddEmpty
-     * @return array
+     * @return array<string, int>
      */
     public function toOptionArray($bAddEmpty = true)
     {
@@ -24,14 +24,14 @@ class Sitewards_B2BProfessional_Model_System_Config_Source_Category extends Mage
 
         $aCategoryOptions = array();
         if ($bAddEmpty) {
-            $aCategoryOptions [] = array(
+            $aCategoryOptions[] = array(
                 'label' => Mage::helper('adminhtml')->__('-- Please select at least one category --'),
                 'value' => ''
             );
         }
         foreach ($oCategoryCollection as $oCategory) {
             /* @var $oCategory Mage_Catalog_Model_Category */
-            $aCategoryOptions [] = array(
+            $aCategoryOptions[] = array(
                 'label' => $oCategory->getName(),
                 'value' => $oCategory->getId()
             );
