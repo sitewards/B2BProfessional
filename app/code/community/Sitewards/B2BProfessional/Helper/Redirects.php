@@ -41,7 +41,7 @@ class Sitewards_B2BProfessional_Helper_Redirects extends Mage_Core_Helper_Abstra
      *  - Customer account to allow for login
      *  - Magento API to allow api requests
      *
-     * @param $oControllerAction
+     * @param Mage_Core_Controller_Front_Action $oControllerAction
      * @return bool
      */
     public function isRedirectRequired($oControllerAction)

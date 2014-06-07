@@ -25,7 +25,7 @@ class Sitewards_B2BProfessional_Model_Observer
      *
      * @var array
      */
-    protected $_aPriceBlockClassNames = array(
+    protected $aPriceBlockClassNames = array(
         'Mage_Catalog_Block_Product_Price' => 1,
         'Mage_Bundle_Block_Catalog_Product_Price' => 1,
     );
@@ -79,14 +79,14 @@ class Sitewards_B2BProfessional_Model_Observer
         /** @var Sitewards_B2BProfessional_Helper_Data $oB2BHelper */
         $oB2BHelper = Mage::helper('sitewards_b2bprofessional');
         if ($oB2BHelper->isExtensionActive() === true) {
-            $oBlock = $oObserver->getData('block');
+            $oBlock     = $oObserver->getData('block');
             $oTransport = $oObserver->getData('transport');
 
             /*
              * Check to see if we should remove the product price
              */
             if ($this->isExactlyPriceBlock($oBlock)) {
-                $oProduct = $oBlock->getProduct();
+                $oProduct          = $oBlock->getProduct();
                 $iCurrentProductId = $oProduct->getId();
 
                 if ($oB2BHelper->isProductActive($oProduct) === false) {
@@ -190,22 +190,22 @@ class Sitewards_B2BProfessional_Model_Observer
             $oBlock = $oObserver->getData('block');
             if ($oBlock instanceof Mage_Catalog_Block_Layer_View) {
                 /* @var $oCategoryFilter Mage_Catalog_Block_Layer_Filter_Category */
-                $oCategoryFilter = $oBlock->getChild('category_filter');
+                $oCategoryFilter  = $oBlock->getChild('category_filter');
                 $aCategoryOptions = array();
                 if ($oCategoryFilter instanceof Mage_Catalog_Block_Layer_Filter_Category) {
                     $oCategories = $oCategoryFilter->getItems();
                     foreach ($oCategories as $oCategory) {
                         /* @var $oCategory Mage_Catalog_Model_Layer_Filter_Item */
-                        $iCategoryId = $oCategory->getValue();
+                        $iCategoryId        = $oCategory->getValue();
                         $aCategoryOptions[] = $iCategoryId;
                     }
 
                     if (empty($aCategoryOptions)) {
                         /* @var $oCategory Mage_Catalog_Model_Category */
                         $oCategory = Mage::registry('current_category_filter');
-                        if (is_null($oCategory)) {
+                        if ($oCategory === NULL) {
                             $oCategory = Mage::registry('current_category');
-                            if (is_null($oCategory)) {
+                            if ($oCategory === NULL) {
                                 $oCategory = Mage::getModel('catalog/category')->load(
                                     Mage::app()->getStore()->getRootCategoryId()
                                 );
@@ -216,7 +216,7 @@ class Sitewards_B2BProfessional_Model_Observer
                 }
 
                 if ($oB2BHelper->hasEnabledCategories($aCategoryOptions)) {
-                    $aFilterableAttributes = $oBlock->getData('_filterable_attributes');
+                    $aFilterableAttributes    = $oBlock->getData('_filterable_attributes');
                     $aNewFilterableAttributes = array();
                     foreach ($aFilterableAttributes as $oFilterableAttribute) {
                         if ($oFilterableAttribute->getAttributeCode() != 'price') {
@@ -237,6 +237,6 @@ class Sitewards_B2BProfessional_Model_Observer
      */
     protected function isExactlyPriceBlock($oBlock)
     {
-        return ($oBlock && isset($this->_aPriceBlockClassNames[get_class($oBlock)]));
+        return ($oBlock && isset($this->aPriceBlockClassNames[get_class($oBlock)]));
     }
 }

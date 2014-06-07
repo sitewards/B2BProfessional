@@ -27,7 +27,7 @@ class Sitewards_B2BProfessional_Helper_Category extends Mage_Core_Helper_Abstrac
      *
      * @var bool
      */
-    protected $_isExtensionActiveByCategory;
+    protected $isExtensionActiveByCategory;
 
     /**
      * Check to see if the website is set-up to require a user login to view pages
@@ -36,22 +36,22 @@ class Sitewards_B2BProfessional_Helper_Category extends Mage_Core_Helper_Abstrac
      */
     public function isExtensionActivatedByCategory()
     {
-        if (is_null($this->_isExtensionActiveByCategory)) {
-            $this->_isExtensionActiveByCategory = Mage::getStoreConfigFlag(self::CONFIG_EXTENSION_ACTIVE_BY_CATEGORY);
+        if (is_null($this->isExtensionActiveByCategory)) {
+            $this->isExtensionActiveByCategory = Mage::getStoreConfigFlag(self::CONFIG_EXTENSION_ACTIVE_BY_CATEGORY);
         }
-        return $this->_isExtensionActiveByCategory;
+        return $this->isExtensionActiveByCategory;
     }
 
     /**
      * For a product get all the parent and children product ids when they are set
      *
      * @param Mage_Catalog_Model_Product $oProduct
-     * @return array <int>
+     * @return array<int>
      */
     protected function getChildrenAndParentIds(Mage_Catalog_Model_Product $oProduct)
     {
-        $oProductType = $oProduct->getTypeInstance();
-        $aLinkedProductIds = $oProductType->getParentIdsByChild($oProduct->getId());
+        $oProductType             = $oProduct->getTypeInstance();
+        $aLinkedProductIds        = $oProductType->getParentIdsByChild($oProduct->getId());
         $aChildProductIdsByGroups = $oProductType->getChildrenIds($oProduct->getId());
         foreach ($aChildProductIdsByGroups as $aChildProductIds) {
             $aLinkedProductIds = array_unique(array_merge($aLinkedProductIds, $aChildProductIds));
@@ -89,7 +89,7 @@ class Sitewards_B2BProfessional_Helper_Category extends Mage_Core_Helper_Abstrac
     /**
      * Check that at least one of the given category ids is active
      *
-     * @param array <int> $aCategoryIds
+     * @param array<int> $aCategoryIds
      * @return bool
      */
     public function hasActiveCategory($aCategoryIds)
@@ -111,12 +111,12 @@ class Sitewards_B2BProfessional_Helper_Category extends Mage_Core_Helper_Abstrac
      */
     protected function getActiveCategories()
     {
-        $aCurrentActiveCategories = $this->_getActivatedCategoryIds();
+        $aCurrentActiveCategories = $this->getExtensionActivatedCategoryIds();
 
         /**
          * Loop through each activated category ids and add children category ids
          */
-        $aSubActiveCategories = $this->_addCategoryChildren($aCurrentActiveCategories);
+        $aSubActiveCategories = $this->addCategoryChildren($aCurrentActiveCategories);
         return array_unique(array_merge($aCurrentActiveCategories, $aSubActiveCategories));
     }
 
@@ -125,7 +125,7 @@ class Sitewards_B2BProfessional_Helper_Category extends Mage_Core_Helper_Abstrac
      *
      * @return array<int>
      */
-    protected function _getActivatedCategoryIds()
+    protected function getExtensionActivatedCategoryIds()
     {
         /*
          * Category Ids are saved in the config in format
@@ -138,13 +138,14 @@ class Sitewards_B2BProfessional_Helper_Category extends Mage_Core_Helper_Abstrac
     /**
      * From given category id load all child ids into an array
      *
-     * @param array <int> $aCategoryIds
-     * @return array <int>
+     * @param array<int> $aCategoryIds
+     * @return array<int>
      */
-    protected function _addCategoryChildren($aCategoryIds)
+    protected function addCategoryChildren($aCategoryIds)
     {
         $oCategoryResource = Mage::getResourceModel('catalog/category');
-        $oAdapter = $oCategoryResource->getReadConnection();
+        $oAdapter          = $oCategoryResource->getReadConnection();
+
         $oSelect = $oAdapter->select()
             ->from(array('m' => $oCategoryResource->getEntityTable()), 'entity_id');
 
@@ -157,14 +158,14 @@ class Sitewards_B2BProfessional_Helper_Category extends Mage_Core_Helper_Abstrac
     /**
      * From an array of all product ids get all unique entries in the product category table
      *
-     * @param array <int> $aParentProductIds
-     * @param array <int> $aCurrentCategories
-     * @return array <int>
+     * @param array<int> $aProductIds
+     * @param array<int> $aCurrentCategories
+     * @return array<int>
      */
     protected function getAllCategoryIds($aProductIds, $aCurrentCategories)
     {
         $oProductResource = Mage::getResourceModel('catalog/product');
-        $oAdapter = $oProductResource->getReadConnection();
+        $oAdapter         = $oProductResource->getReadConnection();
 
         $oSelect = $oAdapter->select()
             ->from($oProductResource->getTable('catalog/category_product'), 'category_id')

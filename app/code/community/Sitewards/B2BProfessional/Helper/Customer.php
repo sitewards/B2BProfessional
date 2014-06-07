@@ -32,7 +32,7 @@ class Sitewards_B2BProfessional_Helper_Customer extends Mage_Core_Helper_Abstrac
      *
      * @var array<int>
      */
-    protected $_aActivatedCustomerGroupIds = array();
+    protected $aActivatedCustomerGroupIds = array();
 
     /**
      * Check to see if the customer is logged in
@@ -91,19 +91,19 @@ class Sitewards_B2BProfessional_Helper_Customer extends Mage_Core_Helper_Abstrac
      */
     private function getActivatedCustomerGroupIds()
     {
-        if (empty($this->_aActivatedCustomerGroupIds)) {
+        if (empty($this->aActivatedCustomerGroupIds)) {
             /*
              * Customer group ids are saved in the config in format
              *  - "group1,group2"
              */
-            $sActivatedCustomerGroups = Mage::getStoreConfig(self::CONFIG_EXTENSION_ACTIVE_CUSTOMER_GROUPS);
-            $this->_aActivatedCustomerGroupIds = explode(',', $sActivatedCustomerGroups);
+            $sActivatedCustomerGroups         = Mage::getStoreConfig(self::CONFIG_EXTENSION_ACTIVE_CUSTOMER_GROUPS);
+            $this->aActivatedCustomerGroupIds = explode(',', $sActivatedCustomerGroups);
 
             /*
              * Always add the guest user group id when activated by customer group
              */
-            $this->_aActivatedCustomerGroupIds[] = Mage_Customer_Model_Group::NOT_LOGGED_IN_ID;
+            $this->aActivatedCustomerGroupIds[] = Mage_Customer_Model_Group::NOT_LOGGED_IN_ID;
         }
-        return $this->_aActivatedCustomerGroupIds;
+        return $this->aActivatedCustomerGroupIds;
     }
 }
