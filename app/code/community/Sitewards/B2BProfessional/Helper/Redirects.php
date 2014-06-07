@@ -44,12 +44,40 @@ class Sitewards_B2BProfessional_Helper_Redirects extends Mage_Core_Helper_Abstra
      * @param Mage_Core_Controller_Front_Action $oControllerAction
      * @return bool
      */
-    public function isRedirectRequired($oControllerAction)
+    protected function isRedirectRequired($oControllerAction)
     {
         return !$oControllerAction instanceof Mage_Cms_IndexController
         && !$oControllerAction instanceof Mage_Cms_PageController
         && $oControllerAction instanceof Mage_Core_Controller_Front_Action
         && !$oControllerAction instanceof Mage_Customer_AccountController
         && !$oControllerAction instanceof Mage_Api_Controller_Action;
+    }
+
+    /**
+     * Set-up the redirect to the customer login page
+     *
+     * @param Mage_Core_Controller_Front_Action $oControllerAction
+     */
+    public function performRedirect($oControllerAction)
+    {
+        if ($this->isRedirectRequired($oControllerAction)) {
+            /* @var $oResponse Mage_Core_Controller_Response_Http */
+            $oResponse = $oControllerAction->getResponse();
+            $oResponse->setRedirect(
+                $this->getRedirect(
+                    self::REDIRECT_TYPE_LOGIN
+                )
+            );
+
+            /*
+             * Add message to the session
+             *  - Note:
+             *      We need session_write_close otherwise the messages get lots in redirect
+             */
+            /* @var $oSession Mage_Core_Model_Session */
+            $oSession = Mage::getSingleton('core/session');
+            $oSession->addNotice(Mage::helper('sitewards_b2bprofessional')->__('Please login'));
+            session_write_close();
+        }
     }
 }

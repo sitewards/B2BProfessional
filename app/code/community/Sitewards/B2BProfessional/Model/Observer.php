@@ -112,27 +112,7 @@ class Sitewards_B2BProfessional_Model_Observer
              * And there is no logged in user
              */
             if ($oB2BCustomerHelper->isLoginRequired() == true && !$oB2BCustomerHelper->isCustomerLoggedIn()) {
-                $oB2BRedirectsHelper = Mage::helper('sitewards_b2bprofessional/redirects');
-
-                if ($oB2BRedirectsHelper->isRedirectRequired($oControllerAction)) {
-                    /* @var $oResponse Mage_Core_Controller_Response_Http */
-                    $oResponse = $oControllerAction->getResponse();
-                    $oResponse->setRedirect(
-                        $oB2BRedirectsHelper->getRedirect(
-                            $oB2BRedirectsHelper::REDIRECT_TYPE_LOGIN
-                        )
-                    );
-
-                    /*
-                     * Add message to the session
-                     *  - Note:
-                     *      We need session_write_close otherwise the messages get lots in redirect
-                     */
-                    /* @var $oSession Mage_Core_Model_Session */
-                    $oSession = Mage::getSingleton('core/session');
-                    $oSession->addNotice($oB2BHelper->__('Please login'));
-                    session_write_close();
-                }
+                Mage::helper('sitewards_b2bprofessional/redirects')->performRedirect($oControllerAction);
             }
         }
     }
