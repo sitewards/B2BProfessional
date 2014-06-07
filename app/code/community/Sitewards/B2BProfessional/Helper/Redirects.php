@@ -60,7 +60,8 @@ class Sitewards_B2BProfessional_Helper_Redirects extends Mage_Core_Helper_Abstra
      * @param Mage_Core_Controller_Front_Action $oControllerAction
      * @return bool
      */
-    protected function isCustomerController($oControllerAction) {
+    protected function isCustomerController($oControllerAction)
+    {
         return $oControllerAction instanceof Mage_Customer_AccountController;
     }
 
@@ -70,7 +71,8 @@ class Sitewards_B2BProfessional_Helper_Redirects extends Mage_Core_Helper_Abstra
      * @param Mage_Core_Controller_Front_Action $oControllerAction
      * @return bool
      */
-    protected function isApiController($oControllerAction) {
+    protected function isApiController($oControllerAction)
+    {
         return $oControllerAction instanceof Mage_Api_Controller_Action;
     }
 
@@ -80,7 +82,8 @@ class Sitewards_B2BProfessional_Helper_Redirects extends Mage_Core_Helper_Abstra
      * @param Mage_Core_Controller_Front_Action $oControllerAction
      * @return bool
      */
-    protected function isFrontController($oControllerAction) {
+    protected function isFrontController($oControllerAction)
+    {
         return $oControllerAction instanceof Mage_Core_Controller_Front_Action;
     }
 
@@ -90,9 +93,10 @@ class Sitewards_B2BProfessional_Helper_Redirects extends Mage_Core_Helper_Abstra
      * @param Mage_Core_Controller_Front_Action $oControllerAction
      * @return bool
      */
-    protected function isCmsController($oControllerAction) {
+    protected function isCmsController($oControllerAction)
+    {
         return $oControllerAction instanceof Mage_Cms_IndexController
-            || $oControllerAction instanceof Mage_Cms_PageController;
+        || $oControllerAction instanceof Mage_Cms_PageController;
     }
 
     /**
