@@ -14,7 +14,7 @@ class Sitewards_B2BProfessional_Model_System_Config_Source_Category extends Mage
      * Populate an options array with the current system categories
      *
      * @param boolean $bAddEmpty
-     * @return array<string, int>
+     * @return array
      */
     public function toOptionArray($bAddEmpty = true)
     {
