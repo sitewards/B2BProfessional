@@ -86,19 +86,7 @@ class Sitewards_B2BProfessional_Model_Observer
              * Check to see if we should remove the product price
              */
             if ($this->isExactlyPriceBlock($oBlock)) {
-                $oProduct          = $oBlock->getProduct();
-                $iCurrentProductId = $oProduct->getId();
-
-                if ($oB2BHelper->isProductActive($oProduct) === false) {
-                    // To stop duplicate information being displayed validate that we only do this once per product
-                    if ($iCurrentProductId !== self::$iLastProductId) {
-                        self::$iLastProductId = $iCurrentProductId;
-                        $oTransport->setHtml($oB2BHelper->__('Please login'));
-                    } else {
-                        $oTransport->setHtml('');
-                    }
-                    $this->setSymmetricsProductType($oProduct);
-                }
+                $this->transformPriceBlock($oBlock, $oTransport);
             }
         }
     }
@@ -206,7 +194,7 @@ class Sitewards_B2BProfessional_Model_Observer
      * From a block get all the category filters when set
      *
      * @param Mage_Catalog_Block_Layer_View $oBlock
-     * @return array
+     * @return array<int>
      */
     protected function getCategoryFilters($oBlock)
     {
@@ -217,7 +205,7 @@ class Sitewards_B2BProfessional_Model_Observer
             $oCategories = $oCategoryFilter->getItems();
             foreach ($oCategories as $oCategory) {
                 /* @var $oCategory Mage_Catalog_Model_Layer_Filter_Item */
-                $iCategoryId = $oCategory->getValue();
+                $iCategoryId        = $oCategory->getValue();
                 $aCategoryOptions[] = $iCategoryId;
             }
 
@@ -261,7 +249,7 @@ class Sitewards_B2BProfessional_Model_Observer
      */
     protected function removePriceFilter($oBlock)
     {
-        $aFilterableAttributes = $oBlock->getData('_filterable_attributes');
+        $aFilterableAttributes    = $oBlock->getData('_filterable_attributes');
         $aNewFilterableAttributes = array();
         foreach ($aFilterableAttributes as $oFilterableAttribute) {
             if ($oFilterableAttribute->getAttributeCode() != 'price') {
@@ -283,6 +271,32 @@ class Sitewards_B2BProfessional_Model_Observer
             && $oProduct->getTypeId() == 'bundle'
         ) {
             $oProduct->setTypeId('combined');
+        }
+    }
+
+    /**
+     * For a given product price block check if the product is active
+     *  - if it is active then set the price html as the default message
+     *
+     * @param Mage_Catalog_Block_Product_Price $oBlock
+     * @param Varien_Object $oTransport
+     */
+    protected function transformPriceBlock($oBlock, $oTransport)
+    {
+        /** @var Sitewards_B2BProfessional_Helper_Data $oB2BHelper */
+        $oB2BHelper        = Mage::helper('sitewards_b2bprofessional');
+        $oProduct          = $oBlock->getProduct();
+        $iCurrentProductId = $oProduct->getId();
+
+        if ($oB2BHelper->isProductActive($oProduct) === false) {
+            // To stop duplicate information being displayed validate that we only do this once per product
+            if ($iCurrentProductId !== self::$iLastProductId) {
+                self::$iLastProductId = $iCurrentProductId;
+                $oTransport->setHtml($oB2BHelper->__('Please login'));
+            } else {
+                $oTransport->setHtml('');
+            }
+            $this->setSymmetricsProductType($oProduct);
         }
     }
 }
