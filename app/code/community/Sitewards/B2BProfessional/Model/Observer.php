@@ -97,14 +97,7 @@ class Sitewards_B2BProfessional_Model_Observer
                     } else {
                         $oTransport->setHtml('');
                     }
-
-                    // Set type id to combined to stop tax being displayed via Symmetrics_TweaksGerman_Block_Tax
-                    if (
-                        Mage::helper('core')->isModuleEnabled('Symmetrics_TweaksGerman')
-                        && $oProduct->getTypeId() == 'bundle'
-                    ) {
-                        $oProduct->setTypeId('combined');
-                    }
+                    $this->setSymmetricsProductType($oProduct);
                 }
             }
         }
@@ -189,41 +182,10 @@ class Sitewards_B2BProfessional_Model_Observer
         if ($oB2BHelper->isExtensionActive()) {
             $oBlock = $oObserver->getData('block');
             if ($oBlock instanceof Mage_Catalog_Block_Layer_View) {
-                /* @var $oCategoryFilter Mage_Catalog_Block_Layer_Filter_Category */
-                $oCategoryFilter  = $oBlock->getChild('category_filter');
-                $aCategoryOptions = array();
-                if ($oCategoryFilter instanceof Mage_Catalog_Block_Layer_Filter_Category) {
-                    $oCategories = $oCategoryFilter->getItems();
-                    foreach ($oCategories as $oCategory) {
-                        /* @var $oCategory Mage_Catalog_Model_Layer_Filter_Item */
-                        $iCategoryId        = $oCategory->getValue();
-                        $aCategoryOptions[] = $iCategoryId;
-                    }
-
-                    if (empty($aCategoryOptions)) {
-                        /* @var $oCategory Mage_Catalog_Model_Category */
-                        $oCategory = Mage::registry('current_category_filter');
-                        if ($oCategory === null) {
-                            $oCategory = Mage::registry('current_category');
-                            if ($oCategory === null) {
-                                $oCategory = Mage::getModel('catalog/category')->load(
-                                    Mage::app()->getStore()->getRootCategoryId()
-                                );
-                            }
-                        }
-                        $aCategoryOptions[] = $oCategory->getId();
-                    }
-                }
+                $aCategoryOptions = $this->getCategoryFilters($oBlock);
 
                 if ($oB2BHelper->hasEnabledCategories($aCategoryOptions)) {
-                    $aFilterableAttributes    = $oBlock->getData('_filterable_attributes');
-                    $aNewFilterableAttributes = array();
-                    foreach ($aFilterableAttributes as $oFilterableAttribute) {
-                        if ($oFilterableAttribute->getAttributeCode() != 'price') {
-                            $aNewFilterableAttributes[] = $oFilterableAttribute;
-                        }
-                    }
-                    $oBlock->setData('_filterable_attributes', $aNewFilterableAttributes);
+                    $this->removePriceFilter($oBlock);
                 }
             }
         }
@@ -238,5 +200,89 @@ class Sitewards_B2BProfessional_Model_Observer
     protected function isExactlyPriceBlock($oBlock)
     {
         return ($oBlock && isset($this->aPriceBlockClassNames[get_class($oBlock)]));
+    }
+
+    /**
+     * From a block get all the category filters when set
+     *
+     * @param Mage_Catalog_Block_Layer_View $oBlock
+     * @return array
+     */
+    protected function getCategoryFilters($oBlock)
+    {
+        /* @var $oCategoryFilter Mage_Catalog_Block_Layer_Filter_Category */
+        $oCategoryFilter  = $oBlock->getChild('category_filter');
+        $aCategoryOptions = array();
+        if ($oCategoryFilter instanceof Mage_Catalog_Block_Layer_Filter_Category) {
+            $oCategories = $oCategoryFilter->getItems();
+            foreach ($oCategories as $oCategory) {
+                /* @var $oCategory Mage_Catalog_Model_Layer_Filter_Item */
+                $iCategoryId = $oCategory->getValue();
+                $aCategoryOptions[] = $iCategoryId;
+            }
+
+            if (empty($aCategoryOptions)) {
+                return $this->getDefaultCategoryOptions();
+            }
+        }
+        return $aCategoryOptions;
+    }
+
+    /**
+     * Return the default category,
+     *  - either from the filter,
+     *  - the current category,
+     *  - or the root category
+     *
+     * @return array<int>
+     */
+    protected function getDefaultCategoryOptions()
+    {
+        $aCategoryOptions = array();
+
+        /* @var $oCategory Mage_Catalog_Model_Category */
+        $oCategory = Mage::registry('current_category_filter');
+        if ($oCategory === null) {
+            $oCategory = Mage::registry('current_category');
+            if ($oCategory === null) {
+                $oCategory = Mage::getModel('catalog/category')->load(
+                    Mage::app()->getStore()->getRootCategoryId()
+                );
+            }
+        }
+        $aCategoryOptions[] = $oCategory->getId();
+        return $aCategoryOptions;
+    }
+
+    /**
+     * Remove the price filter options from the filterable attributes
+     *
+     * @param Mage_Catalog_Block_Layer_View $oBlock
+     */
+    protected function removePriceFilter($oBlock)
+    {
+        $aFilterableAttributes = $oBlock->getData('_filterable_attributes');
+        $aNewFilterableAttributes = array();
+        foreach ($aFilterableAttributes as $oFilterableAttribute) {
+            if ($oFilterableAttribute->getAttributeCode() != 'price') {
+                $aNewFilterableAttributes[] = $oFilterableAttribute;
+            }
+        }
+        $oBlock->setData('_filterable_attributes', $aNewFilterableAttributes);
+    }
+
+    /**
+     * Set type id to combined to stop tax being displayed via Symmetrics_TweaksGerman_Block_Tax
+     *
+     * @param Mage_Catalog_Model_Product $oProduct
+     */
+    protected function setSymmetricsProductType(Mage_Catalog_Model_Product $oProduct)
+    {
+        if (
+            Mage::helper('core')->isModuleEnabled('Symmetrics_TweaksGerman')
+            && $oProduct->getTypeId() == 'bundle'
+        ) {
+            $oProduct->setTypeId('combined');
+        }
     }
 }
