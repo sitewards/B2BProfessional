@@ -11,7 +11,7 @@
  * @package     Sitewards_B2BProfessional
  * @copyright   Copyright (c) 2014 Sitewards GmbH (http://www.sitewards.com/)
  */
-class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract
+class Sitewards_B2BProfessional_Helper_Data extends Sitewards_B2BProfessional_Helper_Core
 {
     /**
      * Path for the config for extension active status
@@ -46,10 +46,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function isExtensionActive()
     {
-        if ($this->isExtensionActive === null) {
-            $this->isExtensionActive = Mage::getStoreConfigFlag(self::CONFIG_EXTENSION_ACTIVE);
-        }
-        return $this->isExtensionActive;
+        return $this->getStoreFlag(self::CONFIG_EXTENSION_ACTIVE, 'isExtensionActive');
     }
 
     /**
@@ -121,7 +118,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * From an array of category ids check to see if any are enabled via the extension to hide prices
      *
-     * @param array<int> $aCategoryIds
+     * @param int[] $aCategoryIds
      * @return bool
      */
     public function hasEnabledCategories($aCategoryIds)

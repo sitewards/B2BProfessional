@@ -10,7 +10,7 @@
  * @package     Sitewards_B2BProfessional
  * @copyright   Copyright (c) 2014 Sitewards GmbH (http://www.sitewards.com/)
  */
-class Sitewards_B2BProfessional_Helper_Customer extends Mage_Core_Helper_Abstract
+class Sitewards_B2BProfessional_Helper_Customer extends Sitewards_B2BProfessional_Helper_Core
 {
     /**
      * Path for the config for extension requires login
@@ -28,9 +28,23 @@ class Sitewards_B2BProfessional_Helper_Customer extends Mage_Core_Helper_Abstrac
     const CONFIG_EXTENSION_ACTIVE_CUSTOMER_GROUPS = 'b2bprofessional/activatebycustomersettings/activecustomers';
 
     /**
+     * Flag if the extension is set to require login
+     *
+     * @var bool
+     */
+    protected $isLoginRequired;
+
+    /**
+     * Flag if the extension is active by customer group
+     *
+     * @var bool
+     */
+    protected $isExtensionActiveByCustomerGroup;
+
+    /**
      * Array of activated customer group ids
      *
-     * @var array<int>
+     * @var int[]
      */
     protected $aActivatedCustomerGroupIds = array();
 
@@ -70,7 +84,7 @@ class Sitewards_B2BProfessional_Helper_Customer extends Mage_Core_Helper_Abstrac
      */
     public function isLoginRequired()
     {
-        return Mage::getStoreConfigFlag(self::CONFIG_EXTENSION_REQUIRES_LOGIN);
+        return $this->getStoreFlag(self::CONFIG_EXTENSION_REQUIRES_LOGIN, 'isLoginRequired');
     }
 
     /**
@@ -80,14 +94,14 @@ class Sitewards_B2BProfessional_Helper_Customer extends Mage_Core_Helper_Abstrac
      */
     public function isExtensionActivatedByCustomerGroup()
     {
-        return Mage::getStoreConfigFlag(self::CONFIG_EXTENSION_ACTIVE_BY_CUSTOMER_GROUP);
+        return $this->getStoreFlag(self::CONFIG_EXTENSION_ACTIVE_BY_CUSTOMER_GROUP, 'isExtensionActiveByCustomerGroup');
     }
 
     /**
      * Get an array of all the activated customer group ids
      *  - always include the 'NOT LOGGED IN' group
      *
-     * @return array<int>
+     * @return int[]
      */
     private function getActivatedCustomerGroupIds()
     {

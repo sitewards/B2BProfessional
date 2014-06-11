@@ -174,7 +174,7 @@ class Sitewards_B2BProfessional_Model_Observer
      * From a block get all the category filters when set
      *
      * @param Mage_Catalog_Block_Layer_View $oBlock
-     * @return array<int>
+     * @return int[]
      */
     protected function getCategoryFilters($oBlock)
     {
@@ -202,7 +202,7 @@ class Sitewards_B2BProfessional_Model_Observer
      *  - the current category,
      *  - or the root category
      *
-     * @return array<int>
+     * @return int[]
      */
     protected function getDefaultCategoryOptions()
     {

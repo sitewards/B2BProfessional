@@ -10,7 +10,7 @@
  * @package     Sitewards_B2BProfessional
  * @copyright   Copyright (c) 2014 Sitewards GmbH (http://www.sitewards.com/)
  */
-class Sitewards_B2BProfessional_Helper_Category extends Mage_Core_Helper_Abstract
+class Sitewards_B2BProfessional_Helper_Category extends Sitewards_B2BProfessional_Helper_Core
 {
     /**
      * Path for the config for extension active by category
@@ -36,17 +36,14 @@ class Sitewards_B2BProfessional_Helper_Category extends Mage_Core_Helper_Abstrac
      */
     public function isExtensionActivatedByCategory()
     {
-        if ($this->isExtensionActiveByCategory === null) {
-            $this->isExtensionActiveByCategory = Mage::getStoreConfigFlag(self::CONFIG_EXTENSION_ACTIVE_BY_CATEGORY);
-        }
-        return $this->isExtensionActiveByCategory;
+        return $this->getStoreFlag(self::CONFIG_EXTENSION_ACTIVE_BY_CATEGORY, 'isExtensionActiveByCategory');
     }
 
     /**
      * For a product get all the parent and children product ids when they are set
      *
      * @param Mage_Catalog_Model_Product $oProduct
-     * @return array<int>
+     * @return int[]
      */
     protected function getChildrenAndParentIds(Mage_Catalog_Model_Product $oProduct)
     {
@@ -89,7 +86,7 @@ class Sitewards_B2BProfessional_Helper_Category extends Mage_Core_Helper_Abstrac
     /**
      * Check that at least one of the given category ids is active
      *
-     * @param array<int> $aCategoryIds
+     * @param int[] $aCategoryIds
      * @return bool
      */
     public function hasActiveCategory($aCategoryIds)
@@ -107,7 +104,7 @@ class Sitewards_B2BProfessional_Helper_Category extends Mage_Core_Helper_Abstrac
      * Get all category ids activated via the system config
      *  - Include the children category ids
      *
-     * @return array<int>
+     * @return int[]
      */
     protected function getActiveCategories()
     {
@@ -123,7 +120,7 @@ class Sitewards_B2BProfessional_Helper_Category extends Mage_Core_Helper_Abstrac
     /**
      * Get an array of category ids activated via the admin config section
      *
-     * @return array<int>
+     * @return int[]
      */
     protected function getExtensionActivatedCategoryIds()
     {
@@ -138,8 +135,8 @@ class Sitewards_B2BProfessional_Helper_Category extends Mage_Core_Helper_Abstrac
     /**
      * From given category id load all child ids into an array
      *
-     * @param array<int> $aCategoryIds
-     * @return array<int>
+     * @param int[] $aCategoryIds
+     * @return int[]
      */
     protected function addCategoryChildren($aCategoryIds)
     {
@@ -158,9 +155,9 @@ class Sitewards_B2BProfessional_Helper_Category extends Mage_Core_Helper_Abstrac
     /**
      * From an array of all product ids get all unique entries in the product category table
      *
-     * @param array<int> $aProductIds
-     * @param array<int> $aCurrentCategories
-     * @return array<int>
+     * @param int[] $aProductIds
+     * @param int[] $aCurrentCategories
+     * @return int[]
      */
     protected function getAllCategoryIds($aProductIds, $aCurrentCategories)
     {

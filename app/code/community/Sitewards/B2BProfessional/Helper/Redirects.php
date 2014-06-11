@@ -9,7 +9,7 @@
  * @package     Sitewards_B2BProfessional
  * @copyright   Copyright (c) 2014 Sitewards GmbH (http://www.sitewards.com/)
  */
-class Sitewards_B2BProfessional_Helper_Redirects extends Mage_Core_Helper_Abstract
+class Sitewards_B2BProfessional_Helper_Redirects extends Sitewards_B2BProfessional_Helper_Core
 {
     /**
      * String containing the configuration path for the login redirect
