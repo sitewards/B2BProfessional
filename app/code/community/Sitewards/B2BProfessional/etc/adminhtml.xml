@@ -18,7 +18,7 @@
                         <children>
                             <config>
                                 <children>
-                                    <b2bprofessional translate="title" module="b2bprofessional">
+                                    <b2bprofessional translate="title" module="sitewards_b2bprofessional">
                                         <title>B2B Professional</title>
                                         <sort_order>50</sort_order>
                                     </b2bprofessional>
