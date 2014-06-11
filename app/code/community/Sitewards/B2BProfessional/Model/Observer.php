@@ -119,7 +119,6 @@ class Sitewards_B2BProfessional_Model_Observer
 
     /**
      * Remove the price option from the order by options
-     *  - TODO: we should try to check if it is possible to only remove this if not needed
      *
      * @param Varien_Event_Observer $oObserver
      */
@@ -130,7 +129,6 @@ class Sitewards_B2BProfessional_Model_Observer
         if ($oB2BHelper->isExtensionActive() === true) {
             $oBlock = $oObserver->getData('block');
 
-            // TODO: we should check if we should remove the price not just remove it always
             if ($oBlock instanceof Mage_Catalog_Block_Product_List_Toolbar) {
                 $oBlock->removeOrderFromAvailableOrders('price');
             }
