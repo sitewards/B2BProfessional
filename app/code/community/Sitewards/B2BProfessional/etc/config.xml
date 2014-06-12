@@ -79,6 +79,10 @@
         <b2bprofessional>
             <generalsettings>
                 <active>0</active>
+                <priceblocks>
+                    <catalog>Mage_Catalog_Block_Product_Price</catalog>
+                    <bundle>Mage_Bundle_Block_Catalog_Product_Price</bundle>
+                </priceblocks>
             </generalsettings>
             <requirelogin>
                 <requirelogin>0</requirelogin>

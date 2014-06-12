@@ -21,16 +21,6 @@ class Sitewards_B2BProfessional_Model_Observer
     protected static $iLastProductId = 0;
 
     /**
-     * blocks which display prices
-     *
-     * @var array
-     */
-    protected $aPriceBlockClassNames = array(
-        'Mage_Catalog_Block_Product_Price' => 1,
-        'Mage_Bundle_Block_Catalog_Product_Price' => 1,
-    );
-
-    /**
      * Check to see if a product can be sold to the current logged in user
      *  - if the flag of salable is already false then we should do nothing
      *
@@ -165,7 +155,8 @@ class Sitewards_B2BProfessional_Model_Observer
      */
     protected function isExactlyPriceBlock($oBlock)
     {
-        return ($oBlock && isset($this->aPriceBlockClassNames[get_class($oBlock)]));
+        return $oBlock
+            && Mage::helper('sitewards_b2bprofessional')->isBlockPriceBlock($oBlock);
     }
 
     /**

@@ -19,6 +19,11 @@ class Sitewards_B2BProfessional_Helper_Data extends Sitewards_B2BProfessional_He
     const CONFIG_EXTENSION_ACTIVE = 'b2bprofessional/generalsettings/active';
 
     /**
+     * Path for the config for price block class names
+     */
+    const CONFIG_EXTENSION_PRICE_BLOCKS = 'b2bprofessional/generalsettings/priceblocks';
+
+    /**
      * Variable for if the extension is active
      *
      * @var bool
@@ -38,6 +43,13 @@ class Sitewards_B2BProfessional_Helper_Data extends Sitewards_B2BProfessional_He
      * @var bool
      */
     protected $isExtensionActiveByCustomerGroup;
+
+    /**
+     * Variable for the extension's price blocks
+     *
+     * @var string[]
+     */
+    protected $aPriceBlockClassNames;
 
     /**
      * Check to see if the extension is active
@@ -77,6 +89,18 @@ class Sitewards_B2BProfessional_Helper_Data extends Sitewards_B2BProfessional_He
             )->isExtensionActivatedByCustomerGroup();
         }
         return $this->isExtensionActiveByCustomerGroup;
+    }
+
+    /**
+     * Check to see if the block is a price block
+     *
+     * @param Mage_Core_Block_Template $oBlock
+     * @return bool
+     */
+    public function isBlockPriceBlock($oBlock)
+    {
+        $aPriceBlockClassNames = $this->getPriceBlocks();
+        return in_array(get_class($oBlock), $aPriceBlockClassNames);
     }
 
     /**
@@ -157,5 +181,18 @@ class Sitewards_B2BProfessional_Helper_Data extends Sitewards_B2BProfessional_He
     protected function isCustomerLoggedIn()
     {
         return Mage::helper('sitewards_b2bprofessional/customer')->isCustomerLoggedIn();
+    }
+
+    /**
+     * Get the price blocks as defined in the xml
+     *
+     * @return string[]
+     */
+    protected function getPriceBlocks()
+    {
+        if ($this->aPriceBlockClassNames === null) {
+            $this->aPriceBlockClassNames = Mage::getStoreConfig(self::CONFIG_EXTENSION_PRICE_BLOCKS);
+        }
+        return $this->aPriceBlockClassNames;
     }
 }
