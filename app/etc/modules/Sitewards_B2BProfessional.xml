@@ -17,9 +17,11 @@
             <active>true</active>
             <codePool>community</codePool>
             <depends>
-                <Mage_Catalog />
-                <Mage_Customer />
+                <Mage_Catalog/>
+                <Mage_Customer/>
                 <Netzarbeiter_CustomerActivation/>
+                <Sitewards_DeliveryDate/>
+                <Sitewards_QuickOrders/>
             </depends>
         </Sitewards_B2BProfessional>
     </modules>
