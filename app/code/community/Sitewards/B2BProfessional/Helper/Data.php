@@ -42,7 +42,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Sitewards_B2BProfessional_He
      *
      * @var bool
      */
-    protected $isExtensionActiveByCustomerGroup;
+    protected $bExtensionActiveByCustomerGroup;
 
     /**
      * Variable for the extension's price blocks
