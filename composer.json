@@ -6,9 +6,7 @@
     "homepage": "http://www.sitewards.com",
     "require": {
         "magento-hackathon/magento-composer-installer": "1.*",
-        "netzarbeiter/customer-activation": "0.*",
-        "sitewards/delivery_date": "0.*",
-        "sitewards/quick_orders": "0.*"
+        "netzarbeiter/customer-activation": "0.*"
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.*"
