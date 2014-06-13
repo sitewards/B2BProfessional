@@ -143,8 +143,8 @@ class Sitewards_B2BProfessional_Helper_Category extends Sitewards_B2BProfessiona
         $oCategoryResource = Mage::getResourceModel('catalog/category');
         $oAdapter          = $oCategoryResource->getReadConnection();
 
-        $oSelect = $oAdapter->select()
-            ->from(array('m' => $oCategoryResource->getEntityTable()), 'entity_id');
+        $oSelect = $oAdapter->select();
+        $oSelect->from(array('m' => $oCategoryResource->getEntityTable()), 'entity_id');
 
         foreach ($aCategoryIds as $iCategoryId) {
             $oSelect->orWhere($oAdapter->quoteIdentifier('path') . ' LIKE ?', '%/' . $iCategoryId . '/%');
@@ -164,9 +164,9 @@ class Sitewards_B2BProfessional_Helper_Category extends Sitewards_B2BProfessiona
         $oProductResource = Mage::getResourceModel('catalog/product');
         $oAdapter         = $oProductResource->getReadConnection();
 
-        $oSelect = $oAdapter->select()
-            ->from($oProductResource->getTable('catalog/category_product'), 'category_id')
-            ->where('product_id IN (?)', $aProductIds);
+        $oSelect = $oAdapter->select();
+        $oSelect->from($oProductResource->getTable('catalog/category_product'), 'category_id');
+        $oSelect->where('product_id IN (?)', $aProductIds);
 
         return array_unique(array_merge($aCurrentCategories, $oAdapter->fetchCol($oSelect)));
     }
