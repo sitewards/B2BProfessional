@@ -27,7 +27,7 @@ class Sitewards_B2BProfessional_Helper_Category extends Sitewards_B2BProfessiona
      *
      * @var bool
      */
-    protected $isExtensionActiveByCategory;
+    protected $bExtensionActiveByCategory;
 
     /**
      * Check to see if the website is set-up to require a user login to view pages
@@ -36,7 +36,7 @@ class Sitewards_B2BProfessional_Helper_Category extends Sitewards_B2BProfessiona
      */
     public function isExtensionActivatedByCategory()
     {
-        return $this->getStoreFlag(self::CONFIG_EXTENSION_ACTIVE_BY_CATEGORY, 'isExtensionActiveByCategory');
+        return $this->getStoreFlag(self::CONFIG_EXTENSION_ACTIVE_BY_CATEGORY, 'bExtensionActiveByCategory');
     }
 
     /**

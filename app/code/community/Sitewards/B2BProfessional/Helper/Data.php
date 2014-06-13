@@ -28,14 +28,14 @@ class Sitewards_B2BProfessional_Helper_Data extends Sitewards_B2BProfessional_He
      *
      * @var bool
      */
-    protected $isExtensionActive;
+    protected $bExtensionActive;
 
     /**
      * Variable for if the extension is active by category
      *
      * @var bool
      */
-    protected $isExtensionActiveByCategory;
+    protected $bExtensionActiveByCategory;
 
     /**
      * Variable for if the extension is active by customer group
@@ -58,7 +58,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Sitewards_B2BProfessional_He
      */
     public function isExtensionActive()
     {
-        return $this->getStoreFlag(self::CONFIG_EXTENSION_ACTIVE, 'isExtensionActive');
+        return $this->getStoreFlag(self::CONFIG_EXTENSION_ACTIVE, 'bExtensionActive');
     }
 
     /**
@@ -68,12 +68,12 @@ class Sitewards_B2BProfessional_Helper_Data extends Sitewards_B2BProfessional_He
      */
     protected function isExtensionActiveByCategory()
     {
-        if ($this->isExtensionActiveByCategory === null) {
-            $this->isExtensionActiveByCategory = Mage::helper(
+        if ($this->bExtensionActiveByCategory === null) {
+            $this->bExtensionActiveByCategory = Mage::helper(
                 'sitewards_b2bprofessional/category'
             )->isExtensionActivatedByCategory();
         }
-        return $this->isExtensionActiveByCategory;
+        return $this->bExtensionActiveByCategory;
     }
 
     /**
@@ -83,12 +83,12 @@ class Sitewards_B2BProfessional_Helper_Data extends Sitewards_B2BProfessional_He
      */
     protected function isExtensionActivatedByCustomerGroup()
     {
-        if ($this->isExtensionActiveByCustomerGroup === null) {
-            $this->isExtensionActiveByCustomerGroup = Mage::helper(
+        if ($this->bExtensionActiveByCustomerGroup === null) {
+            $this->bExtensionActiveByCustomerGroup = Mage::helper(
                 'sitewards_b2bprofessional/customer'
             )->isExtensionActivatedByCustomerGroup();
         }
-        return $this->isExtensionActiveByCustomerGroup;
+        return $this->bExtensionActiveByCustomerGroup;
     }
 
     /**

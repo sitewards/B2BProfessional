@@ -32,14 +32,14 @@ class Sitewards_B2BProfessional_Helper_Customer extends Sitewards_B2BProfessiona
      *
      * @var bool
      */
-    protected $isLoginRequired;
+    protected $bLoginRequired;
 
     /**
      * Flag if the extension is active by customer group
      *
      * @var bool
      */
-    protected $isExtensionActiveByCustomerGroup;
+    protected $bExtensionActiveByCustomerGroup;
 
     /**
      * Array of activated customer group ids
@@ -84,7 +84,7 @@ class Sitewards_B2BProfessional_Helper_Customer extends Sitewards_B2BProfessiona
      */
     public function isLoginRequired()
     {
-        return $this->getStoreFlag(self::CONFIG_EXTENSION_REQUIRES_LOGIN, 'isLoginRequired');
+        return $this->getStoreFlag(self::CONFIG_EXTENSION_REQUIRES_LOGIN, 'bLoginRequired');
     }
 
     /**
@@ -94,7 +94,7 @@ class Sitewards_B2BProfessional_Helper_Customer extends Sitewards_B2BProfessiona
      */
     public function isExtensionActivatedByCustomerGroup()
     {
-        return $this->getStoreFlag(self::CONFIG_EXTENSION_ACTIVE_BY_CUSTOMER_GROUP, 'isExtensionActiveByCustomerGroup');
+        return $this->getStoreFlag(self::CONFIG_EXTENSION_ACTIVE_BY_CUSTOMER_GROUP, 'bExtensionActiveByCustomerGroup');
     }
 
     /**
