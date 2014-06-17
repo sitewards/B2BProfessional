@@ -127,7 +127,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Sitewards_B2BProfessional_He
             $bIsCustomerGroupEnabled = $oCustomerHelper->isCustomerGroupActive();
 
             if ($bCheckCategory && $bCheckUser) {
-                $bIsProductActive = !$bIsCategoryEnabled || $bIsCustomerGroupEnabled;
+                $bIsProductActive = !($bIsCategoryEnabled && $bIsCustomerGroupEnabled);
             } elseif ($bCheckUser) {
                 $bIsProductActive = !$bIsCustomerGroupEnabled;
             } elseif ($bCheckCategory) {
@@ -167,7 +167,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Sitewards_B2BProfessional_He
             $bIsUserGroupActive   = $oCustomerHelper->isCustomerGroupActive();
 
             if ($bCheckCategory && $bCheckUser) {
-                $bHasCategories = $bHasActiveCategories && !$bIsUserGroupActive;
+                $bHasCategories = $bHasActiveCategories && $bIsUserGroupActive;
             } elseif ($bCheckUser) {
                 $bHasCategories = $bIsUserGroupActive;
             } elseif ($bCheckCategory) {

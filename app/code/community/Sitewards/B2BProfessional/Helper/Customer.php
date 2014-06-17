@@ -66,9 +66,6 @@ class Sitewards_B2BProfessional_Helper_Customer extends Sitewards_B2BProfessiona
      */
     public function isCustomerGroupActive()
     {
-        if (!$this->isCustomerLoggedIn()) {
-            return false;
-        }
         /* @var $oCustomerSession Mage_Customer_Model_Session */
         $oCustomerSession        = Mage::getModel('customer/session');
         $iCurrentCustomerGroupId = $oCustomerSession->getCustomerGroupId();
