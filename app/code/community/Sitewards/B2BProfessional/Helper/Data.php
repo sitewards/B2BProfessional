@@ -1,189 +1,208 @@
 <?php
+
 /**
  * Sitewards_B2BProfessional_Helper_Data
- *	- Create functions to,
- *		- Check if user is allowed on store,
- *		- Check if product category is active,
- *		- Check customer group is active,
- *		- Check module global flag,
- *		- Check that customer is logged in and active,
- *		- Check that the product/customer is activated,
- *		- Check that the current cart is valid,
+ *  - Helper containing the checks for
+ *      - extension is active,
+ *      - product is active,
+ *      - is the category active,
  *
  * @category    Sitewards
  * @package     Sitewards_B2BProfessional
- * @copyright   Copyright (c) 2013 Sitewards GmbH (http://www.sitewards.com/)
+ * @copyright   Copyright (c) 2014 Sitewards GmbH (http://www.sitewards.com/)
  */
-class Sitewards_B2BProfessional_Helper_Data extends Mage_Core_Helper_Abstract {
-	/**
-	 * Object for the sitewards b2bprofessional category helper
-	 *
-	 * @var Sitewards_B2BProfessional_Helper_Category
-	 */
-	protected $oB2BCategoryHelper;
+class Sitewards_B2BProfessional_Helper_Data extends Sitewards_B2BProfessional_Helper_Core
+{
+    /**
+     * Path for the config for extension active status
+     */
+    const CONFIG_EXTENSION_ACTIVE = 'b2bprofessional/generalsettings/active';
 
-	/**
-	 * Object for the sitewards b2bprofessional customer helper
-	 *
-	 * @var Sitewards_B2BProfessional_Helper_Customer
-	 */
-	protected $oB2BCustomerHelper;
+    /**
+     * Path for the config for price block class names
+     */
+    const CONFIG_EXTENSION_PRICE_BLOCKS = 'b2bprofessional/generalsettings/priceblocks';
 
-	protected $_isActive;
-	protected $_isExtensionActive;
+    /**
+     * Variable for if the extension is active
+     *
+     * @var bool
+     */
+    protected $bExtensionActive;
 
-	/**
-	 * Create instances of the sitewards b2bprofessional category and customer helpers
-	 */
-	protected function _prepareHelpers() {
-		/** @var $this->oB2BCategoryHelper Sitewards_B2BProfessional_Helper_Category */
-		$this->oB2BCategoryHelper = Mage::helper('b2bprofessional/category');
-		/** @var $this->oB2BCustomerHelper Sitewards_B2BProfessional_Helper_Customer */
-		$this->oB2BCustomerHelper = Mage::helper('b2bprofessional/customer');
-	}
+    /**
+     * Variable for if the extension is active by category
+     *
+     * @var bool
+     */
+    protected $bExtensionActiveByCategory;
 
-	/**
-	 * Check to see if the extension is active
-	 * Returns the extension's general setting "active"
-	 *
-	 * @return bool
-	 */
-	public function isExtensionActive() {
-		if (empty($this->_isExtensionActive)) {
-			$this->_isExtensionActive = Mage::getStoreConfigFlag(Sitewards_B2BProfessional_Helper_Core::CONFIG_B2B_PROFESSIONAL_NODE . '/' . Sitewards_B2BProfessional_Helper_Core::CONFIG_GENERAL_SETTINGS_NODE . '/active');
-		}
-		return $this->_isExtensionActive;
-	}
+    /**
+     * Variable for if the extension is active by customer group
+     *
+     * @var bool
+     */
+    protected $bExtensionActiveByCustomerGroup;
 
-	/**
-	 * Check that the price can be displayed for the given product id
-	 *  - Check that the extension is active
-	 *  - Check that the customer is allowed in the store
-	 *  - When the extension is activated by customer group and category
-	 *   - Check that:
-	 *    - The category is active by product
-	 *    - AND The customer is active
-	 *  - When the extension is activated by customer group
-	 *   - Check that:
-	 *    - The customer is active
-	 *  - When the extension is activated by category
-	 *   - Check that:
-	 *    - The category is active by product
-	 *    - AND the user is not logged in
-	 *  - Else
-	 *   - Check if the user is not logged in
-	 *
-	 * @param int $iProductId
-	 * @return bool
-	 */
-	public function isProductActive($iProductId) {
-		$bIsLoggedIn = false;
-		// global extension activation
-		if ($this->isExtensionActive()) {
-			$this->_prepareHelpers();
+    /**
+     * Variable for the extension's price blocks
+     *
+     * @var string[]
+     */
+    protected $aPriceBlockClassNames;
 
-			// check user logged in and has store access
-			if ($this->oB2BCustomerHelper->isCustomerAllowedInStore()) {
-				$bIsLoggedIn = true;
-			}
+    /**
+     * Check to see if the extension is active
+     *
+     * @return bool
+     */
+    public function isExtensionActive()
+    {
+        return $this->getStoreFlag(self::CONFIG_EXTENSION_ACTIVE, 'bExtensionActive');
+    }
 
-			$bCheckUser		= $this->oB2BCustomerHelper->isExtensionActivatedByCustomer();
-			$bCheckCategory	= $this->oB2BCategoryHelper->isExtensionActivatedByCategory();
+    /**
+     * Check to see if the extension is active by category
+     *
+     * @return bool
+     */
+    protected function isExtensionActiveByCategory()
+    {
+        if ($this->bExtensionActiveByCategory === null) {
+            $this->bExtensionActiveByCategory = Mage::helper(
+                'sitewards_b2bprofessional/category'
+            )->isExtensionActivatedByCategory();
+        }
+        return $this->bExtensionActiveByCategory;
+    }
 
-			if($bCheckUser == true && $bCheckCategory == true) {
-				$bIsActive = $this->oB2BCategoryHelper->isCategoryActiveByProduct($iProductId) && $this->oB2BCustomerHelper->isCustomerActive();
-			} elseif($bCheckUser == true) {
-				$bIsActive = $this->oB2BCustomerHelper->isCustomerActive();
-			} elseif ($bCheckCategory == true) {
-				$bIsActive = $this->oB2BCategoryHelper->isCategoryActiveByProduct($iProductId) && !$bIsLoggedIn;
-			} else {
-				$bIsActive = !$bIsLoggedIn;
-			}
-		} else {
-			$bIsActive = false;
-		}
-		return $bIsActive;
-	}
+    /**
+     * Check to see if the extension is active by user group
+     *
+     * @return bool
+     */
+    protected function isExtensionActivatedByCustomerGroup()
+    {
+        if ($this->bExtensionActiveByCustomerGroup === null) {
+            $this->bExtensionActiveByCustomerGroup = Mage::helper(
+                'sitewards_b2bprofessional/customer'
+            )->isExtensionActivatedByCustomerGroup();
+        }
+        return $this->bExtensionActiveByCustomerGroup;
+    }
 
-	/**
-	 * Check that the price can be displayed when no product id is given
-	 *  - Check that the extension is active
-	 *  - Check that the customer is allowed in the store
-	 *  - When the extension is activated by customer group and category
-	 *   - Check that:
-	 *    - The category is active
-	 *    - AND The customer is active
-	 *  - When the extension is activated by customer group
-	 *   - Check that:
-	 *    - The customer is active
-	 *  - When the extension is activated by category
-	 *   - Check that:
-	 *    - The category is active
-	 *    - AND the user is not logged in
-	 *  - Else
-	 *   - Check if the user not is logged in
-	 *
-	 * @return bool
-	 */
-	public function isActive() {
-		if (empty($this->_isActive)) {
-			$bIsLoggedIn = false;
-			// global extension activation
-			if ($this->isExtensionActive()) {
-				$this->_prepareHelpers();
+    /**
+     * Check to see if the block is a price block
+     *
+     * @param Mage_Core_Block_Template $oBlock
+     * @return bool
+     */
+    public function isBlockPriceBlock($oBlock)
+    {
+        $aPriceBlockClassNames = $this->getPriceBlocks();
+        return in_array(get_class($oBlock), $aPriceBlockClassNames);
+    }
 
-				// check user logged in and has store access
-				if ($this->oB2BCustomerHelper->isCustomerAllowedInStore()) {
-					$bIsLoggedIn = true;
-				}
+    /**
+     * Check to see if the given product is active
+     *  - In this case active means product behaves as normal in a magento shop
+     *
+     * @param Mage_Catalog_Model_Product $oProduct
+     * @return bool
+     */
+    public function isProductActive(Mage_Catalog_Model_Product $oProduct)
+    {
+        $bIsProductActive = true;
+        if ($this->isExtensionActive() === true) {
+            $bCheckCategory      = $this->isExtensionActiveByCategory();
+            $bCheckUser          = $this->isExtensionActivatedByCustomerGroup();
+            $bIsCustomerLoggedIn = $this->isCustomerLoggedIn();
 
-				$bCheckUser		= $this->oB2BCustomerHelper->isExtensionActivatedByCustomer();
-				$bCheckCategory	= $this->oB2BCategoryHelper->isExtensionActivatedByCategory();
+            /** @var Sitewards_B2BProfessional_Helper_Category $oCategoryHelper */
+            $oCategoryHelper = Mage::helper('sitewards_b2bprofessional/category');
+            /** @var Sitewards_B2BProfessional_Helper_Customer $oCustomerHelper */
+            $oCustomerHelper = Mage::helper('sitewards_b2bprofessional/customer');
 
-				if($bCheckUser == true && $bCheckCategory == true) {
-					$bIsActive = $this->oB2BCategoryHelper->isCategoryActive() && $this->oB2BCustomerHelper->isCustomerActive();
-				} elseif($bCheckUser == true) {
-					$bIsActive = $this->oB2BCustomerHelper->isCustomerActive();
-				} elseif ($bCheckCategory == true) {
-					$bIsActive = $this->oB2BCategoryHelper->isCategoryActive() && !$bIsLoggedIn;
-				} else {
-					$bIsActive = !$bIsLoggedIn;
-				}
-			} else {
-				$bIsActive = false;
-			}
-			$this->_isActive = $bIsActive;
-		}
-		return $this->_isActive;
-	}
+            $bIsCategoryEnabled      = $oCategoryHelper->isCategoryActiveByProduct($oProduct);
+            $bIsCustomerGroupEnabled = $oCustomerHelper->isCustomerGroupActive();
 
-	/**
-	 * Validate that the current quote in the checkout session is valid for the user
-	 *  - Check each item in the quote against the function checkActive
-	 *
-	 * @return bool
-	 */
-	public function hasValidCart() {
-		$bValidCart = true;
-		/* @var $oQuote Mage_Sales_Model_Quote */
-		$oQuote = Mage::getSingleton('checkout/session')->getQuote();
-		foreach($oQuote->getAllItems() as $oItem) {
-			/* @var $oItem Mage_Sales_Model_Quote_Item */
-			$iProductId = $oItem->getProductId();
-			/*
-			 * For each item check if it is active for the current user
-			 */
-			if ($this->isProductActive($iProductId)) {
-				$bValidCart = false;
-			}
-		}
-		return $bValidCart;
-	}
+            if ($bCheckCategory && $bCheckUser) {
+                $bIsProductActive = !($bIsCategoryEnabled && $bIsCustomerGroupEnabled);
+            } elseif ($bCheckUser) {
+                $bIsProductActive = !$bIsCustomerGroupEnabled;
+            } elseif ($bCheckCategory) {
+                if ($bIsCustomerLoggedIn) {
+                    $bIsProductActive = true;
+                } else {
+                    $bIsProductActive = !$bIsCategoryEnabled;
+                }
+            } else {
+                $bIsProductActive = $bIsCustomerLoggedIn;
+            }
+        }
 
-	/**
- 	 * @return string
- 	 */
- 	public function getOrderHistoryUrl() {
- 		return $this->_getUrl('sales/order/history');
- 	}
+        return $bIsProductActive;
+    }
+
+    /**
+     * From an array of category ids check to see if any are enabled via the extension to hide prices
+     *
+     * @param int[] $aCategoryIds
+     * @return bool
+     */
+    public function hasEnabledCategories($aCategoryIds)
+    {
+        $bHasCategories = false;
+        if ($this->isExtensionActive() === true) {
+            $bCheckCategory      = $this->isExtensionActiveByCategory();
+            $bCheckUser          = $this->isExtensionActivatedByCustomerGroup();
+            $bIsCustomerLoggedIn = $this->isCustomerLoggedIn();
+
+            /** @var Sitewards_B2BProfessional_Helper_Category $oCategoryHelper */
+            $oCategoryHelper = Mage::helper('sitewards_b2bprofessional/category');
+            /** @var Sitewards_B2BProfessional_Helper_Customer $oCustomerHelper */
+            $oCustomerHelper = Mage::helper('sitewards_b2bprofessional/customer');
+
+            $bHasActiveCategories = $oCategoryHelper->hasActiveCategory($aCategoryIds);
+            $bIsUserGroupActive   = $oCustomerHelper->isCustomerGroupActive();
+
+            if ($bCheckCategory && $bCheckUser) {
+                $bHasCategories = $bHasActiveCategories && $bIsUserGroupActive;
+            } elseif ($bCheckUser) {
+                $bHasCategories = $bIsUserGroupActive;
+            } elseif ($bCheckCategory) {
+                if ($bIsCustomerLoggedIn) {
+                    $bHasCategories = false;
+                } else {
+                    $bHasCategories = $bHasActiveCategories;
+                }
+            } else {
+                $bHasCategories = !$bIsCustomerLoggedIn;
+            }
+        }
+        return $bHasCategories;
+    }
+
+    /**
+     * Check if the customer is logged in
+     *
+     * @return bool
+     */
+    protected function isCustomerLoggedIn()
+    {
+        return Mage::helper('sitewards_b2bprofessional/customer')->isCustomerLoggedIn();
+    }
+
+    /**
+     * Get the price blocks as defined in the xml
+     *
+     * @return string[]
+     */
+    protected function getPriceBlocks()
+    {
+        if ($this->aPriceBlockClassNames === null) {
+            $this->aPriceBlockClassNames = Mage::getStoreConfig(self::CONFIG_EXTENSION_PRICE_BLOCKS);
+        }
+        return $this->aPriceBlockClassNames;
+    }
 }

@@ -1,35 +1,26 @@
 <?php
+
 /**
- * Class Sitewards_B2BProfessional_Helper_Core
- *  - define the reusable sections of the config file
+ * Sitewards_B2BProfessional_Helper_Core
  *
  * @category    Sitewards
  * @package     Sitewards_B2BProfessional
- * @copyright   Copyright (c) 2013 Sitewards GmbH (http://www.sitewards.com/)
+ * @copyright   Copyright (c) 2014 Sitewards GmbH (http://www.sitewards.com/)
  */
-class Sitewards_B2BProfessional_Helper_Core extends Mage_Core_Helper_Abstract {
-	/**
-	 * The root node of the b2b professional configuration
-	 */
-	const CONFIG_B2B_PROFESSIONAL_NODE = 'b2bprofessional';
-
-	/**
-	 * The general settings node of the b2b professional configuration
-	 */
-	const CONFIG_GENERAL_SETTINGS_NODE = 'generalsettings';
-
-	/**
-	 * The language settings node of the b2b professional configuration
-	 */
-	const CONFIG_LANGUAGE_SETTINGS_NODE = 'languagesettings';
-
-	/**
-	 * The category settings node of the b2b professional configuration
-	 */
-	const CONFIG_CATEGORY_SETTINGS_NODE = 'activatebycategorysettings';
-
-	/**
-	 * The customer settings node of the b2b professional configuration
-	 */
-	const CONFIG_CUSTOMER_SETTINGS_NODE = 'activatebycustomersettings';
+class Sitewards_B2BProfessional_Helper_Core extends Mage_Core_Helper_Abstract
+{
+    /**
+     * Get a store flag value and set to against the object
+     *
+     * @param string $sStoreFlagPath
+     * @param string $sStoreFlagAttribute
+     * @return bool
+     */
+    public function getStoreFlag($sStoreFlagPath, $sStoreFlagAttribute)
+    {
+        if ($this->$sStoreFlagAttribute === null) {
+            $this->$sStoreFlagAttribute = Mage::getStoreConfigFlag($sStoreFlagPath);
+        }
+        return $this->$sStoreFlagAttribute;
+    }
 }
