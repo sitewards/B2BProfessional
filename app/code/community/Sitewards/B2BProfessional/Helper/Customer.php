@@ -28,6 +28,11 @@ class Sitewards_B2BProfessional_Helper_Customer extends Sitewards_B2BProfessiona
     const CONFIG_EXTENSION_ACTIVE_CUSTOMER_GROUPS = 'b2bprofessional/activatebycustomersettings/activecustomers';
 
     /**
+     * Path for the config for customer groups that are activated
+     */
+    const CONFIG_EXTENSION_ACTIVE_CUSTOMER_GLOBALLY = 'b2bprofessional/generalsettings/activecustomers';
+
+    /**
      * Flag if the extension is set to require login
      *
      * @var bool
@@ -50,12 +55,83 @@ class Sitewards_B2BProfessional_Helper_Customer extends Sitewards_B2BProfessiona
 
     /**
      * Check to see if the customer is logged in
+     *  - Is the session logged in,
+     *  - Are customers activated globally,
+     *  - Is this one customer active for the current store,
      *
      * @return bool
      */
     public function isCustomerLoggedIn()
     {
-        return Mage::helper('customer')->isLoggedIn();
+        if (Mage::helper('customer')->isLoggedIn() === true) {
+            /*
+             * If customer activation is global
+             *  - then any customer can access any store
+             */
+            if ($this->isCustomerActivationGlobal()) {
+                return true;
+            }
+
+            /* @var $oCustomerSession Mage_Customer_Model_Session */
+            $oCustomerSession = Mage::getSingleton('customer/session');
+            /* @var $oCustomer Mage_Customer_Model_Customer */
+            $oCustomer = $oCustomerSession->getCustomer();
+            if($this->isCustomerActiveForStore($oCustomer)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Check if the extension has customers activated globally
+     *
+     * @return bool
+     */
+    private function isCustomerActivationGlobal()
+    {
+        return Mage::getStoreConfigFlag(self::CONFIG_EXTENSION_ACTIVE_CUSTOMER_GLOBALLY);
+    }
+
+    /**
+     * Check if a given customer is allowed for the current store
+     *  - NOTE: users created via the admin section cannot be attached to a front end store and so are globally active
+     *
+     * @param Mage_Customer_Model_Customer $oCustomer
+     * @return bool
+     */
+    private function isCustomerActiveForStore(Mage_Customer_Model_Customer $oCustomer)
+    {
+        /*
+         * Check to see if the user was created via the admin section
+         *  - Note: users created via the admin section cannot be attached to a front end store
+         */
+        if ($this->isCustomerAdminCreation($oCustomer)) {
+            return true;
+        }
+
+        /*
+         * Get user's store and current store for comparison
+         */
+        $iUserStoreId    = $oCustomer->getStoreId();
+        $iCurrentStoreId = Mage::app()->getStore()->getId();
+
+        /*
+         * Return true if:
+         *  - the user's store id matches the current store id
+         */
+        return $iUserStoreId === $iCurrentStoreId;
+    }
+
+    /**
+     * Check to see if the user has been created via the admin section
+     *
+     * @param Mage_Customer_Model_Customer $oCustomer
+     * @return bool
+     */
+    private function isCustomerAdminCreation(Mage_Customer_Model_Customer $oCustomer)
+    {
+        return $oCustomer->getStoreId() === Mage_Core_Model_App::ADMIN_STORE_ID;
     }
 
     /**
