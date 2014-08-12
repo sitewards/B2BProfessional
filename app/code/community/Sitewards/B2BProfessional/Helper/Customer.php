@@ -105,7 +105,7 @@ class Sitewards_B2BProfessional_Helper_Customer extends Sitewards_B2BProfessiona
         /*
          * Check to see if the user was created via the admin section
          *  - Note: users created via the admin section cannot be attached to a front end store
-        */
+         */
         if ($this->isCustomerAdminCreation($oCustomer)) {
             return true;
         }
@@ -130,9 +130,7 @@ class Sitewards_B2BProfessional_Helper_Customer extends Sitewards_B2BProfessiona
      * @return bool
      */
     private function isCustomerAdminCreation(Mage_Customer_Model_Customer $oCustomer) {
-        if($oCustomer->getCreatedIn() == 'Admin') {
-            return true;
-        }
+        return $oCustomer->getStoreId() === Mage_Core_Model_App::ADMIN_STORE_ID;
     }
 
     /**
