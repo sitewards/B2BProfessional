@@ -95,15 +95,44 @@ class Sitewards_B2BProfessional_Helper_Customer extends Sitewards_B2BProfessiona
 
     /**
      * Check if a given customer is allowed for the current store
+     *  - NOTE: users created via the admin section cannot be attached to a front end store and so are globally active
      *
      * @param Mage_Customer_Model_Customer $oCustomer
      * @return bool
      */
     private function isCustomerActiveForStore(Mage_Customer_Model_Customer $oCustomer)
     {
-        $oCustomerStore = $oCustomer->getStore();
-        $iStoreId       = $oCustomerStore->getId();
-        return $iStoreId === Mage::app()->getStore()->getId();
+        /*
+         * Check to see if the user was created via the admin section
+         *  - Note: users created via the admin section cannot be attached to a front end store
+        */
+        if ($this->isCustomerAdminCreation($oCustomer)) {
+            return true;
+        }
+
+        /*
+         * Get user's store and current store for comparison
+         */
+        $iUserStoreId    = $oCustomer->getStoreId();
+        $iCurrentStoreId = Mage::app()->getStore()->getId();
+
+        /*
+         * Return true if:
+         *  - the user's store id matches the current store id
+         */
+        return $iUserStoreId === $iCurrentStoreId;
+    }
+
+    /**
+     * Check to see if the user has been created via the admin section
+     *
+     * @param Mage_Customer_Model_Customer $oCustomer
+     * @return bool
+     */
+    private function isCustomerAdminCreation(Mage_Customer_Model_Customer $oCustomer) {
+        if($oCustomer->getCreatedIn() == 'Admin') {
+            return true;
+        }
     }
 
     /**
