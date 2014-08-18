@@ -3,9 +3,10 @@
 /**
  * Sitewards_B2BProfessional_Model_Observer
  *  - Observer containing the following event methods
- *      - catalog_product_is_salable_after - remove add to cart buttons,
- *      - catalog_product_type_prepare_full_options - stop product being added to cart via url
- *      - core_block_abstract_to_html_after - remove price from product pages
+ *      - catalog_product_load_after                - displays the correct stock status text on all products,
+ *      - catalog_product_is_salable_after          - remove add to cart buttons,
+ *      - catalog_product_type_prepare_full_options - stop product being added to cart via url,
+ *      - core_block_abstract_to_html_after         - remove price from product pages,
  *
  * @category    Sitewards
  * @package     Sitewards_B2BProfessional
@@ -19,6 +20,24 @@ class Sitewards_B2BProfessional_Model_Observer
      * @var int
      */
     protected static $iLastProductId = 0;
+
+    /**
+     * This will cover the case where the event 'catalog_product_is_salable_after' has not been called yet
+     *  - In the same data provided by magento the "swiss-movement-sports-watch" causes this issue
+     *
+     * @param Varien_Event_Observer $oObserver
+     */
+    public function catalogProductLoadAfter(Varien_Event_Observer $oObserver)
+    {
+        /** @var Sitewards_B2BProfessional_Helper_Data $oB2BHelper */
+        $oB2BHelper = Mage::helper('sitewards_b2bprofessional');
+        if ($oB2BHelper->isExtensionActive() === true) {
+            $oProduct = $oObserver->getDataObject();
+            if ($oProduct->getIsSalable() == true) {
+                $oProduct->setIsSalable($oB2BHelper->isProductActive($oProduct));
+            }
+        }
+    }
 
     /**
      * Check to see if a product can be sold to the current logged in user
