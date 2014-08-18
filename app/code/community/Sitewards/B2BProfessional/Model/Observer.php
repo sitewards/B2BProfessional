@@ -32,10 +32,7 @@ class Sitewards_B2BProfessional_Model_Observer
         /** @var Sitewards_B2BProfessional_Helper_Data $oB2BHelper */
         $oB2BHelper = Mage::helper('sitewards_b2bprofessional');
         if ($oB2BHelper->isExtensionActive() === true) {
-            $oProduct = $oObserver->getDataObject();
-            if ($oProduct->getIsSalable() == true) {
-                $oProduct->setIsSalable($oB2BHelper->isProductActive($oProduct));
-            }
+            $this->setSalable($oObserver, $oB2BHelper);
         }
     }
 
@@ -50,13 +47,8 @@ class Sitewards_B2BProfessional_Model_Observer
         /** @var Sitewards_B2BProfessional_Helper_Data $oB2BHelper */
         $oB2BHelper = Mage::helper('sitewards_b2bprofessional');
         if ($oB2BHelper->isExtensionActive() === true) {
-            $oProduct = $oObserver->getEvent()->getProduct();
-            $oSalable = $oObserver->getEvent()->getSalable();
-
-            if ($oSalable->getIsSalable() == true) {
-                $oSalable->setIsSalable($oB2BHelper->isProductActive($oProduct));
-                $oProduct->setData('is_salable', $oB2BHelper->isProductActive($oProduct));
-            }
+            $this->setSalable($oObserver, $oB2BHelper);
+            $this->setSalable($oObserver, $oB2BHelper, 'salable');
         }
     }
 
@@ -71,7 +63,7 @@ class Sitewards_B2BProfessional_Model_Observer
         /** @var Sitewards_B2BProfessional_Helper_Data $oB2BHelper */
         $oB2BHelper = Mage::helper('sitewards_b2bprofessional');
         if ($oB2BHelper->isExtensionActive() === true) {
-            $oProduct = $oObserver->getEvent()->getProduct();
+            $oProduct = $this->getEventsProduct($oObserver);
 
             if ($oB2BHelper->isProductActive($oProduct) === false) {
                 throw new Mage_Catalog_Exception($oB2BHelper->__('Your account is not allowed to access this store.'));
@@ -175,8 +167,7 @@ class Sitewards_B2BProfessional_Model_Observer
      */
     protected function isExactlyPriceBlock($oBlock)
     {
-        return $oBlock
-            && Mage::helper('sitewards_b2bprofessional')->isBlockPriceBlock($oBlock);
+        return $oBlock && Mage::helper('sitewards_b2bprofessional')->isBlockPriceBlock($oBlock);
     }
 
     /**
@@ -286,6 +277,33 @@ class Sitewards_B2BProfessional_Model_Observer
                 $oTransport->setHtml('');
             }
             $this->setSymmetricsProductType($oProduct);
+        }
+    }
+
+    /**
+     * Get the product attached to an event
+     *
+     * @param Varien_Event_Observer $oObserver
+     * @return Mage_Catalog_Model_Product
+     */
+    protected function getEventsProduct(Varien_Event_Observer $oObserver)
+    {
+        return $oObserver->getProduct();
+    }
+
+    /**
+     * Set the salable data on a given object
+     *
+     * @param Varien_Event_Observer $oObserver
+     * @param Sitewards_B2BProfessional_Helper_Data $oB2BHelper
+     * @param string $sObjectName
+     */
+    protected function setSalable(Varien_Event_Observer $oObserver, $oB2BHelper, $sObjectName = 'product')
+    {
+        $oProduct = $this->getEventsProduct($oObserver);
+        $oObject = $oObserver->getData($sObjectName);
+        if ($oObject->getIsSalable() == true) {
+            $oObject->setIsSalable($oB2BHelper->isProductActive($oProduct));
         }
     }
 }
