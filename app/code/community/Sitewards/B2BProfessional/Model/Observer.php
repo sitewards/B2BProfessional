@@ -302,7 +302,7 @@ class Sitewards_B2BProfessional_Model_Observer
     {
         $oProduct = $this->getEventsProduct($oObserver);
         $oObject = $oObserver->getData($sObjectName);
-        if ($oObject->getIsSalable() == true) {
+        if ($oObject !== null && $oObject->getIsSalable() == true) {
             $oObject->setIsSalable($oB2BHelper->isProductActive($oProduct));
         }
     }
