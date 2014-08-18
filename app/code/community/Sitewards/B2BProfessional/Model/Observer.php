@@ -22,6 +22,25 @@ class Sitewards_B2BProfessional_Model_Observer
     protected static $iLastProductId = 0;
 
     /**
+     * The b2b prof helper class
+     * 
+     * @var Sitewards_B2BProfessional_Helper_Data
+     */
+    protected $oB2BHelper;
+
+    /**
+     * Check if the extension is active
+     *
+     * @return bool
+     */
+    protected function isExtensionActive()
+    {
+        /** @var Sitewards_B2BProfessional_Helper_Data $oB2BHelper */
+        $this->oB2BHelper = Mage::helper('sitewards_b2bprofessional');
+        return $this->oB2BHelper->isExtensionActive();
+    }
+
+    /**
      * This will cover the case where the event 'catalog_product_is_salable_after' has not been called yet
      *  - In the same data provided by magento the "swiss-movement-sports-watch" causes this issue
      *
@@ -29,10 +48,8 @@ class Sitewards_B2BProfessional_Model_Observer
      */
     public function catalogProductLoadAfter(Varien_Event_Observer $oObserver)
     {
-        /** @var Sitewards_B2BProfessional_Helper_Data $oB2BHelper */
-        $oB2BHelper = Mage::helper('sitewards_b2bprofessional');
-        if ($oB2BHelper->isExtensionActive() === true) {
-            $this->setSalable($oObserver, $oB2BHelper);
+        if ($this->isExtensionActive()) {
+            $this->setSalable($oObserver);
         }
     }
 
@@ -44,11 +61,9 @@ class Sitewards_B2BProfessional_Model_Observer
      */
     public function catalogProductIsSalableAfter(Varien_Event_Observer $oObserver)
     {
-        /** @var Sitewards_B2BProfessional_Helper_Data $oB2BHelper */
-        $oB2BHelper = Mage::helper('sitewards_b2bprofessional');
-        if ($oB2BHelper->isExtensionActive() === true) {
-            $this->setSalable($oObserver, $oB2BHelper);
-            $this->setSalable($oObserver, $oB2BHelper, 'salable');
+        if ($this->isExtensionActive()) {
+            $this->setSalable($oObserver);
+            $this->setSalable($oObserver, 'salable');
         }
     }
 
@@ -60,13 +75,11 @@ class Sitewards_B2BProfessional_Model_Observer
      */
     public function catalogProductTypePrepareFullOptions(Varien_Event_Observer $oObserver)
     {
-        /** @var Sitewards_B2BProfessional_Helper_Data $oB2BHelper */
-        $oB2BHelper = Mage::helper('sitewards_b2bprofessional');
-        if ($oB2BHelper->isExtensionActive() === true) {
+        if ($this->isExtensionActive()) {
             $oProduct = $this->getEventsProduct($oObserver);
 
-            if ($oB2BHelper->isProductActive($oProduct) === false) {
-                throw new Mage_Catalog_Exception($oB2BHelper->__('Your account is not allowed to access this store.'));
+            if ($this->oB2BHelper->isProductActive($oProduct) === false) {
+                throw new Mage_Catalog_Exception($this->oB2BHelper->__('Your account is not allowed to access this store.'));
             }
         }
     }
@@ -78,9 +91,7 @@ class Sitewards_B2BProfessional_Model_Observer
      */
     public function coreBlockAbstractToHtmlAfter(Varien_Event_Observer $oObserver)
     {
-        /** @var Sitewards_B2BProfessional_Helper_Data $oB2BHelper */
-        $oB2BHelper = Mage::helper('sitewards_b2bprofessional');
-        if ($oB2BHelper->isExtensionActive() === true) {
+        if ($this->isExtensionActive()) {
             $oBlock     = $oObserver->getData('block');
             $oTransport = $oObserver->getData('transport');
 
@@ -100,9 +111,7 @@ class Sitewards_B2BProfessional_Model_Observer
      */
     public function controllerActionPredispatch(Varien_Event_Observer $oObserver)
     {
-        /** @var Sitewards_B2BProfessional_Helper_Data $oB2BHelper */
-        $oB2BHelper = Mage::helper('sitewards_b2bprofessional');
-        if ($oB2BHelper->isExtensionActive() === true) {
+        if ($this->isExtensionActive()) {
             /* @var $oControllerAction Mage_Core_Controller_Front_Action */
             $oControllerAction = $oObserver->getData('controller_action');
 
@@ -126,9 +135,7 @@ class Sitewards_B2BProfessional_Model_Observer
      */
     public function coreBlockAbstractToHtmlBefore(Varien_Event_Observer $oObserver)
     {
-        /** @var Sitewards_B2BProfessional_Helper_Data $oB2BHelper */
-        $oB2BHelper = Mage::helper('sitewards_b2bprofessional');
-        if ($oB2BHelper->isExtensionActive() === true) {
+        if ($this->isExtensionActive()) {
             $oBlock = $oObserver->getData('block');
 
             if ($oBlock instanceof Mage_Catalog_Block_Product_List_Toolbar) {
@@ -145,14 +152,12 @@ class Sitewards_B2BProfessional_Model_Observer
      */
     public function coreLayoutBlockCreateAfter(Varien_Event_Observer $oObserver)
     {
-        /* @var Sitewards_B2BProfessional_Helper_Data $oB2BHelper */
-        $oB2BHelper = Mage::helper('sitewards_b2bprofessional');
-        if ($oB2BHelper->isExtensionActive()) {
+        if ($this->isExtensionActive()) {
             $oBlock = $oObserver->getData('block');
             if ($oBlock instanceof Mage_Catalog_Block_Layer_View) {
                 $aCategoryOptions = $this->getCategoryFilters($oBlock);
 
-                if ($oB2BHelper->hasEnabledCategories($aCategoryOptions)) {
+                if ($this->oB2BHelper->hasEnabledCategories($aCategoryOptions)) {
                     $this->removePriceFilter($oBlock);
                 }
             }
@@ -167,7 +172,7 @@ class Sitewards_B2BProfessional_Model_Observer
      */
     protected function isExactlyPriceBlock($oBlock)
     {
-        return $oBlock && Mage::helper('sitewards_b2bprofessional')->isBlockPriceBlock($oBlock);
+        return $oBlock && $this->oB2BHelper->isBlockPriceBlock($oBlock);
     }
 
     /**
@@ -263,16 +268,14 @@ class Sitewards_B2BProfessional_Model_Observer
      */
     protected function transformPriceBlock($oBlock, $oTransport)
     {
-        /** @var Sitewards_B2BProfessional_Helper_Data $oB2BHelper */
-        $oB2BHelper        = Mage::helper('sitewards_b2bprofessional');
         $oProduct          = $oBlock->getProduct();
         $iCurrentProductId = $oProduct->getId();
 
-        if ($oB2BHelper->isProductActive($oProduct) === false) {
+        if ($this->oB2BHelper->isProductActive($oProduct) === false) {
             // To stop duplicate information being displayed validate that we only do this once per product
             if ($iCurrentProductId !== self::$iLastProductId) {
                 self::$iLastProductId = $iCurrentProductId;
-                $oTransport->setHtml($oB2BHelper->__('Please login'));
+                $oTransport->setHtml($this->oB2BHelper->__('Please login'));
             } else {
                 $oTransport->setHtml('');
             }
@@ -295,15 +298,14 @@ class Sitewards_B2BProfessional_Model_Observer
      * Set the salable data on a given object
      *
      * @param Varien_Event_Observer $oObserver
-     * @param Sitewards_B2BProfessional_Helper_Data $oB2BHelper
      * @param string $sObjectName
      */
-    protected function setSalable(Varien_Event_Observer $oObserver, $oB2BHelper, $sObjectName = 'product')
+    protected function setSalable(Varien_Event_Observer $oObserver, $sObjectName = 'product')
     {
         $oProduct = $this->getEventsProduct($oObserver);
-        $oObject = $oObserver->getData($sObjectName);
+        $oObject  = $oObserver->getData($sObjectName);
         if ($oObject !== null && $oObject->getIsSalable() == true) {
-            $oObject->setIsSalable($oB2BHelper->isProductActive($oProduct));
+            $oObject->setIsSalable($this->oB2BHelper->isProductActive($oProduct));
         }
     }
 }
