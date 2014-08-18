@@ -23,10 +23,18 @@ class Sitewards_B2BProfessional_Model_Observer
 
     /**
      * The b2b prof helper class
-     * 
+     *
      * @var Sitewards_B2BProfessional_Helper_Data
      */
     protected $oB2BHelper;
+
+    /**
+     * Init the helper object
+     */
+    public function __construct()
+    {
+        $this->oB2BHelper = Mage::helper('sitewards_b2bprofessional');
+    }
 
     /**
      * Check if the extension is active
@@ -35,8 +43,6 @@ class Sitewards_B2BProfessional_Model_Observer
      */
     protected function isExtensionActive()
     {
-        /** @var Sitewards_B2BProfessional_Helper_Data $oB2BHelper */
-        $this->oB2BHelper = Mage::helper('sitewards_b2bprofessional');
         return $this->oB2BHelper->isExtensionActive();
     }
 
