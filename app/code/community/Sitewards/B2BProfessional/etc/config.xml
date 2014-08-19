@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Sitewards_B2BProfessional>
-            <version>3.0.0</version>
+            <version>3.0.1</version>
         </Sitewards_B2BProfessional>
     </modules>
     <global>
@@ -19,6 +19,15 @@
     </global>
     <frontend>
         <events>
+            <catalog_product_load_after>
+                <observers>
+                    <sitewards_b2bprofessional>
+                        <type>singleton</type>
+                        <class>sitewards_b2bprofessional/observer</class>
+                        <method>catalogProductLoadAfter</method>
+                    </sitewards_b2bprofessional>
+                </observers>
+            </catalog_product_load_after>
             <catalog_product_is_salable_after>
                 <observers>
                     <sitewards_b2bprofessional>
