@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Sitewards_B2BProfessional>
-            <version>3.0.1</version>
+            <version>3.0.2</version>
         </Sitewards_B2BProfessional>
     </modules>
     <global>
@@ -91,6 +91,8 @@
                 <priceblocks>
                     <catalog>Mage_Catalog_Block_Product_Price</catalog>
                     <bundle>Mage_Bundle_Block_Catalog_Product_Price</bundle>
+                    <mage_setup>FireGento_MageSetup_Block_Catalog_Product_Price</mage_setup>
+                    <mage_setup_bundle>FireGento_MageSetup_Block_Bundle_Catalog_Product_Price</mage_setup_bundle>
                 </priceblocks>
             </generalsettings>
             <requirelogin>
