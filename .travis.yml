@@ -1,8 +1,12 @@
 language: php
+
 php:
   - 5.3
   - 5.4
   - 5.5
+
+sudo: false
+
 env:
   - MAGENTO_VERSION="1.5.0.1"
   - MAGENTO_VERSION="1.6.0.0"
@@ -15,6 +19,7 @@ env:
   - MAGENTO_VERSION="1.8.1.0"
   - MAGENTO_VERSION="1.9.0.0"
   - MAGENTO_VERSION="1.9.0.1"
+
 before_script:
   - mkdir magento/
   - git clone git://github.com/EcomDev/MageCI.git ./mageci/
@@ -28,5 +33,6 @@ before_script:
   - ./mageci/bin/mage-ci install-module magento $CURR_DIR
   - composer install --dev
   - cd magento
+
 script:
   - ../vendor/bin/phpunit --group Sitewards_B2BProfessional
