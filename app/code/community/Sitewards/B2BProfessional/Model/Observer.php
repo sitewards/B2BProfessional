@@ -47,33 +47,6 @@ class Sitewards_B2BProfessional_Model_Observer
     }
 
     /**
-     * This will cover the case where the event 'catalog_product_is_salable_after' has not been called yet
-     *  - In the same data provided by magento the "swiss-movement-sports-watch" causes this issue
-     *
-     * @param Varien_Event_Observer $oObserver
-     */
-    public function catalogProductLoadAfter(Varien_Event_Observer $oObserver)
-    {
-        if ($this->isExtensionActive()) {
-            $this->setSalable($oObserver);
-        }
-    }
-
-    /**
-     * Check to see if a product can be sold to the current logged in user
-     *  - if the flag of salable is already false then we should do nothing
-     *
-     * @param Varien_Event_Observer $oObserver
-     */
-    public function catalogProductIsSalableAfter(Varien_Event_Observer $oObserver)
-    {
-        if ($this->isExtensionActive()) {
-            $this->setSalable($oObserver);
-            $this->setSalable($oObserver, 'salable');
-        }
-    }
-
-    /**
      * Check to see if the product being added to the cart can be bought
      *
      * @param Varien_Event_Observer $oObserver
@@ -298,20 +271,5 @@ class Sitewards_B2BProfessional_Model_Observer
     protected function getEventsProduct(Varien_Event_Observer $oObserver)
     {
         return $oObserver->getProduct();
-    }
-
-    /**
-     * Set the salable data on a given object
-     *
-     * @param Varien_Event_Observer $oObserver
-     * @param string $sObjectName
-     */
-    protected function setSalable(Varien_Event_Observer $oObserver, $sObjectName = 'product')
-    {
-        $oProduct = $this->getEventsProduct($oObserver);
-        $oObject  = $oObserver->getData($sObjectName);
-        if ($oObject !== null && $oObject->getIsSalable() == true) {
-            $oObject->setIsSalable($this->oB2BHelper->isProductActive($oProduct));
-        }
     }
 }
