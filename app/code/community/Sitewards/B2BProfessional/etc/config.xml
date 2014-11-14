@@ -65,6 +65,15 @@
                 </observers>
             </controller_action_predispatch>
         </events>
+        <translate>
+            <modules>
+                <Sitewards_B2BProfessional>
+                    <files>
+                        <default>Sitewards_B2BProfessional.csv</default>
+                    </files>
+                </Sitewards_B2BProfessional>
+            </modules>
+        </translate>
     </frontend>
     <default>
         <b2bprofessional>
