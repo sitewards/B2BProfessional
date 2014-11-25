@@ -46,12 +46,14 @@ class Sitewards_B2BProfessional_Helper_Redirects extends Sitewards_B2BProfession
      */
     protected function isRedirectRequired($oControllerAction)
     {
-        $bIsCmsController      = $this->isCmsController($oControllerAction);
-        $bIsFrontController    = $this->isFrontController($oControllerAction);
-        $bIsApiController      = $this->isApiController($oControllerAction);
-        $bIsCustomerController = $this->isCustomerController($oControllerAction);
+        $bIsCmsController        = $this->isCmsController($oControllerAction);
+        $bIsFrontController      = $this->isFrontController($oControllerAction);
+        $bIsApiController        = $this->isApiController($oControllerAction);
+        $bIsCustomerController   = $this->isCustomerController($oControllerAction);
+        $bIsXmlConnectController = $this->isXmlConnectController($oControllerAction);
 
-        return !$bIsCmsController && $bIsFrontController && !$bIsCustomerController && !$bIsApiController;
+        return !$bIsCmsController && $bIsFrontController && !$bIsCustomerController
+            && !$bIsApiController && !$bIsXmlConnectController;
     }
 
     /**
@@ -97,6 +99,17 @@ class Sitewards_B2BProfessional_Helper_Redirects extends Sitewards_B2BProfession
     {
         return $oControllerAction instanceof Mage_Cms_IndexController
         || $oControllerAction instanceof Mage_Cms_PageController;
+    }
+
+    /**
+     * Check to see if the controller is an xml-connect controller
+     *
+     * @param Mage_Core_Controller_Front_Action $oControllerAction
+     * @return bool
+     */
+    protected function isXmlConnectController($oControllerAction)
+    {
+        return $oControllerAction instanceof Mage_XmlConnect_ConfigurationController;
     }
 
     /**
