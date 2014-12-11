@@ -151,6 +151,24 @@ class Sitewards_B2BProfessional_Model_Observer
     }
 
     /**
+     * Checks if the product can be added to the cart and if not, adds a dummy required
+     * option in order to replace the add-to-cart button's url with the view-details url
+     *
+     * @param Varien_Event_Observer $oObserver
+     */
+    public function sitewardsB2bprofessionalProductListCollectionLoadAfter(Varien_Event_Observer $oObserver)
+    {
+        $oProductCollection = $oObserver->getProductCollection();
+        $oDummyOption       = Mage::getModel('catalog/product_option');
+        foreach ($oProductCollection as $oProduct) {
+            if ($this->oB2BHelper->isProductActive($oProduct) === false) {
+                $oProduct->setRequiredOptions(array($oDummyOption));
+            }
+        }
+        return $oProductCollection;
+    }
+
+    /**
      * checks if the block represents a price block
      *
      * @param Mage_Core_Block_Abstract $oBlock

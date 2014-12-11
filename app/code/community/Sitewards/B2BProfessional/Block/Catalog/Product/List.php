@@ -12,21 +12,22 @@
 class Sitewards_B2BProfessional_Block_Catalog_Product_List extends Mage_Catalog_Block_Product_List
 {
     /**
-     * Checks if the product can be added to the cart and if not, adds a dummy
-     * option in order to replace the add-to-cart button with the view-details button
+     * Fires a custom event we can catch in the observer and process
+     * the products where the add-to-cart-button should be hidden
      *
      * @return Mage_Eav_Model_Entity_Collection_Abstract
      */
     public function getLoadedProductCollection()
     {
         $oProductCollection = parent::getLoadedProductCollection();
-        $oB2BHelper         = Mage::helper('sitewards_b2bprofessional');
-        $oDummyOption       = Mage::getModel('catalog/product_option');
-        foreach ($oProductCollection as $oProduct) {
-            if ($oB2BHelper->isProductActive($oProduct) === false) {
-                $oProduct->setRequiredOptions(array($oDummyOption));
-            }
-        }
+
+        Mage::dispatchEvent(
+            'sitewards_b2bprofessional_product_list_collection_load_after',
+            array(
+                'product_collection' => $oProductCollection
+            )
+        );
+
         return $oProductCollection;
     }
 }
