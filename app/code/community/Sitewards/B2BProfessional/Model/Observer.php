@@ -80,6 +80,13 @@ class Sitewards_B2BProfessional_Model_Observer
             if ($this->isExactlyPriceBlock($oBlock)) {
                 $this->transformPriceBlock($oBlock, $oTransport);
             }
+
+            /**
+             * Check to see if we should remove the add-to-cart button
+             */
+            if ($this->isExactlyAddToCartBlock($oBlock)) {
+                $oTransport->setHtml('');
+            }
         }
     }
 
@@ -152,6 +159,17 @@ class Sitewards_B2BProfessional_Model_Observer
     protected function isExactlyPriceBlock($oBlock)
     {
         return $oBlock && $this->oB2BHelper->isBlockPriceBlock($oBlock);
+    }
+
+    /**
+     * checks if the block represents an add-to-cart block
+     *
+     * @param Mage_Core_Block_Abstract $oBlock
+     * @return bool
+     */
+    protected function isExactlyAddToCartBlock($oBlock)
+    {
+        return $this->oB2BHelper->isAddToCartBlockAndHidden($oBlock);
     }
 
     /**

@@ -19,7 +19,6 @@
         <blocks>
             <catalog>
                 <rewrite>
-                    <product_view>Sitewards_B2BProfessional_Block_Catalog_Product_View</product_view>
                     <product_list>Sitewards_B2BProfessional_Block_Catalog_Product_List</product_list>
                 </rewrite>
             </catalog>

@@ -19,14 +19,14 @@ class Sitewards_B2BProfessional_Block_Catalog_Product_List extends Mage_Catalog_
      */
     public function getLoadedProductCollection()
     {
-        $aProductCollection = parent::getLoadedProductCollection();
+        $oProductCollection = parent::getLoadedProductCollection();
         $oB2BHelper         = Mage::helper('sitewards_b2bprofessional');
         $oDummyOption       = Mage::getModel('catalog/product_option');
-        foreach ($aProductCollection as $oProduct) {
+        foreach ($oProductCollection as $oProduct) {
             if ($oB2BHelper->isProductActive($oProduct) === false) {
-                $oProduct->addOption($oDummyOption);
+                $oProduct->setRequiredOptions(array($oDummyOption));
             }
         }
-        return $aProductCollection;
+        return $oProductCollection;
     }
 }
