@@ -16,6 +16,13 @@
                 <class>Sitewards_B2BProfessional_Helper</class>
             </sitewards_b2bprofessional>
         </helpers>
+        <blocks>
+            <catalog>
+                <rewrite>
+                    <product_list>Sitewards_B2BProfessional_Block_Catalog_Product_List</product_list>
+                </rewrite>
+            </catalog>
+        </blocks>
     </global>
     <frontend>
         <events>
@@ -64,6 +71,15 @@
                     </sitewards_b2bprofessional>
                 </observers>
             </controller_action_predispatch>
+            <sitewards_b2bprofessional_product_list_collection_load_after>
+                <observers>
+                    <sitewards_b2bprofessional>
+                        <type>singleton</type>
+                        <class>sitewards_b2bprofessional/observer</class>
+                        <method>sitewardsB2bprofessionalProductListCollectionLoadAfter</method>
+                    </sitewards_b2bprofessional>
+                </observers>
+            </sitewards_b2bprofessional_product_list_collection_load_after>
         </events>
         <translate>
             <modules>

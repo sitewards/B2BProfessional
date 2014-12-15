@@ -52,6 +52,15 @@ class Sitewards_B2BProfessional_Helper_Data extends Sitewards_B2BProfessional_He
     protected $aPriceBlockClassNames;
 
     /**
+     * Variable for the add-to-cart blocks' layout names
+     *
+     * @var string[]
+     */
+    protected $aAddToCartBlockLayoutNames = array(
+        'product.info.addtocart'
+    );
+
+    /**
      * Check to see if the extension is active
      *
      * @return bool
@@ -101,6 +110,35 @@ class Sitewards_B2BProfessional_Helper_Data extends Sitewards_B2BProfessional_He
     {
         $aPriceBlockClassNames = $this->getPriceBlocks();
         return in_array(get_class($oBlock), $aPriceBlockClassNames);
+    }
+
+    /**
+     * Check to see if the block is an add-to-cart block
+     *
+     * @param Mage_Core_Block_Template $oBlock
+     * @return bool
+     */
+    public function isBlockAddToCartBlock($oBlock)
+    {
+        $aAddToCartBlockClassNames = $this->getAddToCartBlockLayoutNames();
+        return in_array($oBlock->getNameInLayout(), $aAddToCartBlockClassNames);
+    }
+
+    /**
+     * Check to see if it's the add-to-cart block should be hidden
+     *
+     * @param Mage_Core_Block_Template $oBlock
+     * @return bool
+     */
+    public function isAddToCartBlockAndHidden($oBlock)
+    {
+        if ($this->isBlockAddToCartBlock($oBlock)) {
+            $oProduct = $oBlock->getProduct();
+            if ($this->isProductActive($oProduct) === false) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -204,5 +242,15 @@ class Sitewards_B2BProfessional_Helper_Data extends Sitewards_B2BProfessional_He
             $this->aPriceBlockClassNames = Mage::getStoreConfig(self::CONFIG_EXTENSION_PRICE_BLOCKS);
         }
         return $this->aPriceBlockClassNames;
+    }
+
+    /**
+     * Get the add-to-cart blocks' layout names
+     *
+     * @return string[]
+     */
+    protected function getAddToCartBlockLayoutNames()
+    {
+        return $this->aAddToCartBlockLayoutNames;
     }
 }

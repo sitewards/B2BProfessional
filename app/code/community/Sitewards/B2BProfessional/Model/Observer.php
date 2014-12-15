@@ -80,6 +80,13 @@ class Sitewards_B2BProfessional_Model_Observer
             if ($this->isExactlyPriceBlock($oBlock)) {
                 $this->transformPriceBlock($oBlock, $oTransport);
             }
+
+            /**
+             * Check to see if we should remove the add-to-cart button
+             */
+            if ($this->isExactlyAddToCartBlock($oBlock)) {
+                $oTransport->setHtml('');
+            }
         }
     }
 
@@ -144,6 +151,24 @@ class Sitewards_B2BProfessional_Model_Observer
     }
 
     /**
+     * Checks if the product can be added to the cart and if not, adds a dummy required
+     * option in order to replace the add-to-cart button's url with the view-details url
+     *
+     * @param Varien_Event_Observer $oObserver
+     */
+    public function sitewardsB2bprofessionalProductListCollectionLoadAfter(Varien_Event_Observer $oObserver)
+    {
+        $oProductCollection = $oObserver->getProductCollection();
+        $oDummyOption       = Mage::getModel('catalog/product_option');
+        foreach ($oProductCollection as $oProduct) {
+            if ($this->oB2BHelper->isProductActive($oProduct) === false) {
+                $oProduct->setRequiredOptions(array($oDummyOption));
+            }
+        }
+        return $oProductCollection;
+    }
+
+    /**
      * checks if the block represents a price block
      *
      * @param Mage_Core_Block_Abstract $oBlock
@@ -152,6 +177,17 @@ class Sitewards_B2BProfessional_Model_Observer
     protected function isExactlyPriceBlock($oBlock)
     {
         return $oBlock && $this->oB2BHelper->isBlockPriceBlock($oBlock);
+    }
+
+    /**
+     * checks if the block represents an add-to-cart block
+     *
+     * @param Mage_Core_Block_Abstract $oBlock
+     * @return bool
+     */
+    protected function isExactlyAddToCartBlock($oBlock)
+    {
+        return $this->oB2BHelper->isAddToCartBlockAndHidden($oBlock);
     }
 
     /**
