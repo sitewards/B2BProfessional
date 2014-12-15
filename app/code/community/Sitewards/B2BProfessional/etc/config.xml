@@ -94,11 +94,11 @@
     <adminhtml>
         <translate>
             <modules>
-                <sitewards_b2bprofessional>
+                <Sitewards_B2BProfessional>
                     <files>
                         <default>Sitewards_B2BProfessional.csv</default>
                     </files>
-                </sitewards_b2bprofessional>
+                </Sitewards_B2BProfessional>
             </modules>
         </translate>
     </adminhtml>
