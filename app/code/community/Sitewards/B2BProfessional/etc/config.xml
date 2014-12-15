@@ -91,6 +91,17 @@
             </modules>
         </translate>
     </frontend>
+    <adminhtml>
+        <translate>
+            <modules>
+                <sitewards_b2bprofessional>
+                    <files>
+                        <default>Sitewards_B2BProfessional.csv</default>
+                    </files>
+                </sitewards_b2bprofessional>
+            </modules>
+        </translate>
+    </adminhtml>
     <default>
         <b2bprofessional>
             <generalsettings>
