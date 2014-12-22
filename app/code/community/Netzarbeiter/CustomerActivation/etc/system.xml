@@ -1,0 +1,173 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * package    Netzarbeiter_CustomerActivation
+ * copyright  Copyright (c) 2014 Vinai Kopp http://netzarbeiter.com/
+ * license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+-->
+<config>
+    <sections>
+        <customer translate="label" module="customer">
+            <groups>
+                <customeractivation translate="label" module="customeractivation">
+                    <label>Customer Activation</label>
+                    <sort_order>768</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <disable_ext translate="label" module="customeractivation">
+                            <label>Disable CustomerActivation</label>
+                            <frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </disable_ext>
+                        <always_active_in_admin translate="label" module="customeractivation">
+                            <label>Always enable in admin interface</label>
+                            <frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>11</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+							<comment>If you want to activate accounts created via the admin interface</comment>
+							<depends>
+								<disable_ext>1</disable_ext>
+							</depends>
+                        </always_active_in_admin>
+                        <alert_admin translate="label" module="customeractivation">
+                            <label>Notify Admin on Customer Registration</label>
+                            <frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+							<depends>
+								<disable_ext>0</disable_ext>
+							</depends>
+                        </alert_admin>
+						<admin_email translate="label" module="customeractivation">
+							<label>Admin Email Address</label>
+							<fontend_type>text</fontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <alert_admin>1</alert_admin>
+								<disable_ext>0</disable_ext>
+                            </depends>
+						</admin_email>
+                        <registration_admin_template translate="label" module="customeractivation">
+                            <label>Admin Notification Email Template</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_template</source_model>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <alert_admin>1</alert_admin>
+								<disable_ext>0</disable_ext>
+                            </depends>
+                        </registration_admin_template>
+                        <alert_customer translate="label" module="customeractivation">
+                            <label>Notify Customer of Account Activation</label>
+                            <frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+							<depends>
+								<disable_ext>0</disable_ext>
+							</depends>
+                        </alert_customer>
+                        <activation_template translate="label" module="customeractivation">
+                            <label>Customer Notification Email Template</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_template</source_model>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <alert_customer>1</alert_customer>
+								<disable_ext>0</disable_ext>
+                            </depends>
+                        </activation_template>
+                        <activation_status_default translate="label" module="customeractivation">
+                            <label>Activate new Customer Accounts by Default</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>70</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+							<depends>
+								<disable_ext>0</disable_ext>
+							</depends>
+                        </activation_status_default>
+                        <require_activation_for_specific_groups translate="label" module="customeractivation">
+                            <label>Require Activation for Specific Groups only</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>90</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <activation_status_default>0</activation_status_default>
+								<disable_ext>0</disable_ext>
+                            </depends>
+                        </require_activation_for_specific_groups>
+                        <require_activation_groups>
+                            <label>Require Activation for Groups</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>customeractivation/adminhtml_system_config_source_customer_group_multiselect</source_model>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <require_activation_for_specific_groups>1</require_activation_for_specific_groups>
+                                <activation_status_default>0</activation_status_default>
+                                <disable_ext>0</disable_ext>
+                            </depends>
+                        </require_activation_groups>
+                        <always_send_admin_email translate="label comment" module="customeractivation">
+                            <label>Always send Admin Notification</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Send the Admin notification email even if new accounts are activated by default</comment>
+                            <depends>
+                                <disable_ext>0</disable_ext>
+                            </depends>
+                        </always_send_admin_email>
+                    </fields>
+                </customeractivation>
+            </groups>
+        </customer>
+    </sections>
+</config>

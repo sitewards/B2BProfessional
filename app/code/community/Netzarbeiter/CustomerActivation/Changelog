@@ -1,0 +1,150 @@
+Changelog for Netzarbeiter_CustomerActivation
+
+0.5.4 2014-11-19
+- Bug fix: correctly evaluate admin_always_active setting in admin customer grid 
+
+0.5.3 2014-09-13
+- Activate all existing customers by default during installation
+- Refactoring and improved tests to help keep module maintainable
+
+0.5.2 2014-01-09
+- Compatibility with older Magento versions without automatic VAT ID validation (I think 1.5 and older)
+
+0.5.1 2013-12-20
+- Remove dependency on PHP 5.3.2 or newer. Should work down to 5.2 again.
+
+0.5.0 2013-11-24
+- Hide post registration message to enter address for VAT validation for deactivated accounts.
+- Correct handling if default activation status is true and also activate by group is true.
+  In that case, the default activation status takes precedence since that is also how the
+  backend config dependencies show the fields.
+
+0.4.9 2013-11-15
+- Implement workaround for versions of Magento where core/template::getDesignConfig
+  is protected.
+
+0.4.8 2013-11-12
+- Fix de-association of selected default addresses on mass updates
+- Only send notifications to customers whos status actually changed during a mass update 
+
+0.4.7 2013-09-23
+- Fix store variable in email templates
+- Fix mass activation email notifications
+
+0.4.6 2013-05-24
+- Backward compatibility fix for Magento older then 1.7
+
+0.4.5 2013-05-22
+- Bugfix: enable usage default admin notification email template
+
+0.4.4 2013-04-21
+- Minor new feature: export to CSV or XML now contains the activation status column
+
+0.4.3 2013-04-20
+- New feature: require activation only for specific groups
+
+0.4.2 2013-01-16
+- Update composer dependency on stable magento-composer-installer
+
+0.4.1 2012-12-05
+- Bugfix: properly handle checkout registrations,
+          support onepage and multishipping checkout.
+
+0.4.0 2012-11-08
+- Bugfix: only apply mass action to customer grid.
+
+0.3.9 2012-09-25
+- Change observer declaration to <type>model</type> to avoid strange bug a user was reporting
+
+0.3.8 2012-08-07
+- Don't reuse the customer model for mass actions - it messes up the addresses
+
+0.3.7 2012-07-28
+- Move customer grid rewrite to observer to avoid conflicts with other modules
+
+0.3.6 2012-07-22
+- Add configurable feature "Enable customer accounts by default"
+
+0.3.5 2012-07-20
+- Change session model for messages to core/session
+
+0.3.4 2011-05-19
+- Add _isAllowed() method to admin controller
+
+0.3.3 2011-04-29
+- Use better logic to figure out the customer store id
+- Use config value variables in email templates (Thanks to Ryan Price once again!)
+
+0.3.2 2011-04-28
+- Added check of configuration values if emails should be sent (Thanks to Ryan Price for the patch!)
+
+0.3.1 2011-03-23
+- Added shipping and billing address models as email variables
+
+0.3.0 2011-03-22
+- Fix session logout handling for Magento 1.5 compatibility
+- Added licence header comments to all files
+
+0.2.9 2010-12-20
+- Add japanese locale (thanks to Junya Sano for the translation!)
+
+0.2.8 2010-12-20
+- Drop Magento 1.3 Support
+- Add customer_activated attribute to 1.4.2 (CE) / 1.9 (EE) customer_form_attribute table
+- Add renderer for column to display null values as "not activated"
+
+0.2.7 2010-03-22
+- Add option to enable mass activation updates when module is disabled
+
+0.2.6 2010-03-15
+- Add it_IT locale
+
+0.2.5 2010-03-11
+- Fix account not activated message for magento 1.4
+- Add customer_activated customer attribute to attribute_set so it is displayed in the admin interface in 1.4
+
+0.2.4 2009-09-21
+- Get rid of customer edit block override by setting the correct attribute source model
+
+0.2.3 2009-08-10
+- Make customer notification email template selectable on a store view configuraton level
+
+0.2.2 2009-07-18
+- Added new config option to keep module active in admin customer interface, even if it is disabled otherwise
+
+0.2.1 2009-06-13
+- Let through API calls unchecked
+
+0.2.0 2009-06-13
+- Added new Feature: send out notification emails to admin and customer
+
+0.1.9 2009-06-13
+- Added greek translation - thanks to Erik Hoeksma
+
+0.1.8 2009-04-24
+- Added dutch translation - thanks to Toon van Veelden!
+
+0.1.7 2009-04-01
+- Added Mass Action Controller and Amdin Customer Activation Status in the grid from PaulE - thanks for the contributon, man!
+
+0.1.6 2009-01-13
+- Declared stable
+
+0.1.5 2008-12-30
+- Bugfix in Admintml - create new customer form now works (again, thanks SeL for the bug report)
+
+0.1.4 2008-11-13
+- Bugfix in Adminhtml (thanks to SeL)
+- French Translation (again, thanks to SeL)
+- Bugfix, now also works when customer email activation is disabled
+
+0.1.2 2008-08-29
+- Use dropdown in Adminhtml interface instead of text field (now overrides Mage_Adminhtml_Block_Customer_Edit_Tab_Account)
+- Translation of label and dropdown values in adminhtml interface
+
+0.1.1 2008-08-28
+- Bugfix for dependency problem in pear package
+
+0.1.0 2008-08-25
+- Initial release
+
