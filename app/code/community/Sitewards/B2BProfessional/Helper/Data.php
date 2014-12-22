@@ -89,10 +89,7 @@ class Sitewards_B2BProfessional_Helper_Data extends Sitewards_B2BProfessional_He
      */
     public function getLoginMessage()
     {
-        if (!$this->sLoginMessage) {
-            $this->sLoginMessage = Mage::getStoreConfig(self::CONFIG_EXTENSION_LOGIN_MESSAGE);
-        }
-        return $this->sLoginMessage;
+        return $this->getStoreConfig(self::CONFIG_EXTENSION_LOGIN_MESSAGE, 'sLoginMessage');
     }
 
     /**

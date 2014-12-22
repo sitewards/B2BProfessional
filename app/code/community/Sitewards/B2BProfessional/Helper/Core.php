@@ -18,9 +18,21 @@ class Sitewards_B2BProfessional_Helper_Core extends Mage_Core_Helper_Abstract
      */
     public function getStoreFlag($sStoreFlagPath, $sStoreFlagAttribute)
     {
-        if ($this->$sStoreFlagAttribute === null) {
-            $this->$sStoreFlagAttribute = Mage::getStoreConfigFlag($sStoreFlagPath);
+        return (bool)$this->getStoreConfig($sStoreFlagPath, $sStoreFlagAttribute);
+    }
+
+    /**
+     * Get a store config value and set against the object
+     *
+     * @param string $sStoreConfigPath
+     * @param string $sStoreConfigAttribute
+     * @return string
+     */
+    public function getStoreConfig($sStoreConfigPath, $sStoreConfigAttribute)
+    {
+        if ($this->$sStoreConfigAttribute === null) {
+            $this->$sStoreConfigAttribute = Mage::getStoreConfig($sStoreConfigPath);
         }
-        return $this->$sStoreFlagAttribute;
+        return $this->$sStoreConfigAttribute;
     }
 }
