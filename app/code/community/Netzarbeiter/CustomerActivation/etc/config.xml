@@ -1,0 +1,211 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * package    Netzarbeiter_CustomerActivation
+ * copyright  Copyright (c) 2014 Vinai Kopp http://netzarbeiter.com/
+ * license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+ -->
+<config>
+    <modules>
+        <Netzarbeiter_CustomerActivation>
+            <version>0.5.4</version>
+        </Netzarbeiter_CustomerActivation>
+    </modules>
+    <global>
+        <models>
+            <customeractivation>
+                <class>Netzarbeiter_CustomerActivation_Model</class>
+                <resourceModel>customeractivation_resource</resourceModel>
+            </customeractivation>
+            <customeractivation_resource>
+                <class>Netzarbeiter_CustomerActivation_Model_Resource</class>
+            </customeractivation_resource>
+        </models>
+        <helpers>
+            <customeractivation>
+                <class>Netzarbeiter_CustomerActivation_Helper</class>
+            </customeractivation>
+        </helpers>
+        <blocks>
+            <customeractivation>
+                <class>Netzarbeiter_CustomerActivation_Block</class>
+            </customeractivation>
+        </blocks>
+        <resources>
+            <customeractivation_setup>
+                <setup>
+                    <module>Netzarbeiter_CustomerActivation</module>
+                    <class>Mage_Customer_Model_Entity_Setup</class>
+                </setup>
+            </customeractivation_setup>
+        </resources>
+        <template>
+            <email>
+                <customer_customeractivation_registration_admin_template translate="label" module="customeractivation">
+                    <label>Customer Registration Admin Notification</label>
+                    <file>netzarbeiter/customeractivation/customer_registration_admin.html</file>
+                    <type>html</type>
+                </customer_customeractivation_registration_admin_template>
+                <customer_customeractivation_activation_template translate="label" module="customeractivation">
+                    <label>Customer Activation Notification</label>
+                    <file>netzarbeiter/customeractivation/customer_activation.html</file>
+                    <type>html</type>
+                </customer_customeractivation_activation_template>
+            </email>
+        </template>
+        <events>
+            <customer_save_before>
+                <observers>
+                    <customeractivation>
+                        <type>singleton</type>
+                        <class>customeractivation/observer</class>
+                        <method>customerSaveBefore</method>
+                    </customeractivation>
+                </observers>
+            </customer_save_before>
+            <customer_save_after>
+                <observers>
+                    <customeractivation>
+                        <type>model</type>
+                        <class>customeractivation/observer</class>
+                        <method>customerSaveAfter</method>
+                    </customeractivation>
+                </observers>
+            </customer_save_after>
+        </events>
+    </global>
+    <admin>
+        <routers>
+            <customeractivation>
+                <use>admin</use>
+                <args>
+                    <module>Netzarbeiter_CustomerActivation</module>
+                    <frontName>customeractivation</frontName>
+                </args>
+            </customeractivation>
+        </routers>
+    </admin>
+    <frontend>
+        <events>
+            <customer_login>
+                <observers>
+                    <customeractivation>
+                        <type>singleton</type>
+                        <class>customeractivation/observer</class>
+                        <method>customerLogin</method>
+                    </customeractivation>
+                </observers>
+            </customer_login>
+            <sales_convert_quote_address_to_order>
+                <observers>
+                    <customeractivation>
+                        <type>singleton</type>
+                        <class>customeractivation/observer</class>
+                        <method>salesConvertQuoteAddressToOrder</method>
+                    </customeractivation>
+                </observers>
+            </sales_convert_quote_address_to_order>
+            <controller_action_postdispatch_customer_account_resetpasswordpost>
+                <observers>
+                    <customeractivation>
+                        <type>singleton</type>
+                        <class>customeractivation/observer</class>
+                        <method>controllerActionPostdispatchCustomerAccountResetPasswordPost</method>
+                    </customeractivation>
+                </observers>
+            </controller_action_postdispatch_customer_account_resetpasswordpost>
+        </events>
+        <translate>
+            <modules>
+                <Netzarbeiter_CustomerActivation>
+                    <files>
+                        <default>Netzarbeiter_CustomerActivation.csv</default>
+                    </files>
+                </Netzarbeiter_CustomerActivation>
+            </modules>
+        </translate>
+    </frontend>
+    <default>
+        <customer>
+            <customeractivation>
+                <disable_ext>0</disable_ext>
+                <always_active_in_admin>1</always_active_in_admin>
+                <alert_admin>1</alert_admin>
+                <admin_email></admin_email>
+                <registration_admin_template>customer_customeractivation_registration_admin_template</registration_admin_template>
+                <alert_customer>0</alert_customer>
+                <activation_template>customer_customeractivation_activation_template</activation_template>
+                <activation_status_default>0</activation_status_default>
+                <always_send_admin_email>0</always_send_admin_email>
+                <require_activation_for_specific_groups>0</require_activation_for_specific_groups>
+                <require_activation_groups></require_activation_groups>
+            </customeractivation>
+        </customer>
+    </default>
+    <adminhtml>
+        <translate>
+            <modules>
+                <Netzarbeiter_CustomerActivation>
+                    <files>
+                        <default>Netzarbeiter_CustomerActivation.csv</default>
+                    </files>
+                </Netzarbeiter_CustomerActivation>
+            </modules>
+        </translate>
+        <events>
+
+            <!-- The massaction block can't be added in the block abstract event, this needs to be used -->
+            <adminhtml_block_html_before>
+                <observers>
+                    <customeractivation>
+                        <type>model</type>
+                        <class>customeractivation/observer</class>
+                        <method>adminhtmlBlockHtmlBefore</method>
+                    </customeractivation>
+                </observers>
+            </adminhtml_block_html_before>
+
+            <!-- Add attribute to grid collection -->
+            <eav_collection_abstract_load_before>
+                <observers>
+                    <customeractivation>
+                        <type>model</type>
+                        <class>customeractivation/observer</class>
+                        <method>eavCollectionAbstractLoadBefore</method>
+                    </customeractivation>
+                </observers>
+            </eav_collection_abstract_load_before>
+
+            <!-- Add column to grid, also for csv and xml export -->
+            <core_block_abstract_prepare_layout_after>
+                <observers>
+                    <customeractivation>
+                        <type>singleton</type>
+                        <class>customeractivation/observer</class>
+                        <method>coreBlockAbstractPrepareLayoutAfter</method>
+                    </customeractivation>
+                </observers>
+            </core_block_abstract_prepare_layout_after>
+        </events>
+    </adminhtml>
+    <phpunit>
+        <suite>
+            <modules>
+                <Netzarbeiter_CustomerActivation/>
+            </modules>
+        </suite>
+    </phpunit>
+</config>

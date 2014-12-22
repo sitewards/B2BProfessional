@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<config>
+	<modules>
+		<Netzarbeiter_CustomerActivation>
+			<active>true</active>
+			<codePool>community</codePool>
+			<depends>
+				<Mage_Core />
+				<Mage_Customer />
+				<Mage_Adminhtml />
+			</depends>
+		</Netzarbeiter_CustomerActivation>
+	</modules>
+</config>
