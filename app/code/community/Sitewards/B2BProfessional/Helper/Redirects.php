@@ -135,7 +135,11 @@ class Sitewards_B2BProfessional_Helper_Redirects extends Sitewards_B2BProfession
              */
             /* @var $oSession Mage_Core_Model_Session */
             $oSession = Mage::getSingleton('core/session');
-            $oSession->addNotice(Mage::helper('sitewards_b2bprofessional')->__('Please login'));
+            $oSession->addUniqueMessages(
+                Mage::getSingleton('core/message')->notice(
+                    Mage::helper('sitewards_b2bprofessional')->__('Please login')
+                )
+            );
             session_write_close();
         }
     }
