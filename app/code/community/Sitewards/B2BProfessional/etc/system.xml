@@ -55,6 +55,15 @@
                             <show_in_store>1</show_in_store>
                             <comment><![CDATA[Activate customers for all stores. Otherwise they will only see the prices in the store, they have registered for.]]></comment>
                         </activecustomers>
+                        <login_message translate="label comment">
+                            <label>Login message</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Message to be shown instead of the price block for not logged in customers.]]></comment>
+                        </login_message>
                     </fields>
                 </generalsettings>
                 <requirelogin>
