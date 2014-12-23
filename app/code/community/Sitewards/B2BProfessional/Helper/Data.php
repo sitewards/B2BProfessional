@@ -24,11 +24,23 @@ class Sitewards_B2BProfessional_Helper_Data extends Sitewards_B2BProfessional_He
     const CONFIG_EXTENSION_PRICE_BLOCKS = 'b2bprofessional/generalsettings/priceblocks';
 
     /**
+     * Path for the config for login message
+     */
+    const CONFIG_EXTENSION_LOGIN_MESSAGE = 'b2bprofessional/generalsettings/login_message';
+
+    /**
      * Variable for if the extension is active
      *
      * @var bool
      */
     protected $bExtensionActive;
+
+    /**
+     * Variable for the login message
+     *
+     * @var string
+     */
+    protected $sLoginMessage;
 
     /**
      * Variable for if the extension is active by category
@@ -68,6 +80,16 @@ class Sitewards_B2BProfessional_Helper_Data extends Sitewards_B2BProfessional_He
     public function isExtensionActive()
     {
         return $this->getStoreFlag(self::CONFIG_EXTENSION_ACTIVE, 'bExtensionActive');
+    }
+
+    /**
+     * Return the login message to be displayed instead of the price block
+     *
+     * @return string
+     */
+    public function getLoginMessage()
+    {
+        return $this->getStoreConfig(self::CONFIG_EXTENSION_LOGIN_MESSAGE, 'sLoginMessage');
     }
 
     /**

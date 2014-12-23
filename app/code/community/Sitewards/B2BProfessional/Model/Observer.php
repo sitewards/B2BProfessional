@@ -290,7 +290,7 @@ class Sitewards_B2BProfessional_Model_Observer
             // To stop duplicate information being displayed validate that we only do this once per product
             if ($iCurrentProductId !== self::$iLastProductId) {
                 self::$iLastProductId = $iCurrentProductId;
-                $oTransport->setHtml($this->oB2BHelper->__('Please login'));
+                $oTransport->setHtml($this->oB2BHelper->getLoginMessage());
             } else {
                 $oTransport->setHtml('');
             }

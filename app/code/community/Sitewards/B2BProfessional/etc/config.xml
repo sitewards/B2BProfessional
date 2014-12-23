@@ -106,6 +106,7 @@
         <b2bprofessional>
             <generalsettings>
                 <active>0</active>
+                <login_message>Please login</login_message>
                 <priceblocks>
                     <catalog>Mage_Catalog_Block_Product_Price</catalog>
                     <bundle>Mage_Bundle_Block_Catalog_Product_Price</bundle>

@@ -137,7 +137,7 @@ class Sitewards_B2BProfessional_Helper_Redirects extends Sitewards_B2BProfession
             $oSession = Mage::getSingleton('core/session');
             $oSession->addUniqueMessages(
                 Mage::getSingleton('core/message')->notice(
-                    Mage::helper('sitewards_b2bprofessional')->__('Please login')
+                    Mage::helper('sitewards_b2bprofessional')->getLoginMessage()
                 )
             );
             session_write_close();

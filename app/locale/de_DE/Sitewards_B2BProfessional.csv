@@ -17,3 +17,7 @@
 "The user is required to login before they can view pages in this shop. <br /> Note: CMS pages are always allowed.","Der Nutzer muss sich einloggen bevor Seiten im Shop aufgerufen werden können. <br /> Hinweis: CMS-Seiten sind immer erlaubt."
 "Redirect User To Page","Nutzer auf Seite weiterleiten"
 "Select which page to redirect a user to.","Wählen Sie die Seite, auf die der Nutzer weitergeleitet werden soll."
+"Global customer activation","Kunden global aktivieren"
+"Login message","Login Nachricht"
+"Message to be shown instead of the price block for not logged in customers.","Text, welcher statt der Preise für nicht eingeloggte Benutzer angezeigt werden soll."
+"When activating this extension by customer group users in the selected group will not be able to see prices, plus the guest user is also included.","Wenn diese Extension pro Kundengruppe aktiviert wird, werden die Kunden in den jeweiligen Gruppen plus die Gäste keine Preise sehen können."
