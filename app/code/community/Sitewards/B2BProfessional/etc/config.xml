@@ -16,13 +16,6 @@
                 <class>Sitewards_B2BProfessional_Helper</class>
             </sitewards_b2bprofessional>
         </helpers>
-        <blocks>
-            <catalog>
-                <rewrite>
-                    <product_list>Sitewards_B2BProfessional_Block_Catalog_Product_List</product_list>
-                </rewrite>
-            </catalog>
-        </blocks>
     </global>
     <frontend>
         <events>
