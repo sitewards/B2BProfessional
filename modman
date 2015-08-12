@@ -1,8 +1,8 @@
-/app/code/community/Sitewards/B2BProfessional /app/code/community/Sitewards/B2BProfessional
-/app/etc/modules/Sitewards_B2BProfessional.xml /app/etc/modules/Sitewards_B2BProfessional.xml
-/app/locale/de_DE/Sitewards_B2BProfessional.csv /app/locale/de_DE/Sitewards_B2BProfessional.csv
-/app/locale/en_US/Sitewards_B2BProfessional.csv /app/locale/en_US/Sitewards_B2BProfessional.csv
-/app/locale/it_IT/Sitewards_B2BProfessional.csv /app/locale/it_IT/Sitewards_B2BProfessional.csv
+app/code/community/Sitewards/B2BProfessional app/code/community/Sitewards/B2BProfessional
+app/etc/modules/Sitewards_B2BProfessional.xml app/etc/modules/Sitewards_B2BProfessional.xml
+app/locale/de_DE/Sitewards_B2BProfessional.csv app/locale/de_DE/Sitewards_B2BProfessional.csv
+app/locale/en_US/Sitewards_B2BProfessional.csv app/locale/en_US/Sitewards_B2BProfessional.csv
+app/locale/it_IT/Sitewards_B2BProfessional.csv app/locale/it_IT/Sitewards_B2BProfessional.csv
 
 app/etc/modules/Netzarbeiter_CustomerActivation.xml app/etc/modules/Netzarbeiter_CustomerActivation.xml
 app/code/community/Netzarbeiter/CustomerActivation app/code/community/Netzarbeiter/CustomerActivation

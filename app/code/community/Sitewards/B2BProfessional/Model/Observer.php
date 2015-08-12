@@ -156,9 +156,9 @@ class Sitewards_B2BProfessional_Model_Observer
      *
      * @param Varien_Event_Observer $oObserver
      */
-    public function sitewardsB2bprofessionalProductListCollectionLoadAfter(Varien_Event_Observer $oObserver)
+    public function catalogBlockProductListCollectionLoadAfter(Varien_Event_Observer $oObserver)
     {
-        $oProductCollection = $oObserver->getProductCollection();
+        $oProductCollection = $oObserver->getCollection();
         $oDummyOption       = Mage::getModel('catalog/product_option');
         foreach ($oProductCollection as $oProduct) {
             if ($this->oB2BHelper->isProductActive($oProduct) === false) {
