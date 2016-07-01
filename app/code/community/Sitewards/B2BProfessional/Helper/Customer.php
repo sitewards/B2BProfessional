@@ -81,10 +81,10 @@ class Sitewards_B2BProfessional_Helper_Customer extends Sitewards_B2BProfessiona
             $oCustomerSession = Mage::getSingleton('customer/session');
             /* @var $oCustomer Mage_Customer_Model_Customer */
             $oCustomer = $oCustomerSession->getCustomer();
-            /* @var bool $bCheck_CustomerWebsite */
-            $bCheck_CustomerWebsite = Mage::getStoreConfigFlag(self::CONFIG_EXTENSION_CHECK_WEBSITE);
+            /* @var bool $bCheckCustomerWebsite */
+            $bCheckCustomerWebsite = Mage::getStoreConfigFlag(self::CONFIG_EXTENSION_CHECK_WEBSITE);
 
-            if ($bCheck_CustomerWebsite) {
+            if ($bCheckCustomerWebsite) {
                 /* checking if customer website matches the current one */
                 return $this->isCustomerActiveForWebsite($oCustomer);
             } else {
