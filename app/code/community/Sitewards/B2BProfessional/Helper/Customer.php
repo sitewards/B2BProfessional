@@ -28,9 +28,14 @@ class Sitewards_B2BProfessional_Helper_Customer extends Sitewards_B2BProfessiona
     const CONFIG_EXTENSION_ACTIVE_CUSTOMER_GROUPS = 'b2bprofessional/activatebycustomersettings/activecustomers';
 
     /**
-     * Path for the config for customer groups that are activated
+     * Path for the config for global customers activation
      */
     const CONFIG_EXTENSION_ACTIVE_CUSTOMER_GLOBALLY = 'b2bprofessional/generalsettings/activecustomers';
+
+    /**
+     * Path for the config for checking customer website and not customer store
+     */
+    const CONFIG_EXTENSION_CHECK_WEBSITE = 'b2bprofessional/generalsettings/check_website';
 
     /**
      * Flag if the extension is set to require login
@@ -76,10 +81,18 @@ class Sitewards_B2BProfessional_Helper_Customer extends Sitewards_B2BProfessiona
             $oCustomerSession = Mage::getSingleton('customer/session');
             /* @var $oCustomer Mage_Customer_Model_Customer */
             $oCustomer = $oCustomerSession->getCustomer();
-            if($this->isCustomerActiveForStore($oCustomer)) {
-                return true;
+            /* @var bool $bCheckCustomerWebsite */
+            $bCheckCustomerWebsite = Mage::getStoreConfigFlag(self::CONFIG_EXTENSION_CHECK_WEBSITE);
+
+            if ($bCheckCustomerWebsite) {
+                /* checking if customer website matches the current one */
+                return $this->isCustomerActiveForWebsite($oCustomer);
+            } else {
+                /* checking if customer store matches the current one */
+                return $this->isCustomerActiveForStore($oCustomer);
             }
         }
+
         return false;
     }
 
@@ -115,12 +128,31 @@ class Sitewards_B2BProfessional_Helper_Customer extends Sitewards_B2BProfessiona
          */
         $iUserStoreId    = $oCustomer->getStoreId();
         $iCurrentStoreId = Mage::app()->getStore()->getId();
-
         /*
          * Return true if:
          *  - the user's store id matches the current store id
          */
         return $iUserStoreId === $iCurrentStoreId;
+    }
+
+    /**
+     * Check if a given customer is allowed for the current website
+     *
+     * @param Mage_Customer_Model_Customer $oCustomer
+     * @return bool
+     */
+    private function isCustomerActiveForWebsite(Mage_Customer_Model_Customer $oCustomer)
+    {
+        /*
+         * Get user's website and current website for comparison
+         */
+        $iUserWebsiteId    = $oCustomer->getWebsiteId();
+        $iCurrentWebsiteId = Mage::app()->getWebsite()->getId();
+        /*
+         * Return true if:
+         *  - the user's website id matches the current website id
+         */
+        return $iUserWebsiteId === $iCurrentWebsiteId;
     }
 
     /**
