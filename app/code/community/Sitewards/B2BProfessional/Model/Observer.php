@@ -251,9 +251,12 @@ class Sitewards_B2BProfessional_Model_Observer
     {
         $aFilterableAttributes    = $oBlock->getData('_filterable_attributes');
         $aNewFilterableAttributes = array();
-        foreach ($aFilterableAttributes as $oFilterableAttribute) {
-            if ($oFilterableAttribute->getAttributeCode() != 'price') {
-                $aNewFilterableAttributes[] = $oFilterableAttribute;
+        
+        if (is_array($aFilterableAttributes) || is_object($aFilterableAttributes)) {
+            foreach ($aFilterableAttributes as $oFilterableAttribute) {
+                if ($oFilterableAttribute->getAttributeCode() != 'price') {
+                    $aNewFilterableAttributes[] = $oFilterableAttribute;
+                } 
             }
         }
         $oBlock->setData('_filterable_attributes', $aNewFilterableAttributes);
