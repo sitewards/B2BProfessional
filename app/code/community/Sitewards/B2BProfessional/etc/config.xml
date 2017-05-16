@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Sitewards_B2BProfessional>
-            <version>3.0.6</version>
+            <version>3.0.7</version>
         </Sitewards_B2BProfessional>
     </modules>
     <global>
