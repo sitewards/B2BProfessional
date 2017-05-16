@@ -81,16 +81,16 @@
         },
         {
             "name": "netzarbeiter/customer-activation",
-            "version": "0.5.2",
+            "version": "0.5.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Vinai/customer-activation.git",
-                "reference": "bde0903cd0898232b5295b72162014d947ad8b4e"
+                "reference": "04b47ecee5565a2582b2de0af54fd9eadc695d0e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Vinai/customer-activation/zipball/bde0903cd0898232b5295b72162014d947ad8b4e",
-                "reference": "bde0903cd0898232b5295b72162014d947ad8b4e",
+                "url": "https://api.github.com/repos/Vinai/customer-activation/zipball/04b47ecee5565a2582b2de0af54fd9eadc695d0e",
+                "reference": "04b47ecee5565a2582b2de0af54fd9eadc695d0e",
                 "shasum": ""
             },
             "require": {
@@ -112,10 +112,10 @@
             "description": "Makes it impossible for a customer to log in until the account has been activated by the administrator.",
             "homepage": "https://github.com/Vinai/customer-activation",
             "support": {
-                "source": "https://github.com/Vinai/customer-activation/tree/0.5.2",
+                "source": "https://github.com/Vinai/customer-activation/tree/0.5.7",
                 "issues": "https://github.com/Vinai/customer-activation/issues"
             },
-            "time": "2014-01-09 18:43:23"
+            "time": "2017-05-08 18:43:23"
         },
         {
             "name": "phpunit/php-code-coverage",
