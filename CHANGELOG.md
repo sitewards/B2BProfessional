@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to
 [Semantic Versioning](http://semver.org/).
 
+## 4.0.1
+
+### Changed
+
+- Removed orphaned files from the previous deletion of Netzarbeiter/Customer-Activation, hard coded in the repo. @jhoelzl
+
+### Notes
+
+Special thanks to @jhoelzl, who has driven the current batch of improvements to this extension. It's surely appreciated!
+
 ## 4.0.0
 
 ### Changed
