@@ -1,0 +1,14 @@
+{
+  "linters": {
+    "php": {
+      "type": "php",
+      "include": "(\\.(php|phtml)$)"
+    },
+    "phpcs": {
+      "type": "phpcs",
+      "bin": "phpcs",
+      "include": "(\\.(php|phtml)$)",
+      "phpcs.standard": "phpcs.xml"
+    }
+  }
+}

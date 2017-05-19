@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Changed
 
 - Removed orphaned files from the previous deletion of Netzarbeiter/Customer-Activation, hard coded in the repo. @jhoelzl
+- (Dev): Added lints
 
 ### Notes
 

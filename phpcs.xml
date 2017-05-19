@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<ruleset name="SitewardsStandard">
+    <description>Sitewards coding standards.</description>
+
+    <ini name="date.timezone" value="Europe/Berlin" />
+
+    <rule ref="PSR2" />
+
+    <rule ref="PSR1.Classes.ClassDeclaration">
+        <exclude-pattern>*app/code*</exclude-pattern>
+        <exclude-pattern>*SitewardsStandard*</exclude-pattern>
+    </rule>
+
+    <rule ref="Squiz.Classes.ValidClassName">
+        <exclude-pattern>*app/code*</exclude-pattern>
+        <exclude-pattern>*SitewardsStandard*</exclude-pattern>
+    </rule>
+
+    <rule ref="PSR2.Methods.MethodDeclaration.Underscore">
+        <exclude-pattern>*app/code*</exclude-pattern>
+        <exclude-pattern>*SitewardsStandard*</exclude-pattern>
+    </rule>
+
+    <!-- Ensure multiple statements that are sequential are aligned -->
+    <rule ref="Generic.Formatting.MultipleStatementAlignment"/>
+
+    <!-- Ensure there is no superfleus whitespace -->
+    <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace" />
+</ruleset>
